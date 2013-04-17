@@ -10,7 +10,7 @@
 #
 # Sample Usage: include mesos::slave
 #
-class mesos::master {
+class mesos::slave {
   require mesos::install
   include mesos::config
   include mesos::params
