@@ -1,6 +1,6 @@
 # == Class: mesos
 #
-# Full description of class mesos here.
+# This module manages mesos installation
 #
 # === Parameters
 #
@@ -23,19 +23,22 @@
 #
 # === Examples
 #
-#  class { mesos:
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ]
-#  }
+#      include mesos::master 
+#  or
+#      include mesos:slave
+#   
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Tomas Barton <barton.tomas@gmail.com>
 #
 # === Copyright
 #
-# Copyright 2013 Your name here, unless otherwise noted.
+# Copyright 2013 Tomas Barton
 #
 class mesos {
 
+  include mesos::install
+  include mesos::config
 
 }
