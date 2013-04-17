@@ -1,16 +1,25 @@
-mesos
+#puppet-mesos
 
-This is the mesos module.
+This is a puppet module for managing mesos nodes in a cluster.
 
-License
--------
+# Requirements
+  
+  * Puppet 3 (or 2.6 with hiera gem)
+  * mesos binary package, for Debian see [mesos deb packaging](https://github.com/deric/mesos-deb-packaging)
 
+# Usage
+  
+  Should be as simple as this, on master node:
 
-Contact
--------
+      include mesos::master
 
+  On slave:
 
-Support
--------
+      include mesos::slave
 
-Please log tickets and issues at our [Projects site](http://projects.example.com)
+  Configuration should be handled by hiera. @TODO add hiera example
+
+# Links
+
+For more information see [Mesos project](http://incubator.apache.org/mesos/)
+
