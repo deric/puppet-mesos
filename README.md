@@ -2,12 +2,12 @@
 
 This is a puppet module for managing mesos nodes in a cluster.
 
-# Requirements
+## Requirements
   
   * Puppet 3 (or 2.6 with hiera gem)
   * mesos binary package, for Debian see [mesos deb packaging](https://github.com/deric/mesos-deb-packaging)
 
-# Usage
+## Usage
   
   Should be as simple as this, on master node:
 
@@ -17,9 +17,11 @@ This is a puppet module for managing mesos nodes in a cluster.
 
       include mesos::slave
 
-  Configuration should be handled by hiera. @TODO add hiera example
+  Configuration should be handled by hiera. 
+   
+  TODO: add hiera example
 
-# Links
+## Links
 
 For more information see [Mesos project](http://incubator.apache.org/mesos/)
 
