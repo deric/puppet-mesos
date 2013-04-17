@@ -1,35 +1,8 @@
-# Define: mesos::service
-#
-# This module manages mesos serviceation
-#
-# Parameters: None
-#
-# Actions: None
-#
-# Requires: mesos::install
-#
-# Sample Usage: mesos::service { 'master':
-#                 start      => 'yes',
-#             }
-#
-define storm::service( $start = 'no', $enable = false) {
+# /etc/default/mesos-<%= name %>
 
-  file { "/etc/default/mesos-${name}":
-    require => Package['storm'],
-    content => template('mesos/service.erb'),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644'
-  }
-  
-  if $start == 'yes' {
-    service { "mesos-${name}":
-      ensure    => "running",
-      hasstatus => true,
-      enable    => $enable,
-      subscribe => [File["/etc/mesos/conf/mesos.conf"], File["/etc/default/mesos"], File["/etc/default/mesos-${name}"]],
-    }
-  }
+#_ START? _#
+ENABLE="<%= start %>"
 
-}
+#_ PID FILE _#
+MESOS_<%= name.upcase %>_PID="/var/run/mesos-<%= name %>.pid"
 
