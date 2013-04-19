@@ -6,10 +6,10 @@ RUN_MESOS_MASTER=no
 MESOS_MASTER_PID="/var/run/mesos_master.pid"
 MESOS_SLAVE_PID="/var/run/mesos_slave.pid"
 
-MASTER_PORT=5050
-MASTER_IP="<%= scope.lookupvar('mesos::params::mesos_master') %>"
-LOG_DIR="/var/log/mesos"
-MESOS_CONF="/etc/mesos/conf"
+MASTER_PORT=<%= scope.lookupvar('mesos::params::master_port') %>
+MASTER_IP="<%= scope.lookupvar('mesos::params::master') %>"
+LOG_DIR="<%= scope.lookupvar('mesos::params::log_dir') %>"
+MESOS_CONF="<%= scope.lookupvar('mesos::params::conf_dir') %>"
 
-CLUSTER=""
+CLUSTER="<%= scope.lookupvar('mesos::params::cluster') %>"
 
