@@ -14,7 +14,7 @@ class mesos::config {
   require mesos::install
   include mesos::params
 
-  file { '/etc/mesos/conf/mesos.conf':
+  file { '/etc/mesos/mesos.conf':
     require => Package['mesos'],
     content => template('mesos/mesos.conf.erb'),
     owner   => 'root',
