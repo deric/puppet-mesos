@@ -20,5 +20,9 @@ class mesos::install {
     ensure => 'latest'
   }
 
+   if !defined( Package["python"] ) {   package { "python": ensure => present } }
+   # linux containers
+   if !defined( Package["lxc"] ) {   package { "lxc": ensure => present } }
+
 }
 
