@@ -19,7 +19,6 @@ class mesos::slave {
   mesos::service { 'slave':
     start      => 'yes',
     enable     => true,
-    ensure     => "running",
   }
 
 }
