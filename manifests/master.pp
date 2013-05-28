@@ -18,8 +18,7 @@ class mesos::master {
   # Install  /etc/default/mesos-master
   mesos::service { 'master':
     start      => 'yes',
-    enable     => true,
-    ensure     => "running",
+    enable     => true,    
   }
 
 }
