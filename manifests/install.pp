@@ -12,8 +12,7 @@
 #
 class mesos::install {
   
-  # linux containers
-  mesos::requires { "$name-requires-lxc": package => 'lxc' }
+  # linux containers are now implemented natively with usage of cgroups
   mesos::requires { "$name-requires-python": package => 'python' }
 
   # a debian (or other binary package) must be available, see https://github.com/deric/mesos-deb-packaging 
