@@ -1,0 +1,12 @@
+MASTER="<%= scope.lookupvar('mesos::params::master') %>:<%= scope.lookupvar('mesos::params::master_port') %>"
+#fault-tolerant
+#MASTER=zk://localhost:2181/mesos
+#IP=0.0.0.0
+PORT=5051
+WORKDIR=/tmp/mesos
+#OPTS="--hadoop_home=/usr/lib/hadoop-0.20/"
+
+# alternative is to use MESOS_<option> as an envar
+# option list is available with /usr/sbin/mesos-slave --help
+# EX :
+# export MESOS_log_dir=/var/log/mesos
