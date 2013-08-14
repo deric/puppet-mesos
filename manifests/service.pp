@@ -16,7 +16,7 @@ define mesos::service( $start = 'no', $enable = false) {
 
   file { "/etc/default/mesos-${name}":
     require => Package['mesos'],
-    content => template('mesos/${name}.erb'),
+    content => template("mesos/${name}.erb"),
     owner   => 'root',
     group   => 'root',
     mode    => '0644'
