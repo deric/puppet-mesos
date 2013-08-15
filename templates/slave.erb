@@ -1,6 +1,10 @@
-MASTER="<%= scope.lookupvar('mesos::params::master') %>:<%= scope.lookupvar('mesos::params::master_port') %>"
-#fault-tolerant
-#MASTER=zk://localhost:2181/mesos
+# if zookeeper URL is not specified, slaves will connect directly
+# to specified master (not a fault-tolerant mode)
+<% if scope.lookupvar('mesos::params::master').empty? -%>
+  MASTER="<%= scope.lookupvar('mesos::params::master') %>:<%= scope.lookupvar('mesos::params::master_port') %>"
+<% else -%>
+  MASTER="<%= scope.lookupvar('mesos::params::zk') %>"
+<% end -%>
 #IP=0.0.0.0
 PORT=5051
 WORKDIR=/tmp/mesos

@@ -16,7 +16,7 @@ class mesos::params {
   $cluster      = params_lookup('cluster', '')
   $master       = params_lookup('master', '127.0.0.1')
   $master_port  = params_lookup('master_port', '5050')
-  $zk           = params_lookup('zk', 'zk://localhost:2181/mesos')
+  $zk           = params_lookup('zk', '') # e.g. zk://localhost:2181/mesos
   $slaves       = params_lookup('slaves', '*')
   $whitelist    = params_lookup('whitelist', '*')
   
