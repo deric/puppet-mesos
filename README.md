@@ -23,5 +23,9 @@ This is a puppet module for managing mesos nodes in a cluster.
 
 ## Links
 
-For more information see [Mesos project](http://incubator.apache.org/mesos/)
+For more information see [Mesos project](http://mesos.apache.org/)
+
+## License
+
+Apache License 2.0
 
