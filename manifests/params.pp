@@ -19,6 +19,7 @@ class mesos::params {
   $zk           = params_lookup('zk', '') # e.g. zk://localhost:2181/mesos
   $slaves       = params_lookup('slaves', '*')
   $whitelist    = params_lookup('whitelist', '*')
+  $slave_port   = params_lookup('slave_port', '5051')
   
   # master and slave creates separate logs automatically
   $log_dir      = params_lookup('log_dir', '/var/log/mesos')

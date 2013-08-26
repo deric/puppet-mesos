@@ -5,8 +5,9 @@
 <% else -%>
   MASTER="<%= scope.lookupvar('mesos::params::zk') %>"
 <% end -%>
-#IP=0.0.0.0
-PORT=5051
+# public slave's ip, must be unique in mesos cluster
+IP="<%= scope.lookupvar('ipaddress') %>"
+PORT=<%= scope.lookupvar('mesos::params::slave_port') %>
 WORKDIR=/tmp/mesos
 #OPTS="--hadoop_home=/usr/lib/hadoop-0.20/"
 
