@@ -4,8 +4,8 @@ ZK="<%= scope.lookupvar('mesos::params::zk') %>"
 # Human readable name for the cluster, displayed in the webui
 CLUSTER="<%= scope.lookupvar('mesos::params::cluster') %>"
 
-# IP address to listen on
-IP="<%= scope.lookupvar('mesos::params::master') %>"
+# IP address to listen on (in case that you start master on this node, it will bind to this address)
+IP="<%= scope.lookupvar('ipaddress') %>"
 
 # Port to listen on (default: 5050)
 PORT=<%= scope.lookupvar('mesos::params::master_port') %>
