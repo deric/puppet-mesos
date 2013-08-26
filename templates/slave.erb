@@ -5,10 +5,22 @@
 <% else -%>
   MASTER="<%= scope.lookupvar('mesos::params::zk') %>"
 <% end -%>
+
 # public slave's ip, must be unique in mesos cluster
 IP="<%= scope.lookupvar('ipaddress') %>"
+
+# Port to listen on (default: 5051)
 PORT=<%= scope.lookupvar('mesos::params::slave_port') %>
-WORKDIR=/tmp/mesos
+
+# Where to place framework work directories (default: /tmp/mesos)
+WORKDIR="<%= scope.lookupvar('mesos::params::work_dir') %>"
+
+# Whether to checkpoint slave and frameworks information
+# to disk. This enables a restarted slave to recover
+# status updates and reconnect with (--recover=reconnect) or
+# kill (--recover=kill) old executors (default: false)
+CHECKPOINT=<%= scope.lookupvar('mesos::params::checkpoint') %>
+
 #OPTS="--hadoop_home=/usr/lib/hadoop-0.20/"
 
 # alternative is to use MESOS_<option> as an envar
