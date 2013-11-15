@@ -1,23 +1,27 @@
-#puppet-mesos
+# Mesos Puppet Module
 
 This is a puppet module for managing mesos nodes in a cluster.
 
 ## Requirements
-  
+
   * Puppet 3 (or 2.6 with hiera gem)
   * Mesos binary package, for Debian see [mesos deb packaging](https://github.com/deric/mesos-deb-packaging)
 
 ## Usage
-  
+
   Should be as simple as this, on master node:
 
-      include mesos::master
+```puppet
+class{'mesos::master': }
+```
 
   On slave:
 
-      include mesos::slave
+```puppet
+class{'mesos::slave': }
+```
 
-  Configuration should be handled by hiera. 
+  Configuration should be handled by hiera.
 
   Either specify one master
 
