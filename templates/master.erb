@@ -1,22 +1,18 @@
 # ZooKeeper URL (used for leader election amongst masters)
-ZK="<%= scope.lookupvar('mesos::params::zk') %>"
+ZK="<%= scope.lookupvar('mesos::zk') %>"
 
 # Human readable name for the cluster, displayed in the webui
-CLUSTER="<%= scope.lookupvar('mesos::params::cluster') %>"
+CLUSTER="<%= scope.lookupvar('mesos::cluster') %>"
 
 # IP address to listen on (in case that you start master on this node, it will bind to this address)
 IP="<%= scope.lookupvar('ipaddress') %>"
 
 # Port to listen on (default: 5050)
-PORT=<%= scope.lookupvar('mesos::params::master_port') %>
-
-# Initial slaves that should be considered part of this cluster
-# (or if using ZooKeeper a URL) (default: *)
-SLAVES=<%= scope.lookupvar('mesos::params::slaves') %>
+PORT=<%= scope.lookupvar('mesos::master_port') %>
 
 # Path to a file with a list of slaves (one per line) to advertise offers for;
 # should be of the form: file://path/to/file (default: *)
-WHITELIST=<%= scope.lookupvar('mesos::params::whitelist') %>
+WHITELIST=<%= scope.lookupvar('mesos::whitelist') %>
 #OPTS="--hadoop_home=/usr/lib/hadoop-0.20/"
 
 # alternative is to use MESOS_<option> as an envar

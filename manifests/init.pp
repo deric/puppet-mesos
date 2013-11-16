@@ -2,31 +2,12 @@
 #
 # This module manages mesos installation
 #
-# === Parameters
-#
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if it
-#   has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should not be used in preference to class parameters  as of
-#   Puppet 2.6.)
-#
 # === Examples
 #
-#      include mesos::master 
+#      class{ 'mesos::master': }
 #  or
-#      include mesos:slave
-#   
+#      class{ 'mesos:slave': }
+#
 #
 # === Authors
 #
@@ -36,9 +17,43 @@
 #
 # Copyright 2013 Tomas Barton
 #
-class mesos {
+class mesos(
+  $ensure       = hiera('mesos::version', 'present')
+) {
 
-  include mesos::install
-  include mesos::config
+  # human readable name for cluster
+  $cluster      = hiera('mesos::cluster', '')
+  $master_port  = hiera('mesos::master_port', '5050')
+  $slaves       = hiera('mesos::slaves', '*')
+  $whitelist    = hiera('mesos::whitelist', '*')
+
+
+  # master and slave creates separate logs automatically
+  # TODO: currently not used
+  $log_dir      = hiera('mesos::log_dir', '/var/log/mesos')
+  $conf_dir     = hiera('mesos::conf_dir', '/etc/mesos')
+
+  # slave
+  # e.g. zk://localhost:2181/mesos
+  $zk           = hiera('mesos::zk', '')
+  # if "zk" is empty, master value is used
+  $master       = hiera('mesos::master', '127.0.0.1')
+  $slave_port   = hiera('mesos::slave_port', '5051')
+  $work_dir     = hiera('mesos::work_dir', '/tmp/mesos')
+  $checkpoint   = hiera('mesos::checkpoint', false)
+
+#  include mesos::install
+#  include mesos::config
+  class {'mesos::install':
+    ensure => $ensure,
+  }
+
+  class {'mesos::config':
+    log_dir => $log_dir,
+    conf_dir => $conf_dir,
+    owner   => $owner,
+    group   => $group,
+    require => Class['mesos::install']
+  }
 
 }

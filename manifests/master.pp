@@ -10,15 +10,17 @@
 #
 # Sample Usage: include mesos::master
 #
-class mesos::master {
+class mesos::master(
+  $enable = true,
+  $star   = 'yes',
+) inherits mesos {
+
   require mesos::install
-  include mesos::config
-  include mesos::params
 
   # Install  /etc/default/mesos-master
   mesos::service { 'master':
-    start      => 'yes',
-    enable     => true,    
+    start      => $start,
+    enable     => $enable,
   }
 
 }

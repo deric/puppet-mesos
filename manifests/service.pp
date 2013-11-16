@@ -12,24 +12,26 @@
 #                 start      => 'yes',
 #               }
 #
-define mesos::service( $start = 'no', $enable = false) {
+define mesos::service(
+  $start = 'no',
+  $enable = false,
+  $conf_dir = '/etc/mesos',
+) {
 
   file { "/etc/default/mesos-${name}":
-    require => Package['mesos'],
     content => template("mesos/${name}.erb"),
     owner   => 'root',
     group   => 'root',
-    mode    => '0644'
+    mode    => '0644',
+    require => Package['mesos'],
   }
-  
+
   if $start == 'yes' {
     service { "mesos-${name}":
-      ensure     => "running",
+      ensure     => 'running',
       hasstatus => true,
       enable    => $enable,
-      subscribe => [File["/etc/default/mesos"], File["/etc/mesos/${name}.conf"]],
+      subscribe => [File["/etc/default/mesos"], File["${conf_dir}/${name}.conf"]],
     }
   }
-
-
 }

@@ -10,31 +10,38 @@
 #
 # Sample Usage: include mesos::config
 #
-class mesos::config {
-  require mesos::install
-  include mesos::params
+class mesos::config(
+  $log_dir,
+  $conf_dir,
+  $owner,
+  $group,
+){
 
-  file { '/etc/mesos/master.conf':
+  file { $log_dir:
+    ensure => directory,
+    owner  => $owner,
+    group  => $group,
+  }
+
+  file { $conf_dir:
+    ensure => directory,
+    owner  => $owner,
+    group  => $group,
+  }
+
+  file { "#{conf_dir}/master.conf":
     require => Package['mesos'],
     content => template('mesos/master.erb'),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644'
-  }
-  
-  file { '/etc/mesos/slave.conf':
-    require => Package['mesos'],
-    content => template('mesos/slave.erb'),
-    owner   => 'root',
-    group   => 'root',
+    owner   => $owner,
+    group   => $group,
     mode    => '0644'
   }
 
   file { '/etc/default/mesos':
     require => Package['mesos'],
     content => template('mesos/default.erb'),
-    owner   => 'root',
-    group   => 'root',
+    owner   => $owner,
+    group   => $group,
     mode    => '0644'
   }
 
