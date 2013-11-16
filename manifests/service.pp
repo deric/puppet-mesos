@@ -18,14 +18,6 @@ define mesos::service(
   $conf_dir = '/etc/mesos',
 ) {
 
-  file { "/etc/default/mesos-${name}":
-    content => template("mesos/${name}.erb"),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    require => Package['mesos'],
-  }
-
   if $start == 'yes' {
     service { "mesos-${name}":
       ensure     => 'running',

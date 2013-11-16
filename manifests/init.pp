@@ -41,6 +41,8 @@ class mesos(
   $slave_port   = hiera('mesos::slave_port', '5051')
   $work_dir     = hiera('mesos::work_dir', '/tmp/mesos')
   $checkpoint   = hiera('mesos::checkpoint', false)
+  $owner        = hiera('mesos::owner', 'root')
+  $group        = hiera('mesos::group', 'root')
 
 #  include mesos::install
 #  include mesos::config

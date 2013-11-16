@@ -2,13 +2,14 @@
 #
 # This module manages the mesos configuration directories
 #
-# Parameters: None
+# Parameters:
+#  [*log_dir*]  - directory for logging (default: /var/log/mesos)
+#  [*conf_dir*] - directory for configuration files (default: /etc/mesos)
+#  [*owner*]    - owner of configuration files
+#  [*group*]    - group of configuration files
 #
-# Actions: None
-#
-# Requires: mesos::install, mesos
-#
-# Sample Usage: include mesos::config
+# This class should not be included directly,
+# always use 'mesos::slave' or 'mesos:master'
 #
 class mesos::config(
   $log_dir,
@@ -29,20 +30,21 @@ class mesos::config(
     group  => $group,
   }
 
-  file { "#{conf_dir}/master.conf":
-    require => Package['mesos'],
+  file { "${conf_dir}/master.conf":
     content => template('mesos/master.erb'),
     owner   => $owner,
     group   => $group,
-    mode    => '0644'
+    mode    => '0644',
+    require => [File[$conf_dir], Package['mesos']],
   }
 
   file { '/etc/default/mesos':
-    require => Package['mesos'],
+    ensure  => 'present',
     content => template('mesos/default.erb'),
     owner   => $owner,
     group   => $group,
-    mode    => '0644'
+    mode    => '0644',
+    require => Package['mesos'],
   }
 
 }
