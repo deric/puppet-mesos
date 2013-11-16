@@ -14,21 +14,16 @@ class mesos::install(
   $ensure = $mesos::ensure,
 ) {
 
-  # linux containers are now implemented natively with usage of cgroups
-  mesos::requires { "$name-requires-python": package => 'python' }
+  # 'ensure_packages' requires puppetlabs/stdlib
+  #
+  # linux containers are now implemented natively
+  # with usage of cgroups, requires kernel >= 2.6.24
+  ensure_packages(['python'])
 
   # a debian (or other binary package) must be available, see https://github.com/deric/mesos-deb-packaging
   # for Debian packaging
   package { 'mesos':
-    ensure => $ensure,
+    ensure  => $ensure,
+    require => Package['python']
   }
-
-  define mesos::requires ( $ensure='installed', $package ) {
-   if defined( Package[$package] ) {
-    debug("$package already installed")
-   } else {
-    package { $package: ensure => $ensure }
-   }
- }
 }
-
