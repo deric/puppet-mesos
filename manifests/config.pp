@@ -12,10 +12,10 @@
 # always use 'mesos::slave' or 'mesos:master'
 #
 class mesos::config(
-  $log_dir,
-  $conf_dir,
-  $owner,
-  $group,
+  $log_dir  = $mesos::log_dir,
+  $conf_dir = $mesos::conf_dir,
+  $owner    = $mesos::owner,
+  $group    = $mesos::group,
 ){
 
   file { $log_dir:

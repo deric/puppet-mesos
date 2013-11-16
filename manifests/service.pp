@@ -20,12 +20,12 @@ define mesos::service(
 
   if $start == 'yes' {
     service { "mesos-${name}":
-      ensure     => 'running',
+      ensure    => 'running',
       hasstatus => true,
       enable    => $enable,
-      subscribe => [ File["/etc/default/mesos"],
-                     File["${conf_dir}/${name}.conf"]
-                  ],
+      subscribe => [ File['/etc/default/mesos'],
+        File["${conf_dir}/${name}.conf"]
+      ],
     }
   }
 }
