@@ -11,17 +11,27 @@
 # Sample Usage: include mesos::master
 #
 class mesos::master(
-  $enable = true,
-  $star   = 'yes',
+  $enable   = true,
+  $start    = 'yes',
+  $owner    = $mesos::owner,
+  $group    = $mesos::group,
+  $conf_dir = $mesos::conf_dir,
 ) inherits mesos {
 
-  require mesos::install
+  file { "${conf_dir}/master.conf":
+    ensure  => present,
+    content => template('mesos/master.erb'),
+    owner   => $owner,
+    group   => $group,
+    mode    => '0644',
+    require => File[$conf_dir],
+  }
 
-  # Install  /etc/default/mesos-master
+  # Install mesos-master service
   mesos::service { 'master':
     start      => $start,
     enable     => $enable,
+    conf_dir   => $conf_dir,
+    require    => [File["${conf_dir}/master.conf"], Package['mesos']],
   }
-
 }
-

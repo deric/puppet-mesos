@@ -19,9 +19,7 @@ class mesos::install(
 
   # a debian (or other binary package) must be available, see https://github.com/deric/mesos-deb-packaging
   # for Debian packaging
-  package { ['mesos']:
-    # for debugging issues with deb package
-    # @TODO should be replaced by 'present' in future
+  package { 'mesos':
     ensure => $ensure,
   }
 

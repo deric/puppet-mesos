@@ -30,14 +30,6 @@ class mesos::config(
     group  => $group,
   }
 
-  file { "${conf_dir}/master.conf":
-    content => template('mesos/master.erb'),
-    owner   => $owner,
-    group   => $group,
-    mode    => '0644',
-    require => [File[$conf_dir], Package['mesos']],
-  }
-
   file { '/etc/default/mesos':
     ensure  => 'present',
     content => template('mesos/default.erb'),
@@ -46,6 +38,4 @@ class mesos::config(
     mode    => '0644',
     require => Package['mesos'],
   }
-
 }
-

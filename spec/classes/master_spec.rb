@@ -1,27 +1,27 @@
 require 'spec_helper'
 
-describe 'mesos::slave' do
+describe 'mesos::master' do
   let(:owner) { 'mesos' }
   let(:group) { 'mesos' }
+  let(:conf) { '/etc/mesos' }
 
   let(:params){{
-    :conf_dir => '/etc/mesos',
+    :conf_dir => conf,
     :owner    => owner,
     :group    => group,
   }}
 
   it { should contain_package('mesos') }
-  it { should contain_service('mesos-slave').with(
+  it { should contain_service('mesos-master').with(
       :ensure => 'running',
       :enable => true
   ) }
 
-  it { should contain_file('/etc/mesos/slave.conf').with({
+  it { should contain_file('/etc/mesos/master.conf').with({
     'ensure'  => 'present',
     'owner'   => owner,
     'group'   => group,
     'mode'    => '0644',
-    'require' => 'Package[mesos]',
   }) }
 
   context 'disabling service' do
@@ -29,7 +29,7 @@ describe 'mesos::slave' do
       :enable => false,
     }}
 
-    it { should contain_service('mesos-slave').with(
+    it { should contain_service('mesos-master').with(
       :enable => false
     ) }
   end
