@@ -32,6 +32,7 @@ class mesos::slave (
   $owner       = $mesos::owner,
   $group       = $mesos::group,
   $conf_dir    = $mesos::conf_dir,
+  $env_var     = undef,
 ) inherits mesos {
 
   file { "${conf_dir}/slave.conf":

@@ -4,6 +4,7 @@ describe 'mesos::slave' do
   let(:owner) { 'mesos' }
   let(:group) { 'mesos' }
   let(:conf) { '/etc/mesos' }
+  let(:file) { '/etc/mesos/slave.conf' }
 
   let(:facts) {{
     :ipaddress => '192.168.1.1',
@@ -114,4 +115,20 @@ describe 'mesos::slave' do
     ).with_content(/CHECKPOINT=true/) }
   end
 
+  context 'setting environment variables' do
+    let(:params){{
+      :env_var => {
+        'JAVA_HOME' => '/usr/bin/java',
+        'MESOS_HOME' => '/var/lib/mesos',
+      },
+    }}
+
+    it { should contain_file(
+      '/etc/mesos/slave.conf'
+    ).with_content(/JAVA_HOME="\/usr\/bin\/java"/) }
+
+    it { should contain_file(
+      '/etc/mesos/slave.conf'
+    ).with_content(/MESOS_HOME="\/var\/lib\/mesos"/) }
+  end
 end

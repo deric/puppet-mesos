@@ -32,6 +32,17 @@ class{'mesos::slave':
  - `zookeeper` - Zookeeper URL string (which keeps track
              of current Mesos master)
  - `work_dir` - directory for storing task's temporary files (default: `/tmp/mesos`)
+ - `env_var` - slave's execution environment variables, if you are using
+ Java, you might need e.g.:
+
+```puppet
+class{'mesos::slave':
+  master  => '192.168.1.1',
+  env_var => {
+    'JAVA_HOME' => '/usr/bin/java'
+  }
+}
+```
 
 ## Hiera support
 
