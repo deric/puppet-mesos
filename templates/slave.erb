@@ -1,25 +1,25 @@
 # if zookeeper URL is not specified, slaves will connect directly
 # to specified master (not a fault-tolerant mode)
-<% if !@master.nil? && !@master.empty? -%>
-  MASTER="<%= @master %>:<%= @master_port %>"
+<% if !@zookeeper.nil? && !@zookeeper.empty? -%>
+MASTER="<%= @zookeeper %>"
 <% else -%>
-  MASTER="<%= scope.lookupvar('mesos::zk') %>"
+MASTER="<%= @master %>:<%= @master_port %>"
 <% end -%>
 
 # public slave's ip, must be unique in mesos cluster
 IP="<%= scope.lookupvar('ipaddress') %>"
 
 # Port to listen on (default: 5051)
-PORT=<%= scope.lookupvar('mesos::slave::port') %>
+PORT=<%= @port %>
 
 # Where to place framework work directories (default: /tmp/mesos)
-WORKDIR="<%= scope.lookupvar('mesos::work_dir') %>"
+WORKDIR="<%= @work_dir %>"
 
 # Whether to checkpoint slave and frameworks information
 # to disk. This enables a restarted slave to recover
 # status updates and reconnect with (--recover=reconnect) or
 # kill (--recover=kill) old executors (default: false)
-CHECKPOINT=<%= scope.lookupvar('mesos::checkpoint') %>
+CHECKPOINT=<%= @checkpoint %>
 
 #OPTS="--hadoop_home=/usr/lib/hadoop-0.20/"
 

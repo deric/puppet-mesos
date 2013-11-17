@@ -13,6 +13,10 @@
 class mesos::slave (
   $enable      = true,
   $start       = 'yes',
+  $port        = 5051,
+  $work_dir    = $mesos::work_dir,
+  $checkpoint  = $mesos::checkpoint,
+  $zookeeper   = $mesos::zookeeper,
   $owner       = $mesos::owner,
   $group       = $mesos::group,
   $conf_dir    = $mesos::conf_dir,

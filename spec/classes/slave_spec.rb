@@ -35,6 +35,24 @@ describe 'mesos::slave' do
     ).with_content(/IP="192.168.1.1"/)
   end
 
+  it 'has default port eq to 5051' do
+    should contain_file(
+      '/etc/mesos/slave.conf'
+    ).with_content(/PORT=5051/)
+  end
+
+  it 'checkpoint should be false' do
+    should contain_file(
+      '/etc/mesos/slave.conf'
+    ).with_content(/CHECKPOINT=false/)
+  end
+
+  it 'should have workdir in /tmp/mesos' do
+    should contain_file(
+      '/etc/mesos/slave.conf'
+    ).with_content(/WORKDIR="\/tmp\/mesos"/)
+  end
+
   context 'one master node' do
     let(:params){{
       :master => '192.168.1.100',
@@ -42,6 +60,27 @@ describe 'mesos::slave' do
     it { should contain_file(
       '/etc/mesos/slave.conf'
       ).with_content(/MASTER="192.168.1.100:5050"/)
+    }
+  end
+
+  context 'with zookeeper' do
+    let(:params){{
+      :zookeeper => 'zk://192.168.1.100:2181/mesos',
+    }}
+    it { should contain_file(
+      '/etc/mesos/slave.conf'
+      ).with_content(/MASTER="zk:\/\/192.168.1.100:2181\/mesos"/)
+    }
+  end
+
+  context 'zookeeper should be preferred before single master' do
+    let(:params){{
+      :master    => '172.16.0.1',
+      :zookeeper => 'zk://192.168.1.100:2181/mesos',
+    }}
+    it { should contain_file(
+      '/etc/mesos/slave.conf'
+      ).with_content(/MASTER="zk:\/\/192.168.1.100:2181\/mesos"/)
     }
   end
 

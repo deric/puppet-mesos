@@ -1,14 +1,13 @@
 # Class: mesos::install
 #
-# This module manages Mesos installation
+# This class manages Mesos package installation.
 #
-# Parameters: None
+# Parameters:
+# [*ensure*] - 'present' for installing any version of Mesos
+#   'latest' or e.g. '0.15' for specific version
 #
-# Actions: None
-#
-# Requires:
-#
-# Sample Usage: include mesos::install
+# Sample Usage: is not meant for standalone usage, class is
+# required by 'mesos::master' and 'mesos::slave'
 #
 class mesos::install(
   $ensure = $mesos::ensure,
@@ -20,7 +19,8 @@ class mesos::install(
   # with usage of cgroups, requires kernel >= 2.6.24
   ensure_packages(['python'])
 
-  # a debian (or other binary package) must be available, see https://github.com/deric/mesos-deb-packaging
+  # a debian (or other binary package) must be available,
+  # see https://github.com/deric/mesos-deb-packaging
   # for Debian packaging
   package { 'mesos':
     ensure  => $ensure,

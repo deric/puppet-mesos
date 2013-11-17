@@ -19,24 +19,27 @@ class{'mesos::master': }
   On slave:
 
 ```puppet
-class{'mesos::slave': }
+class{'mesos::slave':
+  master => '192.168.1.1'
+}
 ```
 
-  Configuration should be handled by hiera.
+## Hiera support
+
+  Configuration could be handled by hiera.
 
   Either specify one master
 
-    mesos_master      : '192.168.1.1'
+    mesos::master      : '192.168.1.1'
 
-  or [zookeeper](http://zookeeper.apache.org/) could be use for a fault-tolerant setup (multiple instances of zookeeper are separated by comma):
+  or [Zookeeper](http://zookeeper.apache.org/) could be use for a fault-tolerant setup (multiple instances of zookeeper are separated by comma):
 
-    mesos_zk          : 'zk://192.168.1.1:2181/mesos'
-    mesos_master_port : 5050
-    mesos_log_dir     : '/var/log/mesos'
-    mesos_conf_dir    : '/etc/mesos'
-    mesos_cluster     : 'my_mesos_cluster'
-    mesos_slaves      : '*'
-    mesos_whitelist   : '*'
+    mesos::zookeeper   : 'zk://192.168.1.1:2181/mesos'
+    mesos::master_port : 5050
+    mesos::log_dir     : '/var/log/mesos'
+    mesos::conf_dir    : '/etc/mesos'
+    mesos::cluster     : 'my_mesos_cluster'
+    mesos::whitelist   : '*'
 
 
 ## Links

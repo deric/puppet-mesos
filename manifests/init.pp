@@ -34,7 +34,7 @@ class mesos(
 
   # slave
   # e.g. zk://localhost:2181/mesos
-  $zk           = hiera('mesos::zk', undef)
+  $zookeeper    = hiera('mesos::zookeeper', undef)
   # if "zk" is empty, master value is used
   $master       = hiera('mesos::master', '127.0.0.1')
   $master_port  = hiera('mesos::master_port', '5050')
