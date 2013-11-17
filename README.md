@@ -1,7 +1,7 @@
 # Mesos Puppet Module
 [![Build Status](https://travis-ci.org/deric/puppet-mesos.png)](https://travis-ci.org/deric/puppet-mesos)
 
-This is a puppet module for managing mesos nodes in a cluster.
+This is a Puppet module for managing Mesos nodes in a cluster.
 
 ## Requirements
 
@@ -16,7 +16,7 @@ This is a puppet module for managing mesos nodes in a cluster.
 class{'mesos::master': }
 ```
 
-  On slave:
+  For slave you have to specify either `master` or `zookeeper` node(s) to connect.
 
 ```puppet
 class{'mesos::slave':
@@ -24,9 +24,19 @@ class{'mesos::slave':
 }
 ```
 
+### Slave
+
+ - `enable` - install Mesos slave service (default: `true`)
+ - `start`  - autostart of Mesos slave service (default: `true`)
+ - `master`- ip address of Mesos master (default: `localhost`)
+ - `master_port` - Mesos master's port (default: `5050`)
+ - `zookeeper` - Zookeeper URL string (which keeps track
+             of current Mesos master)
+ - `work_dir` - directory for storing task's temporary files (default: `/tmp/mesos`)
+
 ## Hiera support
 
-  Configuration could be handled by hiera.
+  All configuration could be handled by hiera.
 
   Either specify one master
 

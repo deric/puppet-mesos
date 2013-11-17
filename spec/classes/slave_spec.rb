@@ -94,4 +94,26 @@ describe 'mesos::slave' do
     ) }
   end
 
+  context 'changing workdir' do
+    let(:params){{
+      :work_dir => '/home/mesos',
+    }}
+
+    it { should contain_file(
+      '/etc/mesos/slave.conf'
+    ).with_content(/WORKDIR="\/home\/mesos"/)
+    }
+  end
+
+  context 'changing checkpoint' do
+    let(:params){{
+      :checkpoint => true,
+    }}
+
+    it { should contain_file(
+      '/etc/mesos/slave.conf'
+    ).with_content(/CHECKPOINT=true/)
+    }
+  end
+
 end
