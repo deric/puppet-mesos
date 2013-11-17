@@ -3,9 +3,14 @@ require 'spec_helper'
 describe 'mesos::slave' do
   let(:owner) { 'mesos' }
   let(:group) { 'mesos' }
+  let(:conf) { '/etc/mesos' }
+
+  let(:facts) {{
+    :ipaddress => '192.168.1.1',
+  }}
 
   let(:params){{
-    :conf_dir => '/etc/mesos',
+    :conf_dir => conf,
     :owner    => owner,
     :group    => group,
   }}
@@ -23,6 +28,12 @@ describe 'mesos::slave' do
     'mode'    => '0644',
     'require' => 'Package[mesos]',
   }) }
+
+  it 'has ip address from system fact' do
+    should contain_file(
+      '/etc/mesos/slave.conf'
+    ).with_content(/IP="192.168.1.1"/)
+  end
 
   context 'disabling service' do
     let(:params){{
