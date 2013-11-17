@@ -1,4 +1,5 @@
 # Mesos Puppet Module
+[![Build Status](https://travis-ci.org/deric/puppet-mesos.png)](https://travis-ci.org/deric/puppet-mesos)
 
 This is a puppet module for managing mesos nodes in a cluster.
 
