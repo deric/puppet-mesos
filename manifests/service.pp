@@ -1,16 +1,16 @@
 # Define: mesos::service
 #
-# This module manages mesos serviceation
+# This module manages mesos services
 #
-# Parameters: None
+# Parameters:
+#  [*start*] - start service by during boot-time
+#  [*enable*] - enable service
+#  [*conf_dir*] - path to service configuration files
 #
-# Actions: None
-#
-# Requires: mesos::install
-#
-# Sample Usage: mesos::service { 'master':
-#                 start      => 'yes',
-#               }
+# Sample Usage:
+#   mesos::service { 'master':
+#     start      => 'yes',
+#   }
 #
 define mesos::service(
   $start = 'no',
@@ -22,6 +22,7 @@ define mesos::service(
     service { "mesos-${name}":
       ensure    => 'running',
       hasstatus => true,
+      hasrestart => true,
       enable    => $enable,
       subscribe => [ File['/etc/default/mesos'],
         File["${conf_dir}/${name}.conf"]
