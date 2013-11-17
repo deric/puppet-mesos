@@ -23,9 +23,6 @@ class mesos(
 
   # human readable name for cluster
   $cluster      = hiera('mesos::cluster', '')
-  $slaves       = hiera('mesos::slaves', '*')
-  $whitelist    = hiera('mesos::whitelist', '*')
-
 
   # master and slave creates separate logs automatically
   # TODO: currently not used

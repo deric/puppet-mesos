@@ -1,21 +1,25 @@
 # Class: mesos::master
 #
-# This module manages mesos master
+# This module manages Mesos master - installs Mesos package
+# and starts master service.
 #
 # Parameters: None
 #
-# Actions: None
 #
-# Requires: mesos::install
+# Sample Usage:
 #
-# Sample Usage: include mesos::master
+# class{ 'mesos::master': }
 #
 class mesos::master(
-  $enable   = true,
-  $start    = 'yes',
-  $owner    = $mesos::owner,
-  $group    = $mesos::group,
-  $conf_dir = $mesos::conf_dir,
+  $enable      = true,
+  $start       = 'yes',
+  $whitelist   = '*',
+  $cluster     = 'mesos',
+  $master_port = $mesos::master_port,
+  $zookeeper   = $mesos::zookeeper,
+  $owner       = $mesos::owner,
+  $group       = $mesos::group,
+  $conf_dir    = $mesos::conf_dir,
 ) inherits mesos {
 
   file { "${conf_dir}/master.conf":

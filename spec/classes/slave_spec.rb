@@ -101,8 +101,7 @@ describe 'mesos::slave' do
 
     it { should contain_file(
       '/etc/mesos/slave.conf'
-    ).with_content(/WORKDIR="\/home\/mesos"/)
-    }
+    ).with_content(/WORKDIR="\/home\/mesos"/) }
   end
 
   context 'changing checkpoint' do
@@ -112,8 +111,7 @@ describe 'mesos::slave' do
 
     it { should contain_file(
       '/etc/mesos/slave.conf'
-    ).with_content(/CHECKPOINT=true/)
-    }
+    ).with_content(/CHECKPOINT=true/) }
   end
 
 end
