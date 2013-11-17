@@ -12,10 +12,11 @@
 # always use 'mesos::slave' or 'mesos:master'
 #
 class mesos::config(
-  $log_dir  = $mesos::log_dir,
-  $conf_dir = $mesos::conf_dir,
-  $owner    = $mesos::owner,
-  $group    = $mesos::group,
+  $log_dir  = '/var/log/mesos',
+  $ulimit   = '8192',
+  $conf_dir = '/etc/mesos',
+  $owner    = 'root',
+  $group    = 'root',
 ){
 
   file { $log_dir:

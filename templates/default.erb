@@ -1,5 +1,5 @@
 # /etc/default/mesos
 
-LOGS="<%= scope.lookupvar('mesos::log_dir') %>"
-ULIMIT="-n 8192"
+LOGS="<%= @log_dir %>"
+ULIMIT="-n <%= @ulimit %>"
 
