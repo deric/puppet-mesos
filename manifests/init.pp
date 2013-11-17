@@ -23,7 +23,6 @@ class mesos(
 
   # human readable name for cluster
   $cluster      = hiera('mesos::cluster', '')
-  $master_port  = hiera('mesos::master_port', '5050')
   $slaves       = hiera('mesos::slaves', '*')
   $whitelist    = hiera('mesos::whitelist', '*')
 
@@ -35,9 +34,10 @@ class mesos(
 
   # slave
   # e.g. zk://localhost:2181/mesos
-  $zk           = hiera('mesos::zk', '')
+  $zk           = hiera('mesos::zk', undef)
   # if "zk" is empty, master value is used
   $master       = hiera('mesos::master', '127.0.0.1')
+  $master_port  = hiera('mesos::master_port', '5050')
   $slave_port   = hiera('mesos::slave_port', '5051')
   $work_dir     = hiera('mesos::work_dir', '/tmp/mesos')
   $checkpoint   = hiera('mesos::checkpoint', false)

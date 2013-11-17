@@ -1,8 +1,7 @@
 # if zookeeper URL is not specified, slaves will connect directly
 # to specified master (not a fault-tolerant mode)
-<% master = scope.lookupvar('mesos::master') %>
-<% if !master.nil? && !master.empty? -%>
-  MASTER="<%= master %>:<%= scope.lookupvar('mesos::master_port') %>"
+<% if !@master.nil? && !@master.empty? -%>
+  MASTER="<%= @master %>:<%= @master_port %>"
 <% else -%>
   MASTER="<%= scope.lookupvar('mesos::zk') %>"
 <% end -%>

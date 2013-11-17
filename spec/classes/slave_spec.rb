@@ -35,6 +35,16 @@ describe 'mesos::slave' do
     ).with_content(/IP="192.168.1.1"/)
   end
 
+  context 'one master node' do
+    let(:params){{
+      :master => '192.168.1.100',
+    }}
+    it { should contain_file(
+      '/etc/mesos/slave.conf'
+      ).with_content(/MASTER="192.168.1.100:5050"/)
+    }
+  end
+
   context 'disabling service' do
     let(:params){{
       :enable => false,

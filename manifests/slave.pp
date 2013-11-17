@@ -11,11 +11,13 @@
 # Sample Usage: include mesos::slave
 #
 class mesos::slave (
-  $enable   = true,
-  $start    = 'yes',
-  $owner    = $mesos::owner,
-  $group    = $mesos::group,
-  $conf_dir = $mesos::conf_dir,
+  $enable      = true,
+  $start       = 'yes',
+  $owner       = $mesos::owner,
+  $group       = $mesos::group,
+  $conf_dir    = $mesos::conf_dir,
+  $master      = $mesos::master,
+  $master_port = $mesos::master_port,
 ) inherits mesos {
 
   file { "${conf_dir}/slave.conf":
