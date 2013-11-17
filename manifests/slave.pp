@@ -41,7 +41,7 @@ class mesos::slave (
     owner   => $owner,
     group   => $group,
     mode    => '0644',
-    require => Package['mesos'],
+    require => [File[$conf_dir], Package['mesos']],
   }
 
   # Install mesos-slave service

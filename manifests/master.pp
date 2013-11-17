@@ -27,13 +27,13 @@ class mesos::master(
     owner   => $owner,
     group   => $group,
     mode    => '0644',
-    require => File[$conf_dir],
+    require => [File[$conf_dir], Package['mesos']],
   }
 
   # Install mesos-master service
   mesos::service { 'master':
     enable     => $enable,
     conf_dir   => $conf_dir,
-    require    => [File["${conf_dir}/master.conf"], Package['mesos']],
+    require    => File["${conf_dir}/master.conf"],
   }
 }

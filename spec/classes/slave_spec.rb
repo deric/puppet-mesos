@@ -27,7 +27,6 @@ describe 'mesos::slave' do
     'owner'   => owner,
     'group'   => group,
     'mode'    => '0644',
-    'require' => 'Package[mesos]',
   }) }
 
   it 'has ip address from system fact' do
