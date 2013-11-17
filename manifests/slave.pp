@@ -5,8 +5,6 @@
 # Parameters:
 #  [*enable*] - install Mesos slave service
 #              (default: true)
-#  [*start*]  - autostart of Mesos slave service
-#              (default: true)
 #  [*master*] - ip address of Mesos master
 #              (default: localhost)
 #  [*master_port*] - Mesos master's port
@@ -25,7 +23,6 @@
 #
 class mesos::slave (
   $enable      = true,
-  $start       = 'yes',
   $port        = 5051,
   $work_dir    = '/tmp/mesos',
   $checkpoint  = false,
@@ -48,10 +45,8 @@ class mesos::slave (
 
   # Install mesos-slave service
   mesos::service { 'slave':
-    start      => $start,
     enable     => $enable,
     conf_dir   => $conf_dir,
     require    => File["${conf_dir}/slave.conf"],
   }
-
 }

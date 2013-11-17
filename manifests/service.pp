@@ -13,20 +13,17 @@
 #   }
 #
 define mesos::service(
-  $start = 'no',
   $enable = false,
   $conf_dir = '/etc/mesos',
 ) {
 
-  if $start == 'yes' {
-    service { "mesos-${name}":
-      ensure    => 'running',
-      hasstatus => true,
-      hasrestart => true,
-      enable    => $enable,
-      subscribe => [ File['/etc/default/mesos'],
-        File["${conf_dir}/${name}.conf"]
-      ],
-    }
+  service { "mesos-${name}":
+    ensure    => 'running',
+    hasstatus => true,
+    hasrestart => true,
+    enable    => $enable,
+    subscribe => [ File['/etc/default/mesos'],
+      File["${conf_dir}/${name}.conf"]
+    ],
   }
 }

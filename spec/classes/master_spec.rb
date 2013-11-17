@@ -78,7 +78,6 @@ describe 'mesos::master' do
     }
   end
 
-
   context 'disabling service' do
     let(:params){{
       :enable => false,

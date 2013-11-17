@@ -12,7 +12,6 @@
 #
 class mesos::master(
   $enable      = true,
-  $start       = 'yes',
   $whitelist   = '*',
   $cluster     = 'mesos',
   $master_port = $mesos::master_port,
@@ -33,7 +32,6 @@ class mesos::master(
 
   # Install mesos-master service
   mesos::service { 'master':
-    start      => $start,
     enable     => $enable,
     conf_dir   => $conf_dir,
     require    => [File["${conf_dir}/master.conf"], Package['mesos']],

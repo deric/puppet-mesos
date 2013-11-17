@@ -27,7 +27,6 @@ class{'mesos::slave':
 ### Slave
 
  - `enable` - install Mesos slave service (default: `true`)
- - `start`  - autostart of Mesos slave service (default: `true`)
  - `master`- ip address of Mesos master (default: `localhost`)
  - `master_port` - Mesos master's port (default: `5050`)
  - `zookeeper` - Zookeeper URL string (which keeps track
