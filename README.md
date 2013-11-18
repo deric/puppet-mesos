@@ -6,7 +6,12 @@ This is a Puppet module for managing Mesos nodes in a cluster.
 ## Requirements
 
   * Puppet 3 (or 2.6 with hiera gem)
-  * Mesos binary package, for Debian see [mesos deb packaging](https://github.com/deric/mesos-deb-packaging)
+  * Mesos binary package
+    * Debian/Ubuntu
+      * [mesos deb packaging](https://github.com/deric/mesos-deb-packaging)
+      * [mesosphere packages](http://mesosphere.io/downloads/)
+    * RedHat/CentOS
+      * [mesosphere packages](http://mesosphere.io/downloads/)
 
 ## Usage
 
@@ -81,4 +86,3 @@ For more information see [Mesos project](http://mesos.apache.org/)
 ## License
 
 Apache License 2.0
-
