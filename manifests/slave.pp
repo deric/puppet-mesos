@@ -32,8 +32,10 @@ class mesos::slave (
   $owner       = $mesos::owner,
   $group       = $mesos::group,
   $conf_dir    = $mesos::conf_dir,
-  $env_var     = undef,
+  $env_var     = {},
 ) inherits mesos {
+
+  validate_hash($env_var)
 
   file { "${conf_dir}/slave.conf":
     ensure  => 'present',

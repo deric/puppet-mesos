@@ -30,7 +30,7 @@ CHECKPOINT=<%= @checkpoint %>
 
 # slave environment variables
 <% if @env_var %>
-  <% @env_var.each do |key,val| %>
+<% @env_var.each do |key,val| %>
 export <%= key %>="<%= val %>"
-  <% end %>
+<% end %>
 <% end %>
