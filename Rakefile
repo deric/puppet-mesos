@@ -17,6 +17,7 @@ PuppetLint.configuration.send('disable_80chars')
 # offers more possibilities like explicit version management, forge downloads,...
 task :librarian_spec_prep do
   sh 'librarian-puppet install --path=spec/fixtures/modules/'
+  sh 'mkdir -p spec/fixtures/manifests'
   sh 'touch spec/fixtures/manifests/site.pp'
   pwd = `pwd`.strip
   unless File.directory?("#{pwd}/spec/fixtures/modules/mesos")

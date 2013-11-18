@@ -1,4 +1,4 @@
 .librarian/*
 .tmp/*
 *.log
-spec/fixtures/modules/*
+spec/fixtures/*
