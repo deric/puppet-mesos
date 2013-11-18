@@ -32,7 +32,7 @@ class{'mesos::slave':
  - `zookeeper` - Zookeeper URL string (which keeps track
              of current Mesos master)
  - `work_dir` - directory for storing task's temporary files (default: `/tmp/mesos`)
- - `env_var` - slave's execution environment variables, if you are using
+ - `env_var` - slave's execution environment variables - a Hash, if you are using
  Java, you might need e.g.:
 
 ```puppet
@@ -55,12 +55,24 @@ class{'mesos::slave':
   or [Zookeeper](http://zookeeper.apache.org/) could be use for a fault-tolerant setup (multiple instances of zookeeper are separated by comma):
 
     mesos::zookeeper   : 'zk://192.168.1.1:2181/mesos'
+
+Some parameters are shared between master and slave nodes:
+
     mesos::master_port : 5050
     mesos::log_dir     : '/var/log/mesos'
     mesos::conf_dir    : '/etc/mesos'
-    mesos::cluster     : 'my_mesos_cluster'
-    mesos::whitelist   : '*'
+    mesos::owner       : 'mesos'
+    mesos::group       : 'mesos'
 
+Other are master specific:
+
+    mesos::master::cluster     : 'my_mesos_cluster'
+    mesos::master::whitelist   : '*'
+
+or slave specific:
+
+    mesos:slave::env_var:
+      JAVA_HOME: '/usr/bin/java'
 
 ## Links
 
