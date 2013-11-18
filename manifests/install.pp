@@ -13,17 +13,25 @@ class mesos::install(
   $ensure = $mesos::ensure,
 ) {
 
+  anchor { 'mesos::packages' : }
+
   # 'ensure_packages' requires puppetlabs/stdlib
   #
   # linux containers are now implemented natively
   # with usage of cgroups, requires kernel >= 2.6.24
-  ensure_packages(['python'])
+  #
+  # Python is required for web GUI (mesos could be build without GUI)
+  # TODO: make this optional
+  ensure_resource('package', 'python', {
+    ensure  => present,
+    before  => Anchor['mesos::packages'],
+  })
 
   # a debian (or other binary package) must be available,
   # see https://github.com/deric/mesos-deb-packaging
   # for Debian packaging
   package { 'mesos':
     ensure  => $ensure,
-    require => Package['python']
+    require => Anchor['mesos::packages']
   }
 }
