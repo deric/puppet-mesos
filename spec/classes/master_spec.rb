@@ -26,24 +26,18 @@ describe 'mesos::master' do
   }) }
 
   # no zookeeper set by default
-  it { should contain_file(file)
-    .with_content(/ZK=""/)
-  }
+  it { should contain_file(file).with_content(/ZK=""/) }
 
-  it { should contain_file(file)
-    .with_content(/PORT=5050/)
-  }
+  it { should contain_file(file).with_content(/PORT=5050/) }
 
-  it { should contain_file(file)
-    .with_content(/WHITELIST='*'/)
-  }
+  it { should contain_file(file).with_content(/WHITELIST='*'/) }
 
   context 'with zookeeper' do
     let(:params){{
       :zookeeper => 'zk://192.168.1.100:2181/mesos',
     }}
-    it { should contain_file(file)
-      .with_content(/ZK="zk:\/\/192.168.1.100:2181\/mesos"/)
+    it { should contain_file(
+      file).with_content(/ZK="zk:\/\/192.168.1.100:2181\/mesos"/)
     }
   end
 
@@ -51,31 +45,25 @@ describe 'mesos::master' do
     let(:params){{
       :master_port => '4040',
     }}
-    it { should contain_file(file)
-      .with_content(/PORT=4040/)
-    }
+    it { should contain_file(file).with_content(/PORT=4040/) }
   end
 
   context 'setting whitelist' do
     let(:params){{
       :whitelist => '/var/lib/mesos/whitelist',
     }}
-    it { should contain_file(file)
-      .with_content(/WHITELIST='\/var\/lib\/mesos\/whitelist'/)
+    it { should contain_file(
+      file).with_content(/WHITELIST='\/var\/lib\/mesos\/whitelist'/)
     }
   end
 
-  it { should contain_file(file)
-    .with_content(/CLUSTER="mesos"/)
-  }
+  it { should contain_file(file).with_content(/CLUSTER="mesos"/) }
 
   context 'setting cluster name' do
     let(:params){{
       :cluster => 'cluster',
     }}
-    it { should contain_file(file)
-      .with_content(/CLUSTER="cluster"/)
-    }
+    it { should contain_file(file).with_content(/CLUSTER="cluster"/) }
   end
 
   context 'disabling service' do
