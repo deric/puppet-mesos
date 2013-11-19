@@ -29,8 +29,8 @@ CHECKPOINT=<%= @checkpoint %>
 # export MESOS_log_dir=/var/log/mesos
 
 # slave environment variables
-<% if @env_var %>
-<% @env_var.each do |key,val| %>
+<% if @env_var -%>
+  <% @env_var.each do |key,val| -%>
 export <%= key %>="<%= val %>"
-<% end %>
-<% end %>
+  <% end -%>
+<% end -%>
