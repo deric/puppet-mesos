@@ -130,4 +130,20 @@ describe 'mesos::slave' do
       '/etc/mesos/slave.conf'
     ).with_content(/MESOS_HOME="\/var\/lib\/mesos"/) }
   end
+
+  it 'should have isolation eq to process' do
+    should contain_file(
+      '/etc/mesos/slave.conf'
+    ).with_content(/^ISOLATION="process"/)
+  end
+
+  context 'setting isolation mechanism' do
+    let(:params){{
+      :isolation => 'cgroups'
+    }}
+
+    it { should contain_file(
+      '/etc/mesos/slave.conf'
+    ).with_content(/^ISOLATION="cgroups"/)}
+  end
 end

@@ -26,6 +26,7 @@ class mesos::slave (
   $port        = 5051,
   $work_dir    = '/tmp/mesos',
   $checkpoint  = false,
+  $isolation   = 'process',
   $master      = $mesos::master,
   $master_port = $mesos::master_port,
   $zookeeper   = $mesos::zookeeper,

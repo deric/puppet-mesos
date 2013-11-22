@@ -21,6 +21,9 @@ WORKDIR="<%= @work_dir %>"
 # kill (--recover=kill) old executors (default: false)
 CHECKPOINT=<%= @checkpoint %>
 
+# Isolation mechanism, may be one of: process, cgroups (default: process)
+ISOLATION="<%= @isolation %>"
+
 #OPTS="--hadoop_home=/usr/lib/hadoop-0.20/"
 
 # alternative is to use MESOS_<option> as an envar
