@@ -32,25 +32,25 @@ describe 'mesos::slave' do
   it 'has ip address from system fact' do
     should contain_file(
       '/etc/mesos/slave.conf'
-    ).with_content(/IP="192.168.1.1"/)
+    ).with_content(/^IP="192.168.1.1"$/)
   end
 
   it 'has default port eq to 5051' do
     should contain_file(
       '/etc/mesos/slave.conf'
-    ).with_content(/PORT=5051/)
+    ).with_content(/^PORT=5051$/)
   end
 
   it 'checkpoint should be false' do
     should contain_file(
       '/etc/mesos/slave.conf'
-    ).with_content(/CHECKPOINT=false/)
+    ).with_content(/^CHECKPOINT=false/)
   end
 
   it 'should have workdir in /tmp/mesos' do
     should contain_file(
       '/etc/mesos/slave.conf'
-    ).with_content(/WORKDIR="\/tmp\/mesos"/)
+    ).with_content(/^WORKDIR="\/tmp\/mesos"/)
   end
 
   context 'one master node' do
@@ -59,7 +59,7 @@ describe 'mesos::slave' do
     }}
     it { should contain_file(
       '/etc/mesos/slave.conf'
-      ).with_content(/MASTER="192.168.1.100:5050"/)
+      ).with_content(/^MASTER="192.168.1.100:5050"/)
     }
   end
 
@@ -69,7 +69,7 @@ describe 'mesos::slave' do
     }}
     it { should contain_file(
       '/etc/mesos/slave.conf'
-      ).with_content(/MASTER="zk:\/\/192.168.1.100:2181\/mesos"/)
+      ).with_content(/^MASTER="zk:\/\/192.168.1.100:2181\/mesos"/)
     }
   end
 
@@ -80,7 +80,7 @@ describe 'mesos::slave' do
     }}
     it { should contain_file(
       '/etc/mesos/slave.conf'
-      ).with_content(/MASTER="zk:\/\/192.168.1.100:2181\/mesos"/)
+      ).with_content(/^MASTER="zk:\/\/192.168.1.100:2181\/mesos"/)
     }
   end
 
@@ -101,7 +101,7 @@ describe 'mesos::slave' do
 
     it { should contain_file(
       '/etc/mesos/slave.conf'
-    ).with_content(/WORKDIR="\/home\/mesos"/) }
+    ).with_content(/^WORKDIR="\/home\/mesos"/) }
   end
 
   context 'changing checkpoint' do
@@ -124,11 +124,11 @@ describe 'mesos::slave' do
 
     it { should contain_file(
       '/etc/mesos/slave.conf'
-    ).with_content(/JAVA_HOME="\/usr\/bin\/java"/) }
+    ).with_content(/export JAVA_HOME="\/usr\/bin\/java"/) }
 
     it { should contain_file(
       '/etc/mesos/slave.conf'
-    ).with_content(/MESOS_HOME="\/var\/lib\/mesos"/) }
+    ).with_content(/export MESOS_HOME="\/var\/lib\/mesos"/) }
   end
 
   it 'should have isolation eq to process' do
