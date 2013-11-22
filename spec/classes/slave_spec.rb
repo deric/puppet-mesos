@@ -137,6 +137,12 @@ describe 'mesos::slave' do
     ).with_content(/^ISOLATION="process"/)
   end
 
+  it 'should not contain cgroups settings' do
+    should_not contain_file(
+      '/etc/mesos/slave.conf'
+    ).with_content(/^CGROUPS/)
+  end
+
   context 'setting isolation mechanism' do
     let(:params){{
       :isolation => 'cgroups'

@@ -13,6 +13,7 @@
 #                of current Mesos master)
 #  [*work_dir*] - directory for storing task's temporary files
 #              (default: /tmp/mesos)
+#  [*isolation*] - isolation mechanism - either 'process' or 'cgroups'
 #
 # Sample Usage:
 #
@@ -34,9 +35,11 @@ class mesos::slave (
   $group       = $mesos::group,
   $conf_dir    = $mesos::conf_dir,
   $env_var     = {},
+  $cgroups     = [],
 ) inherits mesos {
 
   validate_hash($env_var)
+  validate_array($cgroups)
 
   file { "${conf_dir}/slave.conf":
     ensure  => 'present',
