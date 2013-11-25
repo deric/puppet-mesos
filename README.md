@@ -49,6 +49,19 @@ class{'mesos::slave':
 }
 ```
 
+in a similar manner you can specify cgroups isolation:
+
+```puppet
+class{'mesos::slave':
+  zookeeper  => 'zk://192.168.1.1:2181/mesos',
+  isolation  => 'cgroups',
+  cgroups    => {
+    'hierarchy' => '/sys/fs/cgroup',
+    'root'      => 'mesos',
+  }
+}
+```
+
 ## Hiera support
 
   All configuration could be handled by hiera.
