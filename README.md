@@ -92,6 +92,14 @@ or slave specific:
     mesos:slave::env_var:
       JAVA_HOME: '/usr/bin/java'
 
+cgroups with hiera:
+
+```puppet
+mesos::slave::isolation: 'cgroups'
+mesos::slave::cgroups:
+  hierarchy: '/sys/fs/cgroup'
+```
+
 ## Links
 
 For more information see [Mesos project](http://mesos.apache.org/)
