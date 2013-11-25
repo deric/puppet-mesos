@@ -25,8 +25,8 @@ CHECKPOINT=<%= @checkpoint %>
 ISOLATION="<%= @isolation %>"
 
 <% if @isolation == 'cgroups' -%>
-  <% @cgroups.each do |key,val| -%>
-CGROUPS_<%= key %>="<%= val %>"
+  <% @cgroups.each do |key, val| -%>
+CGROUPS_<%= key.upcase %>="<%= val %>"
   <% end -%>
 <% end -%>
 

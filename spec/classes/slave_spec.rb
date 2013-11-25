@@ -145,11 +145,23 @@ describe 'mesos::slave' do
 
   context 'setting isolation mechanism' do
     let(:params){{
-      :isolation => 'cgroups'
+      :isolation => 'cgroups',
+      :cgroups   => {
+        'hierarchy' => '/sys/fs/cgroup',
+        'root'      => 'mesos',
+      }
     }}
 
     it { should contain_file(
       '/etc/mesos/slave.conf'
     ).with_content(/^ISOLATION="cgroups"/)}
+
+    it { should contain_file(
+      '/etc/mesos/slave.conf'
+    ).with_content(/CGROUPS_HIERARCHY="\/sys\/fs\/cgroup"/)}
+
+    it { should contain_file(
+      '/etc/mesos/slave.conf'
+    ).with_content(/CGROUPS_ROOT="mesos"/)}
   end
 end
