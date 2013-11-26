@@ -24,11 +24,10 @@ CHECKPOINT=<%= @checkpoint %>
 # Isolation mechanism, may be one of: process, cgroups (default: process)
 ISOLATION="<%= @isolation %>"
 
-<% if @isolation == 'cgroups' -%>
-  <% @cgroups.each do |key, val| -%>
+<% @cgroups.each do |key, val| -%>
 CGROUPS_<%= key.upcase %>="<%= val %>"
-  <% end -%>
-<% end -%>
+<% end if @isolation == 'cgroups' -%>
+
 
 #OPTS="--hadoop_home=/usr/lib/hadoop-0.20/"
 
@@ -38,8 +37,6 @@ CGROUPS_<%= key.upcase %>="<%= val %>"
 # export MESOS_log_dir=/var/log/mesos
 
 # slave environment variables
-<% if @env_var -%>
 <% @env_var.each do |key,val| -%>
 export <%= key %>="<%= val %>"
-<% end -%>
-<% end -%>
+<% end if @env_var -%>

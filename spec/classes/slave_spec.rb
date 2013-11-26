@@ -158,7 +158,7 @@ describe 'mesos::slave' do
 
     it { should contain_file(
       '/etc/mesos/slave.conf'
-    ).with_content(/CGROUPS_HIERARCHY="\/sys\/fs\/cgroup"/)}
+    ).with_content(/^CGROUPS_HIERARCHY="\/sys\/fs\/cgroup"/)}
 
     it { should contain_file(
       '/etc/mesos/slave.conf'
