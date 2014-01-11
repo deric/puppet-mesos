@@ -68,8 +68,8 @@ describe 'mesos::slave' do
       :zookeeper => 'zk://192.168.1.100:2181/mesos',
     }}
     it { should contain_file(
-      slave_file
-      ).with_content(/^MASTER="zk:\/\/192.168.1.100:2181\/mesos"/)
+      '/etc/mesos/zk'
+      ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
     }
   end
 
@@ -78,9 +78,13 @@ describe 'mesos::slave' do
       :master    => '172.16.0.1',
       :zookeeper => 'zk://192.168.1.100:2181/mesos',
     }}
-    it { should contain_file(
+    it { should_not contain_file(
       slave_file
-      ).with_content(/^MASTER="zk:\/\/192.168.1.100:2181\/mesos"/)
+      ).with_content(/^MASTER="172.16.0.1"/)
+    }
+    it { should contain_file(
+      '/etc/mesos/zk'
+      ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
     }
   end
 

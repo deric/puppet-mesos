@@ -47,13 +47,21 @@ class mesos::slave (
     group  => $group,
   }
 
+  # file containing only zookeeper URL
+  file { '/etc/mesos/zk':
+    ensure  => defined($zookeeper) ? { true => present, false => absent },
+    content => $zookeeper,
+    owner   => $owner,
+    group   => $group,
+  }
+
   file { "/etc/default/mesos-slave":
     ensure  => 'present',
     content => template('mesos/slave.erb'),
     owner   => $owner,
     group   => $group,
     mode    => '0644',
-    require => [File[$conf_dir], Package['mesos']],
+    require => [File['/etc/mesos/zk'], File[$conf_dir], Package['mesos']],
   }
 
   # Install mesos-slave service

@@ -3,13 +3,9 @@
 # This module manages mesos services
 #
 # Parameters:
-#  [*start*] - start service by during boot-time
-#  [*enable*] - enable service
+#  [*enable*] - enable service autostart
 #
-# Sample Usage:
-#   mesos::service { 'master':
-#     start      => 'yes',
-#   }
+# Should not be called directly
 #
 define mesos::service(
   $enable = false,

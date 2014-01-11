@@ -15,7 +15,7 @@
 #
 # === Copyright
 #
-# Copyright 2013 Tomas Barton
+# Copyright 2013-2014 Tomas Barton
 #
 class mesos(
   $ensure       = hiera('mesos::version', 'present')
