@@ -15,6 +15,15 @@
 #              (default: /tmp/mesos)
 #  [*isolation*] - isolation mechanism - either 'process' or 'cgroups'
 #
+#  [*options*] any extra arguments that are not named here could be
+#              stored in a hash:
+#
+#                options => { "key" => "value" }
+#
+#              which is serialized to disk and then passed to mesos-slave as:
+#
+#                --key=value
+#
 # Sample Usage:
 #
 # class{ 'mesos::slave':
@@ -38,6 +47,7 @@ class mesos::slave (
   $group       = $mesos::group,
   $env_var     = {},
   $cgroups     = {},
+  $options     = {},
 ) inherits mesos {
 
   validate_hash($env_var)
@@ -62,7 +72,12 @@ class mesos::slave (
 
   # stores properties in file structure
   create_resources(mesos::property,
-    mesos_hash_parser($cgroups),
+    mesos_hash_parser($cgroups, 'cgroups'),
+    { dir => '/etc/mesos-slave' }
+  )
+
+  create_resources(mesos::property,
+    mesos_hash_parser($options),
     { dir => '/etc/mesos-slave' }
   )
 

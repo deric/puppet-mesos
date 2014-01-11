@@ -157,11 +157,11 @@ describe 'mesos::slave' do
     }}
 
     it { should contain_file(
-      "#{conf}/root"
+      "#{conf}/cgroups_root"
     ).with_content(/^mesos$/)}
 
     it { should contain_file(
-      "#{conf}/hierarchy"
+      "#{conf}/cgroups_hierarchy"
     ).with_content(/^\/sys\/fs\/cgroup$/)}
 
     it { should contain_file(

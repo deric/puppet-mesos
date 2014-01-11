@@ -5,22 +5,26 @@
 
 module Puppet::Parser::Functions
   newfunction(:mesos_hash_parser, :type => :rvalue, :doc => <<-EOS
-This function reduces a hash of arguments
+This function converts simple key-value structure to a Hash
+that is required by create_resources function
 
-*Examples:*
-
-*TODO*
         EOS
   ) do |arguments|
 
     # Only 1 argument should be passed
-    raise(Puppet::ParseError, "mesos_hash_parser(): Wrong number of arguments " +         "given (#{arguments.size} for 1)") if arguments.size != 1
+    if arguments.size < 1 || arguments.size > 2
+      raise(Puppet::ParseError, "mesos_hash_parser(): Wrong number of arguments " + "given (#{arguments.size} for 1)")
+    end
 
     # The argument should be a Hash
-    raise(Puppet::ParseError, "mesos_hash_parser() accepts a Hash, you passed a " + arguments[0].class) if arguments[0].class != Hash
+    if arguments[0].class != Hash
+      raise(Puppet::ParseError, "mesos_hash_parser() accepts a Hash, you passed a " + arguments[0].class)
+    end
 
     res = {}
+    prefix = arguments[1] if arguments.size == 2
     arguments[0].each do |key, val|
+      key = "#{prefix}_#{key}" if prefix
       res[key] = {
         "value" => val
       }
