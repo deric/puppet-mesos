@@ -48,15 +48,34 @@ class mesos::slave (
   $env_var     = {},
   $cgroups     = {},
   $options     = {},
+  $resources   = {},
+  $attributes  = {},
 ) inherits mesos {
 
   validate_hash($env_var)
   validate_hash($cgroups)
+  validate_hash($options)
+  validate_hash($resources)
+  validate_hash($attributes)
 
   file { $conf_dir:
     ensure => directory,
     owner  => $owner,
     group  => $group,
+  }
+
+  file { "${conf_dir}/resources":
+    ensure  => directory,
+    owner   => $owner,
+    group   => $group,
+    require => File[$conf_dir],
+  }
+
+  file { "${conf_dir}/attributes":
+    ensure  => directory,
+    owner   => $owner,
+    group   => $group,
+    require => File[$conf_dir],
   }
 
   # file containing only zookeeper URL
@@ -79,6 +98,16 @@ class mesos::slave (
   create_resources(mesos::property,
     mesos_hash_parser($options),
     { dir => '/etc/mesos-slave' }
+  )
+
+  create_resources(mesos::property,
+    mesos_hash_parser($resources),
+    { dir => '/etc/mesos-slave/resources' }
+  )
+
+  create_resources(mesos::property,
+    mesos_hash_parser($attributes),
+    { dir => '/etc/mesos-slave/attributes' }
   )
 
   file { $conf_file:

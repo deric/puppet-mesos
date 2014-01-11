@@ -10,5 +10,6 @@ define mesos::property (
   file { "${dir}/${file}":
     ensure  => present,
     content => $value,
+    require => File[$dir],
   }
 }

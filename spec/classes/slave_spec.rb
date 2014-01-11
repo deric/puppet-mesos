@@ -180,4 +180,27 @@ describe 'mesos::slave' do
       'mode'    => '0644',
     }) }
   end
+
+  context 'resources specification' do
+    let(:resources_dir) { '/etc/mesos-slave/resources' }
+
+    let(:params){{
+      :resources   => {
+        'cpu' => '4',
+        'mem' => '2048',
+      }
+    }}
+
+    it { should contain_file(resources_dir).with({
+      'ensure'  => 'directory',
+    }) }
+
+    it { should contain_file(
+      "#{resources_dir}/cpu"
+    ).with_content(/^4$/)}
+
+    it { should contain_file(
+      "#{resources_dir}/mem"
+    ).with_content(/^2048$/)}
+  end
 end
