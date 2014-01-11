@@ -15,6 +15,7 @@ class mesos::master(
   $whitelist   = '*',
   $cluster     = 'mesos',
   $conf_dir    = '/etc/mesos-master',
+  $conf_file   = '/etc/default/mesos-master',
   $master_port = $mesos::master_port,
   $zookeeper   = $mesos::zookeeper,
   $owner       = $mesos::owner,
@@ -27,7 +28,7 @@ class mesos::master(
     group  => $group,
   }
 
-  file { "/etc/default/mesos-master":
+  file { $conf_file:
     ensure  => present,
     content => template('mesos/master.erb'),
     owner   => $owner,
@@ -39,6 +40,6 @@ class mesos::master(
   # Install mesos-master service
   mesos::service { 'master':
     enable     => $enable,
-    require    => File["/etc/default/mesos-master"],
+    require    => File[$conf_file],
   }
 }

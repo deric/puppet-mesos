@@ -29,6 +29,7 @@ class mesos::slave (
   $checkpoint  = false,
   $isolation   = 'process',
   $conf_dir    = '/etc/mesos-slave',
+  $conf_file   = '/etc/default/mesos-slave',
   $master      = $mesos::master,
   $master_port = $mesos::master_port,
   $zookeeper   = $mesos::zookeeper,
@@ -55,7 +56,7 @@ class mesos::slave (
     group   => $group,
   }
 
-  file { "/etc/default/mesos-slave":
+  file { $conf_file:
     ensure  => 'present',
     content => template('mesos/slave.erb'),
     owner   => $owner,
@@ -67,6 +68,6 @@ class mesos::slave (
   # Install mesos-slave service
   mesos::service { 'slave':
     enable     => $enable,
-    require    => File["/etc/default/mesos-slave"],
+    require    => File[$conf_file],
   }
 }

@@ -76,4 +76,16 @@ describe 'mesos::master' do
     ) }
   end
 
+  context 'changing master config file location' do
+    let(:master_file) { '/etc/mesos/master' }
+    let(:params){{
+      :conf_file => master_file,
+    }}
+
+    it { should contain_file(master_file).with({
+      'ensure'  => 'present',
+      'mode'    => '0644',
+    }) }
+  end
+
 end

@@ -12,11 +12,11 @@ define mesos::service(
 ) {
 
   service { "mesos-${name}":
-    ensure    => 'running',
-    hasstatus => true,
+    ensure     => 'running',
+    hasstatus  => true,
     hasrestart => true,
-    enable    => $enable,
-    subscribe => [ File['/etc/default/mesos'],
+    enable     => $enable,
+    subscribe  => [ File['/etc/default/mesos'],
       File["/etc/default/mesos-${name}"]
     ],
   }

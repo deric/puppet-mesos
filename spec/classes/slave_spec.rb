@@ -168,4 +168,16 @@ describe 'mesos::slave' do
       slave_file
     ).with_content(/CGROUPS_ROOT="mesos"/)}
   end
+
+  context 'changing slave config file location' do
+    let(:slave_file) { '/etc/mesos/slave' }
+    let(:params){{
+      :conf_file => slave_file,
+    }}
+
+    it { should contain_file(slave_file).with({
+      'ensure'  => 'present',
+      'mode'    => '0644',
+    }) }
+  end
 end
