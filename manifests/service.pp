@@ -23,7 +23,7 @@ define mesos::service(
     hasrestart => true,
     enable    => $enable,
     subscribe => [ File['/etc/default/mesos'],
-      File["${conf_dir}/${name}.conf"]
+      File["/etc/default/mesos-${name}"]
     ],
   }
 }

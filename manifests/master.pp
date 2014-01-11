@@ -21,7 +21,7 @@ class mesos::master(
   $conf_dir    = $mesos::conf_dir,
 ) inherits mesos {
 
-  file { "${conf_dir}/master.conf":
+  file { "/etc/default/mesos-master":
     ensure  => present,
     content => template('mesos/master.erb'),
     owner   => $owner,
@@ -34,6 +34,6 @@ class mesos::master(
   mesos::service { 'master':
     enable     => $enable,
     conf_dir   => $conf_dir,
-    require    => File["${conf_dir}/master.conf"],
+    require    => File["/etc/default/mesos-master"],
   }
 }

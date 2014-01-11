@@ -4,7 +4,7 @@ describe 'mesos::master' do
   let(:owner) { 'mesos' }
   let(:group) { 'mesos' }
   let(:conf) { '/etc/mesos' }
-  let(:file) { '/etc/mesos/master.conf' }
+  let(:file) { '/etc/default/mesos-master' }
 
   let(:params){{
     :conf_dir => conf,

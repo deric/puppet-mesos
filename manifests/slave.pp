@@ -41,7 +41,7 @@ class mesos::slave (
   validate_hash($env_var)
   validate_hash($cgroups)
 
-  file { "${conf_dir}/slave.conf":
+  file { "/etc/default/mesos-slave":
     ensure  => 'present',
     content => template('mesos/slave.erb'),
     owner   => $owner,
@@ -54,6 +54,6 @@ class mesos::slave (
   mesos::service { 'slave':
     enable     => $enable,
     conf_dir   => $conf_dir,
-    require    => File["${conf_dir}/slave.conf"],
+    require    => File["/etc/default/mesos-slave"],
   }
 }

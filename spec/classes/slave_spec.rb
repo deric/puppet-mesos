@@ -4,7 +4,7 @@ describe 'mesos::slave' do
   let(:owner) { 'mesos' }
   let(:group) { 'mesos' }
   let(:conf) { '/etc/mesos' }
-  let(:file) { '/etc/mesos/slave.conf' }
+  let(:slave_file) { '/etc/default/mesos-slave' }
 
   let(:facts) {{
     :ipaddress => '192.168.1.1',
@@ -22,7 +22,7 @@ describe 'mesos::slave' do
       :enable => true
   ) }
 
-  it { should contain_file('/etc/mesos/slave.conf').with({
+  it { should contain_file(slave_file).with({
     'ensure'  => 'present',
     'owner'   => owner,
     'group'   => group,
@@ -31,25 +31,25 @@ describe 'mesos::slave' do
 
   it 'has ip address from system fact' do
     should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
     ).with_content(/^IP="192.168.1.1"$/)
   end
 
   it 'has default port eq to 5051' do
     should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
     ).with_content(/^PORT=5051$/)
   end
 
   it 'checkpoint should be false' do
     should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
     ).with_content(/^CHECKPOINT=false/)
   end
 
   it 'should have workdir in /tmp/mesos' do
     should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
     ).with_content(/^WORKDIR="\/tmp\/mesos"/)
   end
 
@@ -58,7 +58,7 @@ describe 'mesos::slave' do
       :master => '192.168.1.100',
     }}
     it { should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
       ).with_content(/^MASTER="192.168.1.100:5050"/)
     }
   end
@@ -68,7 +68,7 @@ describe 'mesos::slave' do
       :zookeeper => 'zk://192.168.1.100:2181/mesos',
     }}
     it { should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
       ).with_content(/^MASTER="zk:\/\/192.168.1.100:2181\/mesos"/)
     }
   end
@@ -79,7 +79,7 @@ describe 'mesos::slave' do
       :zookeeper => 'zk://192.168.1.100:2181/mesos',
     }}
     it { should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
       ).with_content(/^MASTER="zk:\/\/192.168.1.100:2181\/mesos"/)
     }
   end
@@ -100,7 +100,7 @@ describe 'mesos::slave' do
     }}
 
     it { should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
     ).with_content(/^WORKDIR="\/home\/mesos"/) }
   end
 
@@ -110,7 +110,7 @@ describe 'mesos::slave' do
     }}
 
     it { should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
     ).with_content(/CHECKPOINT=true/) }
   end
 
@@ -123,23 +123,23 @@ describe 'mesos::slave' do
     }}
 
     it { should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
     ).with_content(/export JAVA_HOME="\/usr\/bin\/java"/) }
 
     it { should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
     ).with_content(/export MESOS_HOME="\/var\/lib\/mesos"/) }
   end
 
   it 'should have isolation eq to process' do
     should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
     ).with_content(/^ISOLATION="process"/)
   end
 
   it 'should not contain cgroups settings' do
     should_not contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
     ).with_content(/^CGROUPS/)
   end
 
@@ -153,15 +153,15 @@ describe 'mesos::slave' do
     }}
 
     it { should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
     ).with_content(/^ISOLATION="cgroups"/)}
 
     it { should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
     ).with_content(/^CGROUPS_HIERARCHY="\/sys\/fs\/cgroup"/)}
 
     it { should contain_file(
-      '/etc/mesos/slave.conf'
+      slave_file
     ).with_content(/CGROUPS_ROOT="mesos"/)}
   end
 end
