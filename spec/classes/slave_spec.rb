@@ -157,16 +157,16 @@ describe 'mesos::slave' do
     }}
 
     it { should contain_file(
+      "#{conf}/root"
+    ).with_content(/^mesos$/)}
+
+    it { should contain_file(
+      "#{conf}/hierarchy"
+    ).with_content(/^\/sys\/fs\/cgroup$/)}
+
+    it { should contain_file(
       slave_file
     ).with_content(/^ISOLATION="cgroups"/)}
-
-    it { should contain_file(
-      slave_file
-    ).with_content(/^CGROUPS_HIERARCHY="\/sys\/fs\/cgroup"/)}
-
-    it { should contain_file(
-      slave_file
-    ).with_content(/CGROUPS_ROOT="mesos"/)}
   end
 
   context 'changing slave config file location' do

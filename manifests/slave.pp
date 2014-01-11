@@ -22,6 +22,7 @@
 #   master_port => 5050,
 # }
 #
+
 class mesos::slave (
   $enable      = true,
   $port        = 5051,
@@ -50,11 +51,20 @@ class mesos::slave (
 
   # file containing only zookeeper URL
   file { '/etc/mesos/zk':
-    ensure  => defined($zookeeper) ? { true => present, false => absent },
+    ensure  => defined($zookeeper) ? {
+      true  => present,
+      false => absent,
+    },
     content => $zookeeper,
     owner   => $owner,
     group   => $group,
   }
+
+  # stores properties in file structure
+  create_resources(mesos::property,
+    mesos_hash_parser($cgroups),
+    { dir => '/etc/mesos-slave' }
+  )
 
   file { $conf_file:
     ensure  => 'present',
