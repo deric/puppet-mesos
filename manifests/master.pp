@@ -14,12 +14,18 @@ class mesos::master(
   $enable      = true,
   $whitelist   = '*',
   $cluster     = 'mesos',
+  $conf_dir    = '/etc/mesos-master',
   $master_port = $mesos::master_port,
   $zookeeper   = $mesos::zookeeper,
   $owner       = $mesos::owner,
   $group       = $mesos::group,
-  $conf_dir    = $mesos::conf_dir,
 ) inherits mesos {
+
+  file { $conf_dir:
+    ensure => directory,
+    owner  => $owner,
+    group  => $group,
+  }
 
   file { "/etc/default/mesos-master":
     ensure  => present,
@@ -33,7 +39,6 @@ class mesos::master(
   # Install mesos-master service
   mesos::service { 'master':
     enable     => $enable,
-    conf_dir   => $conf_dir,
     require    => File["/etc/default/mesos-master"],
   }
 }

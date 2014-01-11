@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'mesos::slave' do
   let(:owner) { 'mesos' }
   let(:group) { 'mesos' }
-  let(:conf) { '/etc/mesos' }
+  let(:conf) { '/etc/mesos-slave' }
   let(:slave_file) { '/etc/default/mesos-slave' }
 
   let(:facts) {{

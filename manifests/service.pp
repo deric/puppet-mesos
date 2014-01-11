@@ -5,7 +5,6 @@
 # Parameters:
 #  [*start*] - start service by during boot-time
 #  [*enable*] - enable service
-#  [*conf_dir*] - path to service configuration files
 #
 # Sample Usage:
 #   mesos::service { 'master':
@@ -14,7 +13,6 @@
 #
 define mesos::service(
   $enable = false,
-  $conf_dir = '/etc/mesos',
 ) {
 
   service { "mesos-${name}":

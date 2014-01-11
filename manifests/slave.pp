@@ -28,18 +28,24 @@ class mesos::slave (
   $work_dir    = '/tmp/mesos',
   $checkpoint  = false,
   $isolation   = 'process',
+  $conf_dir    = '/etc/mesos-slave',
   $master      = $mesos::master,
   $master_port = $mesos::master_port,
   $zookeeper   = $mesos::zookeeper,
   $owner       = $mesos::owner,
   $group       = $mesos::group,
-  $conf_dir    = $mesos::conf_dir,
   $env_var     = {},
   $cgroups     = {},
 ) inherits mesos {
 
   validate_hash($env_var)
   validate_hash($cgroups)
+
+  file { $conf_dir:
+    ensure => directory,
+    owner  => $owner,
+    group  => $group,
+  }
 
   file { "/etc/default/mesos-slave":
     ensure  => 'present',
@@ -53,7 +59,6 @@ class mesos::slave (
   # Install mesos-slave service
   mesos::service { 'slave':
     enable     => $enable,
-    conf_dir   => $conf_dir,
     require    => File["/etc/default/mesos-slave"],
   }
 }
