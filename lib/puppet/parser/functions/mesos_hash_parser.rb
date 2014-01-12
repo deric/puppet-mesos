@@ -9,21 +9,21 @@ This function converts simple key-value structure to a Hash
 that is required by create_resources function
 
         EOS
-  ) do |arguments|
+  ) do |args|
 
     # Only 1 argument should be passed
-    if arguments.size < 1 || arguments.size > 2
-      raise(Puppet::ParseError, "mesos_hash_parser(): Wrong number of arguments " + "given (#{arguments.size} for 1)")
+    if args.size < 1 || args.size > 2
+      raise(Puppet::ParseError, "mesos_hash_parser(): Wrong number of args " + "given (#{args.size} for 1)")
     end
 
     # The argument should be a Hash
-    if arguments[0].class != Hash
-      raise(Puppet::ParseError, "mesos_hash_parser() accepts a Hash, you passed a " + arguments[0].class)
+    if args[0].class != Hash
+      raise(Puppet::ParseError, "mesos_hash_parser() accepts a Hash, you passed a " + args[0].class)
     end
 
     res = {}
-    prefix = arguments[1] if arguments.size == 2
-    arguments[0].each do |key, val|
+    prefix = args[1] if args.size == 2
+    args[0].each do |key, val|
       key = "#{prefix}_#{key}" if prefix
       res[key] = {
         "value" => val

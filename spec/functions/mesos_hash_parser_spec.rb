@@ -17,10 +17,6 @@ describe 'mesos_hash_parser' do
         })
     end
 
-    it 'should raise an error if run without arguments' do
-      subject.should run.with_params().and_raise_error(Puppet::ParseError)
-    end
-
     it 'should raise an error if run with extra arguments' do
       subject.should run.with_params(1, 2, 3).and_raise_error(Puppet::ParseError)
     end
