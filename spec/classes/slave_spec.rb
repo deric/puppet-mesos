@@ -61,6 +61,10 @@ describe 'mesos::slave' do
       slave_file
       ).with_content(/^MASTER="192.168.1.100:5050"/)
     }
+    it { should contain_file(
+      '/etc/mesos/zk'
+      ).with(:ensure => 'absent')
+    }
   end
 
   context 'with zookeeper' do
@@ -69,6 +73,8 @@ describe 'mesos::slave' do
     }}
     it { should contain_file(
       '/etc/mesos/zk'
+      ).with(
+      :ensure => 'present'
       ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
     }
   end

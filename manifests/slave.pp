@@ -80,9 +80,9 @@ class mesos::slave (
 
   # file containing only zookeeper URL
   file { '/etc/mesos/zk':
-    ensure  => defined($zookeeper) ? {
-      true  => present,
-      false => absent,
+    ensure  => empty($zookeeper) ? {
+      true  => absent,
+      false => present,
     },
     content => $zookeeper,
     owner   => $owner,

@@ -25,7 +25,7 @@ class mesos(
   $log_dir      = hiera('mesos::log_dir', '/var/log/mesos')
   $conf_dir     = hiera('mesos::conf_dir', '/etc/mesos')
   # e.g. zk://localhost:2181/mesos
-  $zookeeper    = hiera('mesos::zookeeper', undef)
+  $zookeeper    = hiera('mesos::zookeeper', '')
   # if "zk" is empty, master value is used
   $master       = hiera('mesos::master', '127.0.0.1')
   $master_port  = hiera('mesos::master_port', '5050')
