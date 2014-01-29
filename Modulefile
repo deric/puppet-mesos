@@ -1,4 +1,4 @@
-name    'puppet-mesos'
+name    'deric-mesos'
 version '0.2.0'
 source 'http://github.com/deric/puppet-mesos'
 author 'Tomas Barton'
