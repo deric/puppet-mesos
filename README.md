@@ -100,6 +100,13 @@ mesos::slave::cgroups:
   hierarchy: '/sys/fs/cgroup'
 ```
 
+Limit resources used by Mesos slave:
+
+```puppet
+mesos::slave::resources:
+  cpus: '10'
+```
+
 ## Links
 
 For more information see [Mesos project](http://mesos.apache.org/)

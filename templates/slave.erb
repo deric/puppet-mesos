@@ -6,8 +6,11 @@ MASTER="<%= @zookeeper %>"
 MASTER="<%= @master %>:<%= @master_port %>"
 <% end -%>
 
+<% ipaddress = scope.lookupvar('ipaddress_public') -%>
+<% ipaddress ||= scope.lookupvar('public_ip') -%>
+<% ipaddress ||= scope.lookupvar('ipaddress') -%>
 # public slave's ip, must be unique in mesos cluster
-IP="<%= scope.lookupvar('ipaddress') %>"
+IP="<%= ipaddress %>"
 
 # Port to listen on (default: 5051)
 PORT=<%= @port %>

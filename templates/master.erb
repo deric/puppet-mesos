@@ -6,7 +6,10 @@ CLUSTER="<%= @cluster %>"
 
 # IP address to listen on (in case that you start master
 # on this node, it will bind to this address)
-IP="<%= scope.lookupvar('ipaddress') %>"
+<% ipaddress = scope.lookupvar('ipaddress_public') -%>
+<% ipaddress ||= scope.lookupvar('public_ip') -%>
+<% ipaddress ||= scope.lookupvar('ipaddress') -%>
+IP="<%= ipaddress %>"
 
 # Port to listen on (default: 5050)
 PORT=<%= @master_port %>
