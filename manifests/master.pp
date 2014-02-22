@@ -11,15 +11,16 @@
 # class{ 'mesos::master': }
 #
 class mesos::master(
-  $enable      = true,
-  $whitelist   = '*',
-  $cluster     = 'mesos',
-  $conf_dir    = '/etc/mesos-master',
-  $conf_file   = '/etc/default/mesos-master',
-  $master_port = $mesos::master_port,
-  $zookeeper   = $mesos::zookeeper,
-  $owner       = $mesos::owner,
-  $group       = $mesos::group,
+  $enable         = true,
+  $whitelist      = '*',
+  $cluster        = 'mesos',
+  $conf_dir       = '/etc/mesos-master',
+  $conf_file      = '/etc/default/mesos-master',
+  $master_port    = $mesos::master_port,
+  $zookeeper      = $mesos::zookeeper,
+  $owner          = $mesos::owner,
+  $group          = $mesos::group,
+  $listen_address = $mesos::listen_address,
 ) inherits mesos {
 
   file { $conf_dir:
