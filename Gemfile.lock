@@ -40,6 +40,10 @@ GEM
       facter (~> 1.6)
       hiera (~> 1.0)
       rgen (~> 0.6.5)
+    puppet-blacksmith (2.0.2)
+      nokogiri
+      puppet (>= 2.7.16)
+      rest-client
     puppet-lint (0.3.2)
     puppetlabs_spec_helper (0.4.1)
       mocha (>= 0.10.5)
@@ -51,6 +55,8 @@ GEM
       builder
       nokogiri (>= 1.4.1)
       trollop
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rgen (0.6.6)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
@@ -98,6 +104,7 @@ PLATFORMS
 DEPENDENCIES
   librarian-puppet (>= 0.9.10)
   puppet (>= 2.7.0)
+  puppet-blacksmith
   puppet-lint (>= 0.3.2)
   puppetlabs_spec_helper (>= 0.2.0)
   rake (>= 0.9.2.2)

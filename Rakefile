@@ -2,12 +2,10 @@ require 'bundler'
 Bundler.require(:rake)
 require 'rake/clean'
 
-CLEAN.include('spec/fixtures/modules', 'doc', 'pkg')
-CLOBBER.include('.tmp', '.librarian')
-
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
 require 'rspec-system/rake_task'
+require 'puppet_blacksmith/rake_tasks'
 
 PuppetLint.configuration.ignore_paths = ["spec/fixtures/modules/apt/manifests/*.pp"]
 PuppetLint.configuration.log_format = '%{path}:%{linenumber}:%{KIND}: %{message}'
