@@ -1,5 +1,5 @@
 .librarian/*
 .tmp/*
 *.log
-spec/fixtures/*
+spec/fixtures/modules/*
 pkg/*
