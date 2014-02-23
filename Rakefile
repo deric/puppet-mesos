@@ -16,7 +16,8 @@ PuppetLint.configuration.send('disable_80chars')
 # offers more possibilities like explicit version management, forge downloads,...
 task :librarian_spec_prep do
   sh 'librarian-puppet install --path=spec/fixtures/modules/'
+  sh 'touch spec/fixtures/manifests/site.pp'
 end
 task :spec_prep => :librarian_spec_prep
 
-task :default => [:clean, :spec]
+task :default => [:spec, :lint]
