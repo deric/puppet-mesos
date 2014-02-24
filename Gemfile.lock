@@ -1,9 +1,9 @@
 GIT
-  remote: https://github.com/deric/puppet-blacksmith.git
-  revision: 74a4909b0245ef21655ae1d5d37cb414e717c0c9
+  remote: https://github.com/maestrodev/puppet-blacksmith.git
+  revision: adeb613d78dc1e9971ad175ecd5d3b66465ba927
   specs:
     puppet-blacksmith (2.0.2)
-      nokogiri (~> 1.5.10)
+      nokogiri
       puppet (>= 2.7.16)
       rest-client
 
