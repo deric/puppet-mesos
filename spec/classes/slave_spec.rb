@@ -209,4 +209,23 @@ describe 'mesos::slave' do
       "#{resources_dir}/mem"
     ).with_content(/^2048$/)}
   end
+
+  context 'custom ipaddress fact' do
+    let(:facts) {{
+      :ipaddress_eth0 => '192.168.1.2',
+    }}
+
+    let(:params){{
+      :conf_dir => conf,
+      :owner    => owner,
+      :group    => group,
+      :listen_address => '$::ipaddress_eth0',
+    }}
+
+    it 'has ip address from system fact' do
+      should contain_file(
+        slave_file
+      ).with_content(/^IP="192.168.1.2"$/)
+    end
+  end
 end
