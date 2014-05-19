@@ -16,6 +16,7 @@ define mesos::service(
     hasstatus  => true,
     hasrestart => true,
     enable     => $enable,
+    provider   => 'upstart',
     subscribe  => [ File['/etc/default/mesos'],
       File["/etc/default/mesos-${name}"]
     ],
