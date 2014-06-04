@@ -12,7 +12,7 @@ define mesos::service(
 ) {
 
   $provider = $osfamily ? {
-    'redhat' => 'upstart',
+    'RedHat' => 'upstart',
     default => undef,
   }
   service { "mesos-${name}":
