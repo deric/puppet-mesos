@@ -11,12 +11,16 @@ define mesos::service(
   $enable = false,
 ) {
 
+  $provider = $osfamily ? {
+    'redhat' => 'upstart',
+    default => undef,
+  }
   service { "mesos-${name}":
     ensure     => 'running',
     hasstatus  => true,
     hasrestart => true,
     enable     => $enable,
-    provider   => 'upstart',
+    provider   => $provider,
     subscribe  => [ File['/etc/default/mesos'],
       File["/etc/default/mesos-${name}"]
     ],
