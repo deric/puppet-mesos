@@ -80,17 +80,6 @@ class mesos::slave (
     require => File[$conf_dir],
   }
 
-  # file containing only zookeeper URL
-  file { '/etc/mesos/zk':
-    ensure  => empty($zookeeper) ? {
-      true  => absent,
-      false => present,
-    },
-    content => $zookeeper,
-    owner   => $owner,
-    group   => $group,
-  }
-
   # stores properties in file structure
   create_resources(mesos::property,
     mesos_hash_parser($cgroups, 'cgroups'),
@@ -118,7 +107,7 @@ class mesos::slave (
     owner   => $owner,
     group   => $group,
     mode    => '0644',
-    require => [File['/etc/mesos/zk'], File[$conf_dir], Package['mesos']],
+    require => [Class['mesos::config'], File[$conf_dir], Package['mesos']],
   }
 
   # Install mesos-slave service

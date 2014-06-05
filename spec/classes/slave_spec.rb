@@ -67,18 +67,6 @@ describe 'mesos::slave' do
     }
   end
 
-  context 'with zookeeper' do
-    let(:params){{
-      :zookeeper => 'zk://192.168.1.100:2181/mesos',
-    }}
-    it { should contain_file(
-      '/etc/mesos/zk'
-      ).with(
-      :ensure => 'present'
-      ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
-    }
-  end
-
   context 'zookeeper should be preferred before single master' do
     let(:params){{
       :master    => '172.16.0.1',
@@ -88,10 +76,11 @@ describe 'mesos::slave' do
       slave_file
       ).with_content(/^MASTER="172.16.0.1"/)
     }
-    it { should contain_file(
-      '/etc/mesos/zk'
-      ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
-    }
+    # this would work only if we set mesos::zookeeper through hiera
+    #it { should contain_file(
+    #  '/etc/mesos/zk'
+    #  ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
+    #}
   end
 
   context 'disabling service' do

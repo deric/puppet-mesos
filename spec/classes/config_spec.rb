@@ -52,4 +52,16 @@ describe 'mesos::config' do
       ).with_content(/LOGS="\/srv\/mesos\/log"/)
     }
   end
+
+  context 'with zookeeper' do
+    let(:params){{
+      :zookeeper => 'zk://192.168.1.100:2181/mesos',
+    }}
+    it { should contain_file(
+      '/etc/mesos/zk'
+      ).with(
+      :ensure => 'present'
+      ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
+    }
+  end
 end

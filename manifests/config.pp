@@ -12,11 +12,12 @@
 # always use 'mesos::slave' or 'mesos:master'
 #
 class mesos::config(
-  $log_dir  = '/var/log/mesos',
-  $ulimit   = '8192',
-  $conf_dir = '/etc/mesos',
-  $owner    = 'root',
-  $group    = 'root',
+  $log_dir   = '/var/log/mesos',
+  $ulimit    = '8192',
+  $conf_dir  = '/etc/mesos',
+  $owner     = 'root',
+  $group     = 'root',
+  $zookeeper = '',
 ){
 
   file { $log_dir:
@@ -39,4 +40,16 @@ class mesos::config(
     mode    => '0644',
     require => Package['mesos'],
   }
+
+  # file containing only zookeeper URL
+  file { '/etc/mesos/zk':
+    ensure  => empty($zookeeper) ? {
+      true  => absent,
+      false => present,
+    },
+    content => $zookeeper,
+    owner   => $owner,
+    group   => $group,
+  }
+
 }
