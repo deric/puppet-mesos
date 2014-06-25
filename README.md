@@ -15,6 +15,17 @@ This is a Puppet module for managing Mesos nodes in a cluster.
 
 ## Usage
 
+Parameters:
+
+ - `zookeeper` - ZooKeeper URL which is used for slaves connecting to the master and also for leader election, e.g.:
+	- single ZooKeeper: `zk://127.0.0.1:2181/mesos` (which isn't fault tolerant)
+        - multiple ZooKeepers: `zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos` (usually 3 or 5 ZooKeepers should be enough)
+        - ZooKeeper URL will be stored in `/etc/mesos/zk`
+ - `conf_dir` - directory with simple configuration files containing master/slave parameters (name of the file is a key, contets its value)
+        - this directory will be completly managed by Puppet
+
+### Master
+
   Should be as simple as this, on master node:
 
 ```puppet
@@ -29,13 +40,15 @@ class{'mesos::slave':
 }
 ```
 
+ - `conf_dir` default value is `/etc/mesos-master` (this directory will be purged by Puppet!)
+ 	- for list of supported options see `mesos-master --help`
+
 ### Slave
 
  - `enable` - install Mesos slave service (default: `true`)
+ - `port` - slave's port for incomming connections (default: `5051`)
  - `master`- ip address of Mesos master (default: `localhost`)
  - `master_port` - Mesos master's port (default: `5050`)
- - `zookeeper` - Zookeeper URL string (which keeps track
-             of current Mesos master)
  - `work_dir` - directory for storing task's temporary files (default: `/tmp/mesos`)
  - `env_var` - slave's execution environment variables - a Hash, if you are using
  Java, you might need e.g.:
@@ -61,6 +74,8 @@ class{'mesos::slave':
   }
 }
 ```
+ - `conf_dir` default value is `/etc/mesos-slave` (this directory will be purged by Puppet!)
+        - for list of supported options see `mesos-slave --help`
 
 ## Hiera support
 
