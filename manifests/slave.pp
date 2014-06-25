@@ -61,9 +61,12 @@ class mesos::slave (
   validate_hash($attributes)
 
   file { $conf_dir:
-    ensure => directory,
-    owner  => $owner,
-    group  => $group,
+    ensure  => directory,
+    owner   => $owner,
+    group   => $group,
+    recurse => true,
+    purge   => true,
+    force   => true,
   }
 
   file { "${conf_dir}/resources":
@@ -71,6 +74,8 @@ class mesos::slave (
     owner   => $owner,
     group   => $group,
     require => File[$conf_dir],
+    recurse => true,
+    purge   => true,
   }
 
   file { "${conf_dir}/attributes":
@@ -78,6 +83,8 @@ class mesos::slave (
     owner   => $owner,
     group   => $group,
     require => File[$conf_dir],
+    recurse => true,
+    purge   => true,
   }
 
   # stores properties in file structure
