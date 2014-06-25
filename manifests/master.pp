@@ -24,9 +24,12 @@ class mesos::master(
 ) inherits mesos {
 
   file { $conf_dir:
-    ensure => directory,
-    owner  => $owner,
-    group  => $group,
+    ensure  => directory,
+    owner   => $owner,
+    group   => $group,
+    recurse => true,
+    purge   => true,
+    force   => true,
   }
 
   file { $conf_file:
