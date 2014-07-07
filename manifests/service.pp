@@ -11,9 +11,10 @@ define mesos::service(
   $enable = false,
 ) {
 
-  $provider = $osfamily ? {
-    'RedHat' => 'upstart',
-    default => undef,
+  if $::osfamily == 'RedHat' and $::os_maj_version < 7 { 
+    $provider = 'upstart'
+  } else {
+    $provider = undef
   }
   service { "mesos-${name}":
     ensure     => 'running',
