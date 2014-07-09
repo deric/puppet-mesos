@@ -77,6 +77,27 @@ class{'mesos::slave':
  - `conf_dir` default value is `/etc/mesos-slave` (this directory will be purged by Puppet!)
         - for list of supported options see `mesos-slave --help`
 
+## File based configuration
+
+If some file based configurations this module doesn't provide directly in master and slave module, `mesos::property` allows to confgure them or remove the file when `value` is left empty. e.g. configure value in `/etc/mesos/hostname`:
+
+```puppet
+::mesos::property { 'hostname':
+  value => 'mesos.hostname.com',
+  dir   => '/etc/mesos'
+}
+```
+
+Remove this file simplely set value to undef:
+
+```puppet
+::mesos::property { 'hostname':
+  value => undef,
+  dir   => '/etc/mesos'
+}
+```
+
+
 ## Hiera support
 
   All configuration could be handled by hiera.
