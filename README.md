@@ -21,8 +21,8 @@ Parameters:
 	- single ZooKeeper: `zk://127.0.0.1:2181/mesos` (which isn't fault tolerant)
         - multiple ZooKeepers: `zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos` (usually 3 or 5 ZooKeepers should be enough)
         - ZooKeeper URL will be stored in `/etc/mesos/zk`
- - `conf_dir` - directory with simple configuration files containing master/slave parameters (name of the file is a key, contets its value)
-        - this directory will be completly managed by Puppet
+ - `conf_dir` - directory with simple configuration files containing master/slave parameters (name of the file is a key, contents its value)
+        - this directory will be completely managed by Puppet
 
 ### Master
 
@@ -46,7 +46,7 @@ class{'mesos::slave':
 ### Slave
 
  - `enable` - install Mesos slave service (default: `true`)
- - `port` - slave's port for incomming connections (default: `5051`)
+ - `port` - slave's port for incoming connections (default: `5051`)
  - `master`- ip address of Mesos master (default: `localhost`)
  - `master_port` - Mesos master's port (default: `5050`)
  - `work_dir` - directory for storing task's temporary files (default: `/tmp/mesos`)
@@ -79,7 +79,7 @@ class{'mesos::slave':
 
 ## File based configuration
 
-If some file based configurations this module doesn't provide directly in master and slave module, `mesos::property` allows to confgure them or remove the file when `value` is left empty. e.g. configure value in `/etc/mesos/hostname`:
+If some file based configurations this module doesn't provide directly in master and slave module, `mesos::property` allows to configure them or remove the file when `value` is left empty. e.g. configure value in `/etc/mesos/hostname`:
 
 ```puppet
 ::mesos::property { 'hostname':
@@ -88,7 +88,7 @@ If some file based configurations this module doesn't provide directly in master
 }
 ```
 
-Remove this file simplely set value to undef:
+Remove this file simply set value to undef:
 
 ```puppet
 ::mesos::property { 'hostname':
