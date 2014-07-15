@@ -15,7 +15,6 @@ describe 'mesos::service' do
         :enable     => false,
         :hasstatus  => true,
         :hasrestart => true,
-        :provider   => provider
     )}
     context 'enable service' do
       let(:params) {{
