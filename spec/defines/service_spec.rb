@@ -14,7 +14,7 @@ describe 'mesos::service' do
         :ensure     => 'running',
         :enable     => false,
         :hasstatus  => true,
-        :hasrestart => true,
+        :hasrestart => true
     )}
     context 'enable service' do
       let(:params) {{
