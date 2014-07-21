@@ -93,7 +93,14 @@ class mesos::slave (
     { dir => $conf_dir }
   )
 
-  $merged_opts = merge($options, {'work_dir' => $work_dir})
+  # work_dir can't be specified via options,
+  # we would get a duplicate declaration error
+  mesos::property {'slave_work_dir':
+    value   => $work_dir,
+    dir     => $conf_dir,
+    file    => 'work_dir',
+    require => File[conf_dir],
+  }
 
   file { $work_dir:
     ensure  => directory,
@@ -102,7 +109,7 @@ class mesos::slave (
   }
 
   create_resources(mesos::property,
-    mesos_hash_parser($merged_opts),
+    mesos_hash_parser($options),
     { dir => $conf_dir }
   )
 

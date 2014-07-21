@@ -36,8 +36,8 @@ optionally you can specify some parameters or it is possible to configure Mesos 
 ```puppet
 class{'mesos::master':
   master_port => 5050,
+  work_dir => '/var/lib/mesos',
   options => {
-    work_dir => '/tmp/mesos',
     quorum   => 4
   }
 }
@@ -157,7 +157,7 @@ mesos:slave::env_var:
 Mesos service reads configuration either from ENV variables or from configuration files wich are stored in `/etc/mesos-slave` resp. `/etc/mesos-master`. Hash passed via `options` will be converted to config files. Most of the options is possible to configure this way:
 
     mesos::master::options:
-      work_dir: '/etc/mesos/registry'
+      webui_dir: '/usr/local/share/mesos/webui'
       quorum: 4
 
 cgroups with Hiera:

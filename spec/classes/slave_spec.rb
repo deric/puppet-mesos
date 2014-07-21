@@ -218,30 +218,31 @@ describe 'mesos::slave' do
     end
   end
 
-   context 'set work_dir via options' do
+   context 'set isolation via options' do
     let(:params){{
       :conf_dir => conf,
-      :options => { 'work_dir' => '/tmp/mesos' },
+      :options => { 'isolation' => 'cgroups/cpu,cgroups/mem' },
     }}
 
-    it 'contains work_dir file in slave directory' do
+    it 'contains isolation file in slave directory' do
       should contain_file(
-        "#{conf}/work_dir"
-      ).with_content(/^\/tmp\/mesos$/)
+        "#{conf}/isolation"
+      ).with_content(/^cgroups\/cpu,cgroups\/mem$/)
     end
   end
 
 
   context 'allow changing config directory' do
+    let(:my_conf_dir) { '/var/mesos-slave' }
     let(:params){{
-      :conf_dir => '/var/mesos-slave',
-      :options => { 'work_dir' => '/tmp/mesos' },
+      :conf_dir => my_conf_dir,
+      :options => { 'isolation' => 'cgroups/cpu,cgroups/mem' },
     }}
 
-    it 'contains work_dir file in slave directory' do
+    it 'contains isolation file in slave directory' do
       should contain_file(
-        "/var/mesos-slave/work_dir"
-      ).with_content(/^\/tmp\/mesos$/)
+        "#{my_conf_dir}/isolation"
+      ).with_content(/^cgroups\/cpu,cgroups\/mem$/)
     end
   end
 
