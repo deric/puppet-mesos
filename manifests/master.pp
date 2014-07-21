@@ -15,6 +15,7 @@ class mesos::master(
   $whitelist      = '*',
   $cluster        = 'mesos',
   $conf_dir       = '/etc/mesos-master',
+  $work_dir       = '/var/lib/mesos', # registrar directory, since 0.19
   $conf_file      = '/etc/default/mesos-master',
   $master_port    = $mesos::master_port,
   $zookeeper      = $mesos::zookeeper,
@@ -35,8 +36,16 @@ class mesos::master(
     force   => true,
   }
 
+  file { $work_dir:
+    ensure  => directory,
+    owner   => $owner,
+    group   => $group,
+  }
+
+  $merged_opts = merge($options, {'work_dir' => $work_dir})
+
   create_resources(mesos::property,
-    mesos_hash_parser($options),
+    mesos_hash_parser($merged_opts),
     { dir => $conf_dir }
   )
 
