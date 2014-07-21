@@ -230,4 +230,18 @@ describe 'mesos::slave' do
       ).with_content(/^\/tmp\/mesos$/)
     end
   end
+
+
+  context 'allow changing config directory' do
+    let(:params){{
+      :conf_dir => '/var/mesos-slave',
+      :options => { 'work_dir' => '/tmp/mesos' },
+    }}
+
+    it 'contains work_dir file in slave directory' do
+      should contain_file(
+        "/var/mesos-slave/work_dir"
+      ).with_content(/^\/tmp\/mesos$/)
+    end
+  end
 end

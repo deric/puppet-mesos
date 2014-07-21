@@ -90,22 +90,22 @@ class mesos::slave (
   # stores properties in file structure
   create_resources(mesos::property,
     mesos_hash_parser($cgroups, 'cgroups'),
-    { dir => '/etc/mesos-slave' }
+    { dir => $conf_dir }
   )
 
   create_resources(mesos::property,
     mesos_hash_parser($options),
-    { dir => '/etc/mesos-slave' }
+    { dir => $conf_dir }
   )
 
   create_resources(mesos::property,
     mesos_hash_parser($resources),
-    { dir => '/etc/mesos-slave/resources' }
+    { dir => "${conf_dir}/resources" }
   )
 
   create_resources(mesos::property,
     mesos_hash_parser($attributes),
-    { dir => '/etc/mesos-slave/attributes' }
+    { dir => "${conf_dir}/attributes" }
   )
 
   file { $conf_file:
