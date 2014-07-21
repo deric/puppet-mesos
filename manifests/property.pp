@@ -15,5 +15,5 @@ define mesos::property (
     content => $value,
     require => File[$dir]
   }
-  
+
 }
