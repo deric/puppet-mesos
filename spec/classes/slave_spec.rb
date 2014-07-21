@@ -255,11 +255,9 @@ describe 'mesos::slave' do
       :group    => group,
     }}
 
-    it 'contains work_dir file in slave directory' do
-      should contain_file(
-        "#{conf}/work_dir"
-      ).with_content(/^\/tmp\/mesos$/)
-    end
+    it { should contain_file(
+      slave_file
+    ).with_content(/\/tmp\/mesos/) }
 
     it { should contain_file(work_dir).with({
       'ensure'  => 'directory',

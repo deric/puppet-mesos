@@ -124,11 +124,6 @@ describe 'mesos::master' do
       :group    => group,
     }}
 
-    it 'contains work_dir file in slave directory' do
-      should contain_file(
-        "#{conf}/work_dir"
-      ).with_content(/^\/var\/lib\/mesos$/)
-    end
 
     it { should contain_file(work_dir).with({
       'ensure'  => 'directory',
