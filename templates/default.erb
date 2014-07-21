@@ -1,5 +1,9 @@
 # This file is managed by Puppet
 
-LOGS="<%= @log_dir %>"
-ULIMIT="-n <%= @ulimit %>"
+# enables mesos logging, otherwise stdout goes to LOG_DIR
+#LOGS=/var/log/mesos
+# both master and slave will log into syslog file
 USE_SYSLOG="<%= @use_syslog %>"
+# separate 'master.log' and 'slave.log' files
+LOG_DIR="<%= @log_dir %>"
+ULIMIT="-n <%= @ulimit %>"
