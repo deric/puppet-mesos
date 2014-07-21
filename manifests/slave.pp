@@ -93,8 +93,16 @@ class mesos::slave (
     { dir => $conf_dir }
   )
 
+  $merged_opts = merge($options, {'work_dir' => $work_dir})
+
+  file { $work_dir:
+    ensure  => directory,
+    owner   => $owner,
+    group   => $group,
+  }
+
   create_resources(mesos::property,
-    mesos_hash_parser($options),
+    mesos_hash_parser($merged_opts),
     { dir => $conf_dir }
   )
 

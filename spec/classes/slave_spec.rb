@@ -244,4 +244,27 @@ describe 'mesos::slave' do
       ).with_content(/^\/tmp\/mesos$/)
     end
   end
+
+  context 'work_dir' do
+    let(:work_dir) { '/tmp/mesos' }
+    let(:params){{
+      :conf_dir => conf,
+      :work_dir => work_dir,
+      :owner    => owner,
+      :group    => group,
+    }}
+
+    it 'contains work_dir file in slave directory' do
+      should contain_file(
+        "#{conf}/work_dir"
+      ).with_content(/^\/tmp\/mesos$/)
+    end
+
+    it { should contain_file(work_dir).with({
+      'ensure'  => 'directory',
+      'owner'   => owner,
+      'group'   => group,
+    }) }
+
+  end
 end
