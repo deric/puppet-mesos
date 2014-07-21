@@ -217,4 +217,17 @@ describe 'mesos::slave' do
       ).with_content(/^IP="192.168.1.2"$/)
     end
   end
+
+   context 'set work_dir via options' do
+    let(:params){{
+      :conf_dir => conf,
+      :options => { 'work_dir' => '/tmp/mesos' },
+    }}
+
+    it 'contains work_dir file in slave directory' do
+      should contain_file(
+        "#{conf}/work_dir"
+      ).with_content(/^\/tmp\/mesos$/)
+    end
+  end
 end
