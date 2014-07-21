@@ -23,7 +23,7 @@ describe 'mesos::config' do
   it 'has default log dir' do
     should contain_file(
       '/etc/default/mesos'
-    ).with_content(/LOGS="\/var\/log\/mesos"/)
+    ).with_content(/LOG_DIR="\/var\/log\/mesos"/)
   end
 
   it 'has default ulimit' do
@@ -49,7 +49,7 @@ describe 'mesos::config' do
     }}
     it { should contain_file(
       '/etc/default/mesos'
-      ).with_content(/LOGS="\/srv\/mesos\/log"/)
+      ).with_content(/LOG_DIR="\/srv\/mesos\/log"/)
     }
   end
 
