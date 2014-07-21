@@ -3,12 +3,12 @@
 # This module manages Mesos master - installs Mesos package
 # and starts master service.
 #
-# Parameters: None
-#
-#
 # Sample Usage:
 #
 # class{ 'mesos::master': }
+#
+# mesos-master service stores configuration in /etc/default/mesos-master in file/directory
+# structure. Arguments passed via $options hash are converted to file/directories
 #
 class mesos::master(
   $enable         = true,

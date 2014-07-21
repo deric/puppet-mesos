@@ -100,4 +100,18 @@ describe 'mesos::master' do
       ).with_content(/^4$/)
     end
   end
+
+  context 'allow changing conf_dir' do
+    let(:my_conf_dir) { '/var/mesos-master'}
+    let(:params){{
+      :conf_dir => my_conf_dir,
+      :options => { 'quorum' => '4' },
+    }}
+
+    it 'has quorum file in master config dir' do
+      should contain_file(
+        "#{my_conf_dir}/quorum"
+      ).with_content(/^4$/)
+    end
+  end
 end

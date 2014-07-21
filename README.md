@@ -28,18 +28,34 @@ Parameters:
 
   Should be as simple as this, on master node:
 
-```puppet
+  ```puppet
 class{'mesos::master': }
 ```
+optionally you can specify some parameters or it is possible to configure Mesos via Hiera (see below).
 
-  For slave you have to specify either `master` or `zookeeper` node(s) to connect.
+```puppet
+class{'mesos::master':
+  master_port => 5050,
+  options => {
+    work_dir => '/tmp/mesos',
+    quorum   => 4
+  }
+}
+```
+
+  For slave you have to specify either `master`
 
 ```puppet
 class{'mesos::slave':
   master => '192.168.1.1'
 }
 ```
-
+or `zookeeper` node(s) to connect:
+```puppet
+class{'mesos::slave':
+  zookeeper => 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos'
+}
+```
  - `conf_dir` default value is `/etc/mesos-master` (this directory will be purged by Puppet!)
  	- for list of supported options see `mesos-master --help`
 
@@ -128,7 +144,13 @@ or slave specific:
     mesos:slave::env_var:
       JAVA_HOME: '/usr/bin/java'
 
-cgroups with hiera:
+Mesos service reads configuration either from ENV variables or from configuration files wich are stored in `/etc/mesos-slave` resp. `/etc/mesos-master`. Hash passed via `options` will be converted to config files. Most of the options is possible to configure this way:
+
+    mesos::master::options:
+      work_dir: '/etc/mesos/registry'
+      quorum: 4
+
+cgroups with Hiera:
 
 ```puppet
 mesos::slave::isolation: 'cgroups'
