@@ -156,9 +156,19 @@ mesos:slave::env_var:
 
 Mesos service reads configuration either from ENV variables or from configuration files wich are stored in `/etc/mesos-slave` resp. `/etc/mesos-master`. Hash passed via `options` will be converted to config files. Most of the options is possible to configure this way:
 
-    mesos::master::options:
-      webui_dir: '/usr/local/share/mesos/webui'
-      quorum: 4
+```yaml
+mesos::master::options:
+  webui_dir: '/usr/local/share/mesos/webui'
+  quorum: '4'
+```
+
+you can also use facts from Puppet:
+
+```
+mesos::master::options:
+  hostname: "%{::fqdn}"
+```
+
 
 cgroups with Hiera:
 
