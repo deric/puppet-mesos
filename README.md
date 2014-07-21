@@ -120,29 +120,39 @@ Remove this file simply set value to undef:
 
   Either specify one master
 
-    mesos::master      : '192.168.1.1'
+```yaml
+mesos::master      : '192.168.1.1'
+```
 
   or [Zookeeper](http://zookeeper.apache.org/) could be use for a fault-tolerant setup (multiple instances of zookeeper are separated by comma):
 
-    mesos::zookeeper   : 'zk://192.168.1.1:2181/mesos'
+```yaml
+mesos::zookeeper   : 'zk://192.168.1.1:2181/mesos'
+```
 
 Some parameters are shared between master and slave nodes:
 
-    mesos::master_port : 5050
-    mesos::log_dir     : '/var/log/mesos'
-    mesos::conf_dir    : '/etc/mesos'
-    mesos::owner       : 'mesos'
-    mesos::group       : 'mesos'
+```yaml
+mesos::master_port : 5050
+mesos::log_dir     : '/var/log/mesos'
+mesos::conf_dir    : '/etc/mesos'
+mesos::owner       : 'mesos'
+mesos::group       : 'mesos'
+```
 
 Other are master specific:
 
-    mesos::master::cluster     : 'my_mesos_cluster'
-    mesos::master::whitelist   : '*'
+```yaml
+mesos::master::cluster     : 'my_mesos_cluster'
+mesos::master::whitelist   : '*'
+```
 
 or slave specific:
 
-    mesos:slave::env_var:
-      JAVA_HOME: '/usr/bin/java'
+```yaml
+mesos:slave::env_var:
+  JAVA_HOME: '/usr/bin/java'
+```
 
 Mesos service reads configuration either from ENV variables or from configuration files wich are stored in `/etc/mesos-slave` resp. `/etc/mesos-master`. Hash passed via `options` will be converted to config files. Most of the options is possible to configure this way:
 
