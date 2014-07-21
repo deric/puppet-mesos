@@ -21,7 +21,10 @@ class mesos::master(
   $owner          = $mesos::owner,
   $group          = $mesos::group,
   $listen_address = $mesos::listen_address,
+  $options        = {},
 ) inherits mesos {
+
+  validate_hash($options)
 
   file { $conf_dir:
     ensure  => directory,
@@ -31,6 +34,11 @@ class mesos::master(
     purge   => true,
     force   => true,
   }
+
+  create_resources(mesos::property,
+    mesos_hash_parser($options),
+    { dir => $conf_dir }
+  )
 
   file { $conf_file:
     ensure  => present,
