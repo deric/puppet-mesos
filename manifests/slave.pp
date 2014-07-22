@@ -90,7 +90,10 @@ class mesos::slave (
   # stores properties in file structure
   create_resources(mesos::property,
     mesos_hash_parser($cgroups, 'cgroups'),
-    { dir => $conf_dir }
+    {
+      dir     => $conf_dir,
+      service => Service['mesos-slave'],
+    }
   )
 
   # work_dir can't be specified via options,
@@ -99,6 +102,7 @@ class mesos::slave (
     value   => $work_dir,
     dir     => $conf_dir,
     file    => 'work_dir',
+    service => Service['mesos-slave'],
     require => File[$conf_dir],
   }
 
@@ -110,17 +114,26 @@ class mesos::slave (
 
   create_resources(mesos::property,
     mesos_hash_parser($options),
-    { dir => $conf_dir }
+    {
+      dir     => $conf_dir,
+      service => Service['mesos-slave'],
+    }
   )
 
   create_resources(mesos::property,
     mesos_hash_parser($resources),
-    { dir => "${conf_dir}/resources" }
+    {
+      dir     => "${conf_dir}/resources",
+      service => Service['mesos-slave'],
+    }
   )
 
   create_resources(mesos::property,
     mesos_hash_parser($attributes),
-    { dir => "${conf_dir}/attributes" }
+    {
+      dir     => "${conf_dir}/attributes",
+      service => Service['mesos-slave'],
+    }
   )
 
   file { $conf_file:

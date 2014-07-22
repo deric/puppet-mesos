@@ -264,6 +264,5 @@ describe 'mesos::slave' do
       'owner'   => owner,
       'group'   => group,
     }) }
-
   end
 end

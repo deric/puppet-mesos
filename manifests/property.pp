@@ -4,6 +4,7 @@
 define mesos::property (
   $value,
   $dir,
+  $service, #service to be notified about property changes
   $file = $title,
 ) {
 
@@ -13,7 +14,8 @@ define mesos::property (
       false => present,
     },
     content => $value,
-    require => File[$dir]
+    require => File[$dir],
+    notify  => $service,
   }
 
 }
