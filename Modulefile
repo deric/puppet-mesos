@@ -1,5 +1,5 @@
 name    'deric-mesos'
-version '0.3.1'
+version '0.4.0'
 source 'http://github.com/deric/puppet-mesos'
 author 'Tomas Barton'
 license 'Apache License, Version 2.0'
