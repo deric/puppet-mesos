@@ -130,6 +130,22 @@ describe 'mesos::master' do
       'owner'   => owner,
       'group'   => group,
     }) }
-
   end
+
+  context 'support boolean flags' do
+    let(:my_conf_dir) { '/var/mesos-master'}
+    let(:params){{
+      :conf_dir => my_conf_dir,
+      :options => { 'authenticate' => true },
+    }}
+
+    it 'has authenticate file in config dir' do
+      should contain_file(
+        "#{my_conf_dir}/?authenticate"
+      ).with({
+      'ensure'  => 'present',
+      })
+    end
+  end
+
 end

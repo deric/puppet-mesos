@@ -8,12 +8,25 @@ define mesos::property (
   $file = $title,
 ) {
 
-  file { "${dir}/${file}":
-    ensure  => empty($value) ? {
+  if is_bool($value) {
+    $filename = $value ? {
+      true => "${dir}/?${file}",
+      false => "${dir}/?no-${file}",
+    }
+    $ensure = 'present'
+    $content = ''
+  } else {
+    $filename = "${dir}/${file}"
+    $ensure = empty($value) ? {
       true  => absent,
       false => present,
-    },
-    content => $value,
+    }
+    $content = $value
+  }
+
+  file { $filename:
+    ensure  => $ensure,
+    content => $content,
     require => File[$dir],
     notify  => $service,
   }

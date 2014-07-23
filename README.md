@@ -126,6 +126,21 @@ which will create a file `/etc/mesos-slave/hostname` with content `mesos.hostnam
 
 Yet another option would be to pass this value via Hiera (see the section below).
 
+
+### Boolean flags
+
+Current Mesos packages recognizes boolean flags like `--[no-]quiet` via files named as `/etc/mesos-slave/?quiet` for `--quiet` (true) and `/etc/mesos-slave/?no-quiet` for false value.
+
+```puppet
+class{'mesos::slave':
+  options => {
+    'quiet' => true
+  }
+}
+```
+
+ *since 0.4.1*
+
 ## Hiera support
 
   All configuration could be handled by hiera.

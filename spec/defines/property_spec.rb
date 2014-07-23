@@ -25,7 +25,7 @@ describe 'mesos::property' do
       :service => '',
     }}
 
-    it 'should contain a property file' do
+    it 'should not contain a property file' do
         should contain_file(
           "#{directory}/#{title}"
         ).with({
@@ -36,16 +36,48 @@ describe 'mesos::property' do
 
   context 'with an empty array value' do
     let(:params) {{
-      :value   => [],
+      :value   => [], # TODO this is not really meaningful value
+      :dir     => directory,
+      :service => '',
+    }}
+
+    it 'should not contain a property file' do
+        should contain_file(
+          "#{directory}/#{title}"
+        ).with({
+        'ensure'  => 'absent',
+        })
+    end
+  end
+
+  context 'with a boolean (true) value' do
+    let(:params) {{
+      :value   => true, # TODO this is not really meaningful value
       :dir     => directory,
       :service => '',
     }}
 
     it 'should contain a property file' do
         should contain_file(
-          "#{directory}/#{title}"
+          "#{directory}/?#{title}"
         ).with({
-        'ensure'  => 'absent',
+        'ensure'  => 'present',
+        })
+    end
+  end
+
+  context 'with a boolean (false) value' do
+    let(:params) {{
+      :value   => false, # TODO this is not really meaningful value
+      :dir     => directory,
+      :service => '',
+    }}
+
+    it 'should contain a "no-property" file' do
+        should contain_file(
+          "#{directory}/?no-#{title}"
+        ).with({
+        'ensure'  => 'present',
         })
     end
   end

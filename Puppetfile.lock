@@ -1,8 +1,8 @@
 FORGE
   remote: http://forge.puppetlabs.com
   specs:
-    puppetlabs/stdlib (4.1.0)
+    puppetlabs/stdlib (4.3.2)
 
 DEPENDENCIES
-  puppetlabs/stdlib (>= 0.1.6)
+  puppetlabs/stdlib (>= 4.2.0)
 

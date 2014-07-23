@@ -265,4 +265,20 @@ describe 'mesos::slave' do
       'group'   => group,
     }) }
   end
+
+  context 'support boolean flags' do
+    let(:my_conf_dir) { '/var/mesos-slave'}
+    let(:params){{
+      :conf_dir => my_conf_dir,
+      :options => { 'strict' => false },
+    }}
+
+    it 'has no-strict file in config dir' do
+      should contain_file(
+        "#{my_conf_dir}/?no-strict"
+      ).with({
+      'ensure'  => 'present',
+      })
+    end
+  end
 end

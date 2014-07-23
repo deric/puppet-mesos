@@ -7,4 +7,4 @@ summary 'Module managing Mesos master and slave instalation'
 description 'Apache Mesos is a cluster manager that provides efficient resource isolation and sharing across distributed applications'
 project_page 'http://github.com/deric/puppet-mesos'
 
-dependency 'puppetlabs/stdlib', '>= 0.1.6'
+dependency 'puppetlabs/stdlib', '>=4.2.0'
