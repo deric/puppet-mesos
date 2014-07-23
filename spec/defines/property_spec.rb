@@ -81,4 +81,20 @@ describe 'mesos::property' do
         })
     end
   end
+
+  context 'with a numeric value' do
+    let(:params) {{
+      :value   => 3.14,
+      :dir     => directory,
+      :service => '',
+    }}
+
+    it 'should contain a property file' do
+        should contain_file(
+          "#{directory}/#{title}"
+        ).with_content(/^3.14$/).with({
+      'ensure'  => 'present',
+      })
+    end
+  end
 end

@@ -91,13 +91,15 @@ describe 'mesos::master' do
   context 'set quorum via options' do
     let(:params){{
       :conf_dir => conf,
-      :options => { 'quorum' => '4' },
+      :options => { 'quorum' => 4 },
     }}
 
     it 'has quorum file in master config dir' do
       should contain_file(
         "#{conf}/quorum"
-      ).with_content(/^4$/)
+      ).with_content(/^4$/).with({
+      'ensure'  => 'present',
+      })
     end
   end
 
@@ -105,13 +107,15 @@ describe 'mesos::master' do
     let(:my_conf_dir) { '/var/mesos-master'}
     let(:params){{
       :conf_dir => my_conf_dir,
-      :options => { 'quorum' => '4' },
+      :options => { 'quorum' => 4 },
     }}
 
     it 'has quorum file in master config dir' do
       should contain_file(
         "#{my_conf_dir}/quorum"
-      ).with_content(/^4$/)
+      ).with_content(/^4$/).with({
+      'ensure'  => 'present',
+      })
     end
   end
 
