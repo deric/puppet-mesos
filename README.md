@@ -212,6 +212,23 @@ mesos::slave::resources:
   cpus: '10'
 ```
 
+## Dependencies
+
+  * [stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib) version `>= 4.2.0` - we need function `is_bool`
+
+## Installation
+
+Preferred installation is via [puppet-librarian](https://github.com/rodjek/librarian-puppet) just add to `Puppetfile`:
+
+```ruby
+mod 'deric/mesos', '>= 0.4.0'
+```
+
+for latest version from git:
+```ruby
+mod 'deric/mesos', :git => 'git://github.com/deric/puppet-mesos.git'
+```
+
 ## Links
 
 For more information see [Mesos project](http://mesos.apache.org/)
