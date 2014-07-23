@@ -14,12 +14,16 @@
 #  [*work_dir*] - directory for storing task's temporary files
 #              (default: /tmp/mesos)
 #  [*isolation*] - isolation mechanism - either 'process' or 'cgroups'
+#                  newer versions of Mesos > 0.18 support isolation mechanism
+#                  'cgroups/cpu,cgroups/mem' or posix/cpu,posix/mem
+#
 #
 #  [*options*] any extra arguments that are not named here could be
 #              stored in a hash:
 #
 #                options => { "key" => "value" }
 #
+#              (as value you can pass either string, boolean or numeric value)
 #              which is serialized to disk and then passed to mesos-slave as:
 #
 #                --key=value
@@ -37,7 +41,7 @@ class mesos::slave (
   $port           = 5051,
   $work_dir       = '/tmp/mesos',
   $checkpoint     = false,
-  $isolation      = 'process',
+  $isolation      = '',
   $conf_dir       = '/etc/mesos-slave',
   $conf_file      = '/etc/default/mesos-slave',
   $use_syslog     = false,
@@ -59,6 +63,7 @@ class mesos::slave (
   validate_hash($options)
   validate_hash($resources)
   validate_hash($attributes)
+  validate_string($isolation)
 
   file { $conf_dir:
     ensure  => directory,
@@ -96,6 +101,13 @@ class mesos::slave (
     }
   )
 
+  # for backwards compatibility, prefered way is specification via $options
+  if !empty($isolation) {
+    $merged_options = merge($options, {'isolation' => $isolation})
+  }else {
+    $merged_options = $options
+  }
+
   # work_dir can't be specified via options,
   # we would get a duplicate declaration error
   mesos::property {'slave_work_dir':
@@ -113,7 +125,7 @@ class mesos::slave (
   }
 
   create_resources(mesos::property,
-    mesos_hash_parser($options),
+    mesos_hash_parser($merged_options),
     {
       dir     => $conf_dir,
       service => Service['mesos-slave'],

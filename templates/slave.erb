@@ -12,18 +12,6 @@ IP="<%= @listen_address %>"
 # Port to listen on (default: 5051)
 PORT=<%= @port %>
 
-# Where to place framework work directories (default: /tmp/mesos)
-WORKDIR="<%= @work_dir %>"
-
-# Whether to checkpoint slave and frameworks information
-# to disk. This enables a restarted slave to recover
-# status updates and reconnect with (--recover=reconnect) or
-# kill (--recover=kill) old executors (default: false)
-CHECKPOINT=<%= @checkpoint %>
-
-# Isolation mechanism, may be one of: process, cgroups (default: process)
-ISOLATION="<%= @isolation %>"
-
 <% @cgroups.sort.each do |key, val| -%>
 CGROUPS_<%= key.upcase %>="<%= val %>"
 <% end if @isolation == 'cgroups' -%>

@@ -42,15 +42,17 @@ describe 'mesos::slave' do
   end
 
   it 'checkpoint should be false' do
-    should contain_file(
-      slave_file
-    ).with_content(/^CHECKPOINT=false/)
+    should_not contain_file(
+      "#{conf}/?checkpoint"
+    ).with({
+      'ensure'  => 'present',
+    })
   end
 
   it 'should have workdir in /tmp/mesos' do
     should contain_file(
-      slave_file
-    ).with_content(/^WORKDIR="\/tmp\/mesos"/)
+      "#{conf}/work_dir"
+    ).with_content(/^\/tmp\/mesos$/)
   end
 
   context 'one master node' do
@@ -99,18 +101,36 @@ describe 'mesos::slave' do
     }}
 
     it { should contain_file(
-      slave_file
-    ).with_content(/^WORKDIR="\/home\/mesos"/) }
+      "#{conf}/work_dir"
+    ).with_content(/^\/home\/mesos$/) }
   end
 
-  context 'changing checkpoint' do
+  context 'enabling checkpoint (enabled by default anyway)' do
     let(:params){{
-      :checkpoint => true,
+      :options => {
+        'checkpoint' => true,
+      }
     }}
 
     it { should contain_file(
-      slave_file
-    ).with_content(/CHECKPOINT=true/) }
+      "#{conf}/?checkpoint"
+    ).with({
+      'ensure'  => 'present',
+    }) }
+  end
+
+  context 'disabling checkpoint' do
+    let(:params){{
+      :options => {
+        'checkpoint' => false,
+      }
+    }}
+
+    it { should contain_file(
+      "#{conf}/?no-checkpoint"
+    ).with({
+      'ensure'  => 'present',
+    }) }
   end
 
   context 'setting environment variables' do
@@ -130,10 +150,24 @@ describe 'mesos::slave' do
     ).with_content(/export MESOS_HOME="\/var\/lib\/mesos"/) }
   end
 
-  it 'should have isolation eq to process' do
-    should contain_file(
-      slave_file
-    ).with_content(/^ISOLATION="process"/)
+  it 'should not set isolation by default (value depends on mesos version)' do
+    should_not contain_file(
+      "#{conf}/isolation"
+    ).with({
+      'ensure'  => 'present',
+    })
+  end
+
+  context 'should set isolation to cgroups' do
+    let(:params){{
+      :isolation => 'cgroups/cpu,cgroups/mem',
+    }}
+
+    it { should contain_file(
+      "#{conf}/isolation"
+    ).with({
+      'ensure'  => 'present',
+    }).with_content(/^cgroups\/cpu,cgroups\/mem$/) }
   end
 
   it 'should not contain cgroups settings' do
@@ -144,7 +178,7 @@ describe 'mesos::slave' do
 
   context 'setting isolation mechanism' do
     let(:params){{
-      :isolation => 'cgroups',
+      :isolation => 'cgroups/cpu,cgroups/mem',
       :cgroups   => {
         'hierarchy' => '/sys/fs/cgroup',
         'root'      => 'mesos',
@@ -160,8 +194,10 @@ describe 'mesos::slave' do
     ).with_content(/^\/sys\/fs\/cgroup$/)}
 
     it { should contain_file(
-      slave_file
-    ).with_content(/^ISOLATION="cgroups"/)}
+      "#{conf}/isolation"
+    ).with({
+      'ensure'  => 'present',
+    }).with_content(/^cgroups\/cpu,cgroups\/mem$/) }
   end
 
   context 'changing slave config file location' do
@@ -256,7 +292,7 @@ describe 'mesos::slave' do
     }}
 
     it { should contain_file(
-      slave_file
+      "#{conf}/work_dir"
     ).with_content(/\/tmp\/mesos/) }
 
     it { should contain_file(work_dir).with({
