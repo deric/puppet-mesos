@@ -95,7 +95,7 @@ class{'mesos::slave':
 
 ## File based configuration
 
-If some file based configurations this module doesn't provide directly in master and slave module, `mesos::property` allows to configure them or remove the file when `value` is left empty. e.g. configure value in `/etc/mesos/hostname`:
+As Mesos configuration flags changes with each version we don't provide directly a named parameter for each flag. `mesos::property` allows to create a parameter file or remove the file when `value` is left empty. e.g. configure value in `/etc/mesos/hostname`:
 
 ```puppet
 ::mesos::property { 'hostname':
@@ -113,6 +113,18 @@ Remove this file simply set value to undef:
 }
 ```
 
+This is equivalent approach to
+
+```puppet
+class{'mesos::slave':
+  options => {
+    'hostname' => 'mesos.hostname.com'
+  }
+}
+```
+which will create a file `/etc/mesos-slave/hostname` with content `mesos.hostname.com` (where `/etc/mesos-slave` is a slave's `$conf_dir`).
+
+Yet another option would be to pass this value via Hiera (see the section below).
 
 ## Hiera support
 
