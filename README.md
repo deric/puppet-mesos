@@ -212,6 +212,17 @@ mesos::slave::resources:
   cpus: '10'
 ```
 
+### Software repository
+
+APT repository could be enabled with:
+
+```yaml
+mesos::repo: 'mesosphere'
+```
+
+by default this feature is disabled and right now only Debian/Ubuntu (from mesosphere.io) is supported. Feel free to send PR for other distributions/package sources.
+
+
 ## Dependencies
 
   * [stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib) version `>= 4.2.0` - we need function `is_bool`
