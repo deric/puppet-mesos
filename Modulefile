@@ -8,3 +8,4 @@ description 'Apache Mesos is a cluster manager that provides efficient resource 
 project_page 'http://github.com/deric/puppet-mesos'
 
 dependency 'puppetlabs/stdlib', '>=4.2.0'
+dependency 'puppetlabs/apt', '>= 1.0.0'

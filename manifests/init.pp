@@ -32,9 +32,11 @@ class mesos(
   $owner          = hiera('mesos::owner', 'root')
   $group          = hiera('mesos::group', 'root')
   $listen_address = hiera('mesos::listen_address', $::ipaddress)
+  $repo           = hiera('mesos::repo', undef)
 
   class {'mesos::install':
-    ensure => $ensure,
+    ensure      => $ensure,
+    repo_source => $repo,
   }
 
   class {'mesos::config':

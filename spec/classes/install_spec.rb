@@ -16,5 +16,7 @@ describe 'mesos::install' do
     it { should contain_package('python').with({
       'ensure' => 'present'
     }) }
+
+    it { should contain_class('mesos::repo') }
   end
 end
