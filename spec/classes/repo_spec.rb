@@ -14,13 +14,13 @@ describe 'mesos::repo' do
       :lsbdistid => operatingsystem,
     }}
 
-    it { should contain_apt__source('mesosphere').with(
+    it { should contain_apt__source('mesosphere').with({
      'location'   => "http://repos.mesosphere.io/#{operatingsystem.downcase}",
      'repos'      => 'main',
      'release'    => "#{lsbdistcodename}",
      'key'        => 'E56151BF',
      'key_server' => 'keyserver.ubuntu.com',
-    )}
+    })}
 
     it { should contain_class('apt') }
 
