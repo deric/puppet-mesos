@@ -5,13 +5,7 @@ This is a Puppet module for managing Mesos nodes in a cluster.
 
 ## Requirements
 
-  * Puppet 3 (or 2.6 with hiera gem)
-  * Mesos binary package
-    * Debian/Ubuntu
-      * [mesos deb packaging](https://github.com/deric/mesos-deb-packaging)
-      * [mesosphere packages](http://mesosphere.io/downloads/)
-    * RedHat/CentOS
-      * [mesosphere packages](http://mesosphere.io/downloads/)
+  * Puppet 3 (or 2.6 with Hiera gem)
 
 ## Usage
 
@@ -199,7 +193,7 @@ mesos::master::options:
 
 cgroups with Hiera:
 
-```puppet
+```yaml
 mesos::slave::isolation: 'cgroups'
 mesos::slave::cgroups:
   hierarchy: '/sys/fs/cgroup'
@@ -207,7 +201,7 @@ mesos::slave::cgroups:
 
 Limit resources used by Mesos slave:
 
-```puppet
+```yaml
 mesos::slave::resources:
   cpus: '10'
 ```
@@ -221,6 +215,16 @@ mesos::repo: 'mesosphere'
 ```
 
 by default this feature is disabled and right now only Debian/Ubuntu (from mesosphere.io) is supported. Feel free to send PR for other distributions/package sources.
+
+### Packages
+
+You can build package by yourself and upload package to your software repository. Or use packages from mesosphere.io:
+
+  * Debian/Ubuntu
+    * [mesos deb packaging](https://github.com/deric/mesos-deb-packaging)
+    * [mesosphere packages](http://mesosphere.io/downloads/)
+  * RedHat/CentOS
+    * [mesosphere packages](http://mesosphere.io/downloads/)
 
 
 ## Dependencies
