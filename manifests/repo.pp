@@ -24,7 +24,6 @@ class mesos::repo(
               repos       => 'main',
               key         => 'E56151BF',
               key_server  => 'keyserver.ubuntu.com',
-              key_source  => false,
               include_src => false,
             }
           }
