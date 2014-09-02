@@ -8,7 +8,8 @@
 # Should not be called directly
 #
 define mesos::service(
-  $enable = false,
+  $enable         = false,
+  $force_provider = undef,
 ) {
 
   service { "mesos-${name}":
@@ -16,6 +17,7 @@ define mesos::service(
     hasstatus  => true,
     hasrestart => true,
     enable     => $enable,
+    provider   => $force_provider,
     subscribe  => [ File['/etc/default/mesos'],
       File["/etc/default/mesos-${name}"]
     ],

@@ -56,6 +56,7 @@ class mesos::slave (
   $options        = {},
   $resources      = {},
   $attributes     = {},
+  $force_provider = undef, #temporary workaround for starting services
 ) inherits mesos {
 
   validate_hash($env_var)
@@ -159,7 +160,8 @@ class mesos::slave (
 
   # Install mesos-slave service
   mesos::service { 'slave':
-    enable     => $enable,
-    require    => File[$conf_file],
+    enable         => $enable,
+    force_provider => $force_provider,
+    require        => File[$conf_file],
   }
 }

@@ -23,6 +23,7 @@ class mesos::master(
   $group          = $mesos::group,
   $listen_address = $mesos::listen_address,
   $options        = {},
+  $force_provider = undef, #temporary workaround for starting services
 ) inherits mesos {
 
   validate_hash($options)
@@ -71,7 +72,8 @@ class mesos::master(
 
   # Install mesos-master service
   mesos::service { 'master':
-    enable     => $enable,
-    require    => File[$conf_file],
+    enable         => $enable,
+    force_provider => $force_provider,
+    require        => File[$conf_file],
   }
 }
