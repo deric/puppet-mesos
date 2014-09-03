@@ -66,6 +66,23 @@ describe 'mesos::master' do
     it { should contain_file(file).with_content(/CLUSTER="cluster"/) }
   end
 
+  context 'setting environment variables' do
+    let(:params){{
+      :env_var => {
+        'JAVA_HOME' => '/usr/bin/java',
+        'MESOS_HOME' => '/var/lib/mesos',
+      },
+    }}
+
+    it { should contain_file(
+      file
+    ).with_content(/export JAVA_HOME="\/usr\/bin\/java"/) }
+
+    it { should contain_file(
+      file
+    ).with_content(/export MESOS_HOME="\/var\/lib\/mesos"/) }
+  end
+
   context 'disabling service' do
     let(:params){{
       :enable => false,

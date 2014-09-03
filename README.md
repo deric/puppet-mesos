@@ -17,6 +17,7 @@ Parameters:
         - ZooKeeper URL will be stored in `/etc/mesos/zk`
  - `conf_dir` - directory with simple configuration files containing master/slave parameters (name of the file is a key, contents its value)
         - this directory will be completely managed by Puppet
+ - `env_var` - shared master/slave execution environment variables (see example under slave)
 
 ### Master
 
@@ -52,6 +53,7 @@ class{'mesos::slave':
 ```
  - `conf_dir` default value is `/etc/mesos-master` (this directory will be purged by Puppet!)
  	- for list of supported options see `mesos-master --help`
+ - `env_var` - master's execution environment variables (see example under slave)
 
 ### Slave
 

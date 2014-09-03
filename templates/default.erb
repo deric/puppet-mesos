@@ -7,3 +7,8 @@ USE_SYSLOG="<%= @use_syslog %>"
 # separate 'master.log' and 'slave.log' files
 LOG_DIR="<%= @log_dir %>"
 ULIMIT="-n <%= @ulimit %>"
+
+# environment variables that apply to master and slave
+<% @env_var.sort.each do |key,val| -%>
+export <%= key %>="<%= val %>"
+<% end if @env_var -%>

@@ -18,6 +18,7 @@ class mesos::config(
   $owner     = 'root',
   $group     = 'root',
   $zookeeper = '',
+  $env_var   = {},
 ){
 
   file { $log_dir:
