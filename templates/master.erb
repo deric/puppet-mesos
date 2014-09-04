@@ -20,3 +20,8 @@ WHITELIST='<%= @whitelist %>'
 # option list is available with /usr/sbin/mesos-master --help
 # EX :
 # export MESOS_log_dir=/var/log/mesos
+
+# master environment variables
+<% @env_var.sort.each do |key,val| -%>
+export <%= key %>="<%= val %>"
+<% end if @env_var -%>

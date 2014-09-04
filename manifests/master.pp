@@ -22,10 +22,12 @@ class mesos::master(
   $owner          = $mesos::owner,
   $group          = $mesos::group,
   $listen_address = $mesos::listen_address,
+  $env_var        = {},
   $options        = {},
   $force_provider = undef, #temporary workaround for starting services
 ) inherits mesos {
 
+  validate_hash($env_var)
   validate_hash($options)
 
   file { $conf_dir:

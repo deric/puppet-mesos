@@ -33,6 +33,7 @@ class mesos(
   $group          = hiera('mesos::group', 'root')
   $listen_address = hiera('mesos::listen_address', $::ipaddress)
   $repo           = hiera('mesos::repo', undef)
+  $env_var        = hiera('mesos::env_var', {})
 
   class {'mesos::install':
     ensure      => $ensure,
@@ -45,6 +46,7 @@ class mesos(
     owner     => $owner,
     group     => $group,
     zookeeper => $zookeeper,
+    env_var   => $env_var,
     require   => Class['mesos::install']
   }
 
