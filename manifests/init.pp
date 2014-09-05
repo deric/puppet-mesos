@@ -35,6 +35,8 @@ class mesos(
   $repo           = hiera('mesos::repo', undef)
   $env_var        = hiera('mesos::env_var', {})
 
+  validate_hash($env_var)
+
   class {'mesos::install':
     ensure      => $ensure,
     repo_source => $repo,
