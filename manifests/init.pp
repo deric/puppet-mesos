@@ -19,6 +19,7 @@
 #
 class mesos(
   $ensure         = 'present',
+  # if version is not defined, ensure will be used
   $version        = undef,
   # master and slave creates separate logs automatically
   # TODO: currently not used

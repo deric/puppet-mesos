@@ -5,7 +5,7 @@ This is a Puppet module for managing Mesos nodes in a cluster.
 
 ## Requirements
 
-  * Puppet 3 (or 2.6 with Hiera gem)
+  * Puppet > 2.6
 
 ## Usage
 
@@ -18,6 +18,7 @@ Parameters:
  - `conf_dir` - directory with simple configuration files containing master/slave parameters (name of the file is a key, contents its value)
         - this directory will be completely managed by Puppet
  - `env_var` - shared master/slave execution environment variables (see example under slave)
+ - `version` - install specific version of Mesos
 
 ### Master
 
