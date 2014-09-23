@@ -17,6 +17,7 @@ class mesos::repo(
         $distro = downcase($::operatingsystem)
 
         case $source {
+          undef: {} #nothing to do
           'mesosphere': {
             apt::source { 'mesosphere':
               location    => "http://repos.mesosphere.io/${distro}",
@@ -26,6 +27,9 @@ class mesos::repo(
               key_server  => 'keyserver.ubuntu.com',
               include_src => false,
             }
+          }
+          default: {
+            notify { "APT repository '${source}' is not supported for ${::osfamily}": }
           }
         }
       }
