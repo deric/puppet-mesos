@@ -13,7 +13,7 @@
 #
 class mesos::config(
   $log_dir   = '/var/log/mesos',
-  $ulimit    = '8192',
+  $ulimit    = 8192,
   $conf_dir  = '/etc/mesos',
   $owner     = 'root',
   $group     = 'root',

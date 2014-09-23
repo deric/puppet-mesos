@@ -34,4 +34,14 @@ describe 'mesos' do
       'ensure' => version
     }) }
   end
+
+  context 'specify ulimit' do
+    let(:ulimit) { 16384 }
+    let(:file) { '/etc/default/mesos' }
+    let(:params) {{
+      :ulimit => ulimit
+    }}
+
+    it { should contain_file(file).with_content(/ULIMIT="-n #{ulimit}"/) }
+  end
 end

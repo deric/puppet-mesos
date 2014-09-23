@@ -35,6 +35,7 @@ class mesos(
   $listen_address = $::ipaddress,
   $repo           = undef,
   $env_var        = {},
+  $ulimit         = 8192,
 ) {
   validate_hash($env_var)
 
@@ -55,6 +56,7 @@ class mesos(
     group     => $group,
     zookeeper => $zookeeper,
     env_var   => $env_var,
+    ulimit    => $ulimit,
     require   => Class['mesos::install']
   }
 
