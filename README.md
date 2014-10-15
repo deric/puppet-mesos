@@ -56,6 +56,24 @@ class{'mesos::slave':
  	- for list of supported options see `mesos-master --help`
  - `env_var` - master's execution environment variables (see example under slave)
 
+#### listen address
+
+If you want to change the IP address Mesos is binding to, you can either provide a Puppet Fact:
+
+```puppet
+class{'mesos::master':
+  listen_address => $::ipaddress_eth0
+}
+```
+or directly use some IP address:
+
+```puppet
+class{'mesos::master':
+  listen_address => '192.168.1.1'
+}
+```
+
+
 ### Slave
 
  - `enable` - install Mesos slave service (default: `true`)
