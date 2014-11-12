@@ -7,7 +7,9 @@ MASTER="<%= @master %>:<%= @master_port %>"
 <% end -%>
 
 # public slave's ip, must be unique in mesos cluster
+<% if @listen_address -%>
 IP="<%= @listen_address %>"
+<% end -%>
 
 # Port to listen on (default: 5051)
 PORT=<%= @port %>

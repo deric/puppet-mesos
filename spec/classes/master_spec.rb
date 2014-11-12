@@ -25,6 +25,12 @@ describe 'mesos::master' do
     'mode'    => '0644',
   }) }
 
+  it 'shoud not set any IP address by default' do
+    should_not contain_file(
+      file
+    ).with_content(/^IP=/)
+  end
+
   # no zookeeper set by default
   it { should contain_file(file).with_content(/ZK=""/) }
 

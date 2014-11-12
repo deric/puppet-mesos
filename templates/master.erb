@@ -6,7 +6,9 @@ CLUSTER="<%= @cluster %>"
 
 # IP address to listen on (in case that you start master
 # on this node, it will bind to this address)
+<% if @listen_address -%>
 IP="<%= @listen_address %>"
+<% end -%>
 
 # Port to listen on (default: 5050)
 PORT=<%= @master_port %>

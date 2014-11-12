@@ -73,6 +73,8 @@ class{'mesos::master':
 }
 ```
 
+By default no IP address is set, which means that Mesos will use IP to which translates `hostname -f` (you can influence bind address simply in `/etc/hosts`).
+
 
 ### Slave
 

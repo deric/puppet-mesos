@@ -32,7 +32,8 @@ class mesos(
   $master_port    = 5050,
   $owner          = 'root',
   $group          = 'root',
-  $listen_address = $::ipaddress,
+  # could be a fact like $::ipaddress or explicit ip address
+  $listen_address = undef,
   $repo           = undef,
   $env_var        = {},
   $ulimit         = 8192,

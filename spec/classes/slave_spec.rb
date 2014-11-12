@@ -6,10 +6,6 @@ describe 'mesos::slave' do
   let(:conf) { '/etc/mesos-slave' }
   let(:slave_file) { '/etc/default/mesos-slave' }
 
-  let(:facts) {{
-    :ipaddress => '192.168.1.1',
-  }}
-
   let(:params){{
     :conf_dir => conf,
     :owner    => owner,
@@ -29,10 +25,23 @@ describe 'mesos::slave' do
     'mode'    => '0644',
   }) }
 
-  it 'has ip address from system fact' do
-    should contain_file(
-      slave_file
-    ).with_content(/^IP="192.168.1.1"$/)
+  it 'does not set IP address by default' do
+      should_not contain_file(
+        slave_file
+      ).with_content(/^IP=/)
+  end
+
+  context 'with ip address set' do
+
+    let(:params) {{
+      :listen_address => '192.168.1.1',
+    }}
+
+    it 'has ip address from param' do
+      should contain_file(
+        slave_file
+      ).with_content(/^IP="192.168.1.1"$/)
+    end
   end
 
   it 'has default port eq to 5051' do
