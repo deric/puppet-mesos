@@ -1,13 +1,30 @@
 # Mesos Puppet Module
 [![Build Status](https://travis-ci.org/deric/puppet-mesos.png)](https://travis-ci.org/deric/puppet-mesos)
 
-This is a Puppet module for managing Mesos nodes in a cluster.
+For installing master
 
-## Requirements
+```puppet
+class{'mesos::master':
+  zookeeper  => 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos',
+  work_dir => '/var/lib/mesos',
+  options => {
+    quorum   => 2
+  }
+}
+```
+slaves:
 
-  * Puppet > 2.6
+```puppet
+class{'mesos::slave':
+  zookeeper  => 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos',
+  listen_address => $::ipaddress
+}
+```
 
-## Usage
+for using Hiera and other options see below.
+
+
+## Shared parameters
 
 Parameters:
 
@@ -249,6 +266,9 @@ You can build package by yourself and upload package to your software repository
   * RedHat/CentOS
     * [mesosphere packages](http://mesosphere.io/downloads/)
 
+## Requirements
+
+  * Puppet > 2.6
 
 ## Dependencies
 
