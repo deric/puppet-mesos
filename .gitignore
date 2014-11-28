@@ -3,3 +3,4 @@
 *.log
 spec/fixtures/modules/*
 pkg/*
+.bundle
