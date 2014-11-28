@@ -2,22 +2,11 @@ GEM
   remote: https://rubygems.org/
   specs:
     CFPropertyList (2.2.8)
-    activemodel (4.1.8)
-      activesupport (= 4.1.8)
-      builder (~> 3.1)
-    activesupport (4.1.8)
-      i18n (~> 0.6, >= 0.6.9)
-      json (~> 1.7, >= 1.7.7)
-      minitest (~> 5.1)
-      thread_safe (~> 0.1)
-      tzinfo (~> 1.1)
     builder (3.2.2)
     diff-lcs (1.2.5)
     excon (0.41.0)
     facter (2.3.0)
       CFPropertyList (~> 2.2.6)
-    faraday (0.9.0)
-      multipart-post (>= 1.2, < 3)
     fission (0.5.0)
       CFPropertyList (~> 2.2)
     fog (1.25.0)
@@ -75,15 +64,9 @@ GEM
       fog-core
       nokogiri (~> 1.5, >= 1.5.11)
     formatador (0.2.5)
-    her (0.7.2)
-      activemodel (>= 3.0.0, < 4.2)
-      activesupport (>= 3.0.0, < 4.2)
-      faraday (>= 0.8, < 1.0)
-      multi_json (~> 1.7)
     hiera (1.3.4)
       json_pure
     highline (1.6.21)
-    i18n (0.6.11)
     inflecto (0.0.2)
     ipaddress (0.8.0)
     json (1.8.1)
@@ -92,17 +75,14 @@ GEM
     librarian (0.1.2)
       highline
       thor (~> 0.15)
-    librarian-puppet (2.0.0)
+    librarian-puppet (1.0.0)
+      json
       librarian (>= 0.1.2)
-      puppet_forge
-      rsync
     metaclass (0.0.4)
     mime-types (1.25.1)
-    minitest (5.4.3)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     multi_json (1.10.1)
-    multipart-post (2.0.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
@@ -122,8 +102,6 @@ GEM
     puppet-lint (1.1.0)
     puppet-syntax (1.3.0)
       rake
-    puppet_forge (1.0.3)
-      her (~> 0.6)
     puppetlabs_spec_helper (0.8.2)
       mocha
       puppet-lint
@@ -165,7 +143,6 @@ GEM
       rspec-system (~> 2.0)
       serverspec (~> 0.0)
       specinfra (~> 0.0)
-    rsync (1.0.9)
     serverspec (0.16.0)
       highline
       net-ssh
@@ -174,16 +151,13 @@ GEM
     specinfra (0.8.0)
     systemu (2.6.4)
     thor (0.19.1)
-    thread_safe (0.3.4)
     trollop (2.0)
-    tzinfo (1.2.2)
-      thread_safe (~> 0.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  librarian-puppet
+  librarian-puppet (< 2.0)
   puppet (>= 2.7.0)
   puppet-blacksmith (~> 3.0)
   puppet-lint (>= 0.3.2)

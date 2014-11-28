@@ -11,6 +11,6 @@ group :rake do
 end
 
 group :development do
-  gem 'librarian-puppet'
+  gem 'librarian-puppet' , '< 2.0'
   gem 'puppet-blacksmith',  '~> 3.0'
 end
