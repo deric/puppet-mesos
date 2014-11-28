@@ -1,5 +1,5 @@
 FORGE
-  remote: http://forge.puppetlabs.com
+  remote: https://forgeapi.puppetlabs.com
   specs:
     puppetlabs/apt (1.5.2)
       puppetlabs/stdlib (>= 2.2.1)
