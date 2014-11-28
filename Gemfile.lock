@@ -160,7 +160,7 @@ DEPENDENCIES
   librarian-puppet (< 2.0)
   puppet (>= 2.7.0)
   puppet-blacksmith (~> 3.0)
-  puppet-lint (>= 0.3.2)
+  puppet-lint
   puppetlabs_spec_helper (>= 0.2.0)
   rake (>= 0.9.2.2)
   rspec-system-puppet
