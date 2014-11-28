@@ -9,6 +9,5 @@ group :rake do
   gem 'rspec-system-puppet',     :require => false
   gem 'serverspec',              :require => false
   gem 'rspec-system-serverspec', :require => false
-  gem 'hiera-puppet-helper'
   gem 'puppet-blacksmith',  '~> 3.0'
 end
