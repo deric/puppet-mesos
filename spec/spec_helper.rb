@@ -9,6 +9,7 @@ RSpec.configure do |c|
   c.manifest_dir = File.join(fixture_path, 'manifests')
   # we don't want to run tests from submodules in fixtures/sts/..
   c.pattern = "spec/*/*_spec.rb"
+  c.hiera_config = 'spec/fixtures/hiera/hiera.yaml'
 end
 
 Puppet::Util::Log.level = :warning
