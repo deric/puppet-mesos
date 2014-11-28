@@ -10,5 +10,5 @@ group :rake do
   gem 'serverspec',              :require => false
   gem 'rspec-system-serverspec', :require => false
   gem 'hiera-puppet-helper'
-  gem 'puppet-blacksmith',  :git => 'https://github.com/maestrodev/puppet-blacksmith.git'
+  gem 'puppet-blacksmith',  '~> 3.0'
 end
