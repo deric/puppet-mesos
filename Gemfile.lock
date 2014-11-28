@@ -183,7 +183,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  librarian-puppet (>= 0.9.10)
+  librarian-puppet
   puppet (>= 2.7.0)
   puppet-blacksmith (~> 3.0)
   puppet-lint (>= 0.3.2)
