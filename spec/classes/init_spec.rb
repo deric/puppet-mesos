@@ -44,4 +44,8 @@ describe 'mesos' do
 
     it { should contain_file(file).with_content(/ULIMIT="-n #{ulimit}"/) }
   end
+
+  it { should contain_class('mesos::config') }
+  it { should contain_class('mesos::install') }
+  it { should compile.with_all_deps }
 end
