@@ -9,16 +9,12 @@ require 'puppetlabs_spec_helper/rake_tasks'
 # blacksmith does not support ruby 1.8.7 anymore
 require 'puppet_blacksmith/rake_tasks' if ENV['RAKE_ENV'] != 'ci' && RUBY_VERSION.split('.')[0,3].join.to_i > 187
 
-
-exclude_paths = [
-  "pkg/**/*",
-  "spec/fixtures/modules/**/*.pp"
-]
-PuppetLint.configuration.ignore_paths = exclude_paths
-PuppetSyntax.exclude_paths = exclude_paths
-PuppetLint.configuration.log_format = '%{path}:%{linenumber}:%{KIND}: %{message}'
-PuppetLint.configuration.send('disable_80chars')
-PuppetLint.configuration.send('disable_autoloader_layout')
+Rake::Task[:lint].clear
+PuppetLint::RakeTask.new :lint do |config|
+  config.ignore_paths = ["spec/**/*.pp", "vendor/**/*.pp", "pkg/**/*.pp"]
+  config.log_format = '%{path}:%{linenumber}:%{KIND}: %{message}'
+  config.disable_checks = [ "class_inherits_from_params_class", "80chars" ]
+end
 
 # use librarian-puppet to manage fixtures instead of .fixtures.yml
 # offers more possibilities like explicit version management, forge downloads,...
@@ -27,4 +23,4 @@ task :librarian_spec_prep do
 end
 task :spec_prep => :librarian_spec_prep
 
-task :default => [:spec]
+task :default => [:spec, :lint]
