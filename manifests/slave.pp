@@ -120,9 +120,9 @@ class mesos::slave (
   }
 
   file { $work_dir:
-    ensure  => directory,
-    owner   => $owner,
-    group   => $group,
+    ensure => directory,
+    owner  => $owner,
+    group  => $group,
   }
 
   create_resources(mesos::property,
