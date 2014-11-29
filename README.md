@@ -1,5 +1,6 @@
 # Mesos Puppet Module
-[![Build Status](https://travis-ci.org/deric/puppet-mesos.png)](https://travis-ci.org/deric/puppet-mesos)
+[![Puppet
+Forge](http://img.shields.io/puppetforge/v/deric/mesos.svg)](https://forge.puppetlabs.com/deric/mesos) [![Build Status](https://travis-ci.org/deric/puppet-mesos.png)](https://travis-ci.org/deric/puppet-mesos)
 
 For installing master
 
