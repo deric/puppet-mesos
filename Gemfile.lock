@@ -79,6 +79,9 @@ GEM
       json
       librarian (>= 0.1.2)
     metaclass (0.0.4)
+    metadata-json-lint (0.0.4)
+      json
+      spdx-licenses (~> 1.0)
     mime-types (1.25.1)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
@@ -148,6 +151,8 @@ GEM
       net-ssh
       rspec (~> 2.13)
       specinfra (>= 0.7.1)
+    spdx-licenses (1.0.0)
+      json
     specinfra (0.8.0)
     systemu (2.6.4)
     thor (0.19.1)
@@ -158,6 +163,7 @@ PLATFORMS
 
 DEPENDENCIES
   librarian-puppet (< 2.0)
+  metadata-json-lint
   puppet (>= 2.7.0)
   puppet-blacksmith (~> 3.0)
   puppet-lint

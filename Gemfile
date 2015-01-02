@@ -13,4 +13,5 @@ end
 
 group :development do
   gem 'puppet-blacksmith',  '~> 3.0'
+  gem 'metadata-json-lint',      :require => false
 end
