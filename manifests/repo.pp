@@ -39,13 +39,13 @@ class mesos::repo(
         'mesosphere': {
           case $::operatingsystemmajrelease {
             '6': {
-              package { 'mesosphere-el-repo'
+              package { 'mesosphere-el-repo':
                 ensure => present,
                 source => 'http://repos.mesosphere.io/el/6/noarch/RPMS/mesosphere-el-repo-6-2.noarch.rpm'
               }
             }
             '7': {
-              package { 'mesosphere-el-repo'
+              package { 'mesosphere-el-repo':
                 ensure => present,
                 source => 'http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm'
               }
