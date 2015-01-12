@@ -37,19 +37,23 @@ class mesos::repo(
         case $source {
           undef: {} #nothing to do
           'mesosphere': {
-            case $::operatingsystemmajrelease {
+            $osrel = $::operatingsystemmajrelease
+
+            case $osrel {
               '6': {
+                $mrel = "2"
                 package { 'mesosphere-el-repo':
                   ensure => present,
                   provider => 'rpm',
-                  source => 'http://repos.mesosphere.io/el/6/noarch/RPMS/mesosphere-el-repo-6-2.noarch.rpm'
+                  source => "http://repos.mesosphere.io/el/${osrel}/noarch/RPMS/mesosphere-el-repo-${osrel}-${mrel}.noarch.rpm"
                 }
               }
               '7': {
+                $mrel = "1"
                 package { 'mesosphere-el-repo':
                   ensure => present,
                   provider => 'rpm',
-                  source => 'http://repos.mesosphere.io/el/7/noarch/RPMS/mesosphere-el-repo-7-1.noarch.rpm'
+                  source => 'http://repos.mesosphere.io/el/${osrel}/noarch/RPMS/mesosphere-el-repo-${osrel}-${mrel}.noarch.rpm'
                 }
               }
               default: {
