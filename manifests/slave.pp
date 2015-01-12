@@ -73,7 +73,6 @@ class mesos::slave (
     recurse => true,
     purge   => true,
     force   => true,
-    require => Class['::mesos::install'],
   }
 
   file { "${conf_dir}/resources":
