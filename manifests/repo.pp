@@ -45,7 +45,7 @@ class mesos::repo(
               '7': {
                 $mrel = "1"
               }
-
+            }
             case $osrel {
               '6', '7': {
                 package { 'mesosphere-el-repo':
