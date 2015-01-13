@@ -40,18 +40,21 @@ class mesos::repo(
             $osrel = $::operatingsystemmajrelease
             case $osrel {
               '6': {
-                $mrel = "2"
+                $mrel = '2'
               }
               '7': {
-                $mrel = "1"
+                $mrel = '1'
+              }
+              default: {
+                notify { "'${mrel}' is not supported for ${source}": }
               }
             }
             case $osrel {
               '6', '7': {
                 package { 'mesosphere-el-repo':
-                  ensure => present,
+                  ensure   => present,
                   provider => 'rpm',
-                  source => "http://repos.mesosphere.io/el/${osrel}/noarch/RPMS/mesosphere-el-repo-${osrel}-${mrel}.noarch.rpm"
+                  source   => "http://repos.mesosphere.io/el/${osrel}/noarch/RPMS/mesosphere-el-repo-${osrel}-${mrel}.noarch.rpm"
                 }
               }
               default: {
