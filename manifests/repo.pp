@@ -1,6 +1,6 @@
 # == Class mesos::repo
 #
-# This class manages apt repository for Mesos packages
+# This class manages apt/yum repository for Mesos packages
 #
 
 class mesos::repo(

@@ -249,13 +249,26 @@ mesos::slave::resources:
 
 ### Software repository
 
-APT repository could be enabled with:
+Software repositories could be enabled by defining a source:
 
 ```yaml
 mesos::repo: 'mesosphere'
 ```
 
-by default this feature is disabled and right now only Debian/Ubuntu (from mesosphere.io) is supported. Feel free to send PR for other distributions/package sources.
+or in Puppet code:
+
+```puppet
+class{'mesos':
+  repo => 'mesosphere'
+}
+```
+
+by default this feature is disabled and right we support [mesosphere.io](http://mesosphere.io) repositories for:
+
+  * Debian/Ubuntu
+  * RedHat
+
+Feel free to send PR for other distributions/package sources.
 
 ### Packages
 
