@@ -1,6 +1,6 @@
 {
   "name": "deric-mesos",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "author": "Tomas Barton",
   "summary": "Module managing Mesos master and slave instalation",
   "license": "Apache-2.0",
@@ -9,8 +9,14 @@
   "issues_url": "https://github.com/deric/puppet-mesos/issues",
   "description": "Apache Mesos is a cluster manager that provides efficient resource isolation and sharing across distributed applications",
   "dependencies": [
-    {"name":"puppetlabs/stdlib","version_requirement":">=4.2.0"},
-    {"name":"puppetlabs/apt","version_requirement":">= 1.0.0"}
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=4.2.0"
+    },
+    {
+      "name": "puppetlabs/apt",
+      "version_requirement": ">= 1.0.0"
+    }
   ],
   "operatingsystem_support": [
     {
