@@ -37,4 +37,38 @@ describe 'mesos::repo' do
     it_behaves_like 'debian', 'Ubuntu', 'precise'
   end
 
+  shared_examples 'redhat' do |operatingsystem, lsbdistcodename, mrel|
+    let(:params) {{
+      :source => 'mesosphere',
+    }}
+
+    let(:osrel) { lsbdistcodename}
+
+    let(:facts) {{
+      :operatingsystem => operatingsystem,
+      :osfamily                  => 'RedHat',
+      :lsbdistcodename           => lsbdistcodename,
+      :operatingsystemmajrelease => lsbdistcodename,
+      :lsbdistid                 => operatingsystem,
+    }}
+
+    it { should contain_package('mesosphere-el-repo').with({
+     'ensure'   => 'present',
+     'provider' => 'rpm',
+     'source'   => "http://repos.mesosphere.io/el/#{osrel}/noarch/RPMS/mesosphere-el-repo-#{osrel}-#{mrel}.noarch.rpm",
+    })}
+
+    context "undef source" do
+      let(:params) {{
+        :source => 'undef',
+      }}
+      it { should_not contain_package('mesosphere-el-repo') }
+    end
+  end
+
+  context 'on RedHat based systems' do
+    it_behaves_like 'redhat', 'CentOS', '6', '2'
+    it_behaves_like 'redhat', 'CentOS', '7', '1'
+  end
+
 end
