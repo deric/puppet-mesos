@@ -33,7 +33,34 @@ class mesos::repo(
           }
         }
       }
-
+      'redhat': {
+        case $source {
+          undef: {} #nothing to do
+          'mesosphere': {
+            $osrel = $::operatingsystemmajrelease
+            case $osrel {
+              '6': {
+                $mrel = "2"
+              }
+              '7': {
+                $mrel = "1"
+              }
+            }
+            case $osrel {
+              '6', '7': {
+                package { 'mesosphere-el-repo':
+                  ensure => present,
+                  provider => 'rpm',
+                  source => "http://repos.mesosphere.io/el/${osrel}/noarch/RPMS/mesosphere-el-repo-${osrel}-${mrel}.noarch.rpm"
+                }
+              }
+              default: {
+                notify { "Yum repository '${source}' is not supported for major version ${::operatingsystemmajrelease}": }
+              }
+            }
+          }
+        }
+      }
       default: {
         fail("\"${module_name}\" provides no repository information for OSfamily \"${::osfamily}\"")
       }
