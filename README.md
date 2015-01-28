@@ -270,6 +270,23 @@ by default this feature is disabled and right we support [mesosphere.io](http://
 
 Feel free to send PR for other distributions/package sources.
 
+### Overriding service providers
+
+Some Mesos packages does not respect conventions on given OS for starting services. For both `mesos::master` and `mesos::slave` you can specify mechanism which will be used for starting services.
+
+```puppet
+class{'mesos::master':
+  force_provider => 'upstart'
+}
+```
+
+Some reasonable values are:
+
+  * `init`
+  * `upstart` - e.g. Ubuntu
+  * `systemd`
+  * `runit`
+
 ### Packages
 
 You can build package by yourself and upload package to your software repository. Or use packages from mesosphere.io:
