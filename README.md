@@ -118,7 +118,7 @@ in a similar manner you can specify cgroups isolation:
 ```puppet
 class{'mesos::slave':
   zookeeper  => 'zk://192.168.1.1:2181/mesos',
-  isolation  => 'cgroups',
+  isolation  => 'cgroups/cpu,cgroups/mem',
   cgroups    => {
     'hierarchy' => '/sys/fs/cgroup',
     'root'      => 'mesos',
@@ -235,7 +235,7 @@ mesos::master::options:
 cgroups with Hiera:
 
 ```yaml
-mesos::slave::isolation: 'cgroups'
+mesos::slave::isolation: 'cgroups/cpu,cgroups/mem'
 mesos::slave::cgroups:
   hierarchy: '/sys/fs/cgroup'
 ```
