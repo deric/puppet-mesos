@@ -280,12 +280,15 @@ class{'mesos::master':
 }
 ```
 
+If you want to create the service resource yourself, set `force_provider` to `none`.
+
 Some reasonable values are:
 
   * `init`
   * `upstart` - e.g. Ubuntu
   * `systemd`
   * `runit`
+  * `none`
 
 ### Packages
 
