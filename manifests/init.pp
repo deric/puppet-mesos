@@ -37,6 +37,7 @@ class mesos(
   $repo           = undef,
   $env_var        = {},
   $ulimit         = 8192,
+  $manage_python  = true,
 ) {
   validate_hash($env_var)
 
@@ -46,8 +47,9 @@ class mesos(
   }
 
   class {'mesos::install':
-    ensure      => $mesos_ensure,
-    repo_source => $repo,
+    ensure        => $mesos_ensure,
+    repo_source   => $repo,
+    manage_python => $manage_python,
   }
 
   class {'mesos::config':

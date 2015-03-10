@@ -10,8 +10,9 @@
 # required by 'mesos::master' and 'mesos::slave'
 #
 class mesos::install(
-  $ensure      = $mesos::ensure,
-  $repo_source = undef,
+  $ensure        = $mesos::ensure,
+  $repo_source   = undef,
+  $manage_python = true,
 ) {
   # 'ensure_packages' requires puppetlabs/stdlib
   #
@@ -19,8 +20,9 @@ class mesos::install(
   # with usage of cgroups, requires kernel >= 2.6.24
   #
   # Python is required for web GUI (mesos could be build without GUI)
-  # TODO: make this optional
-  ensure_packages(['python'])
+  if $manage_python {
+    ensure_packages(['python'])
+  }
 
   class {'mesos::repo':
     source => $repo_source,
