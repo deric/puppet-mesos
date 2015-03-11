@@ -12,7 +12,7 @@
 class mesos::install(
   $ensure         = $mesos::ensure,
   $repo_source    = undef,
-  $manage_python  = true,
+  $manage_python  = false,
   $python_package = 'python',
 ) {
   # 'ensure_packages' requires puppetlabs/stdlib

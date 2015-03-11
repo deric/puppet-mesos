@@ -37,7 +37,7 @@ class mesos(
   $repo           = undef,
   $env_var        = {},
   $ulimit         = 8192,
-  $manage_python  = true,
+  $manage_python  = false,
   $python_package = 'python',
 ) {
   validate_hash($env_var)

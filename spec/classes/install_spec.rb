@@ -13,18 +13,17 @@ describe 'mesos::install' do
     }) }
 
     # mesos dependencies (for web GUI)
-    it { should contain_package('python').with({
+    it { should_not contain_package('python').with({
       'ensure' => 'present'
     }) }
 
     it { should contain_class('mesos::repo') }
-    it { should contain_package('python') }
   end
 
-  context 'do not manage python' do
+  context 'manage python installation' do
     let(:params){{
-        :manage_python => false,
+        :manage_python => true,
       }}
-    it { should_not contain_package('python') }
+    it { should contain_package('python') }
   end
 end

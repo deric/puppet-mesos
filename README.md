@@ -248,6 +248,28 @@ mesos::slave::resources:
   cpus: '10'
 ```
 
+### Python installation
+
+Python is required for Mesos Web UI and for CLI as well. Installing Python with Mesos should be responsibility of binary packages (Mesos could be build without UI), therefore this behaviour is not enabled by default.
+
+You can enable this feature with following:
+
+```puppet
+class{'mesos':
+  manage_python => true
+}
+```
+
+or change Python package name, to match your needs:
+
+```puppet
+class{'mesos':
+  manage_python => true,
+  python_package => 'python-dev'
+}
+```
+
+
 ### Software repository
 
 Software repositories could be enabled by defining a source:

@@ -12,7 +12,7 @@ describe 'mesos' do
       'ensure' => version
     }) }
 
-    it { should contain_package('python').with({
+    it { should_not contain_package('python').with({
       'ensure' => 'present'
     }) }
   end
@@ -60,6 +60,7 @@ describe 'mesos' do
   context 'change pyton packge name' do
     let(:python) { 'python3' }
     let(:params) {{
+      :manage_python => true,
       :python_package => python
     }}
 
