@@ -11,6 +11,10 @@ describe 'mesos' do
     it { should contain_package('mesos').with({
       'ensure' => version
     }) }
+
+    it { should contain_package('python').with({
+      'ensure' => 'present'
+    }) }
   end
 
   context 'with given version' do
@@ -52,4 +56,15 @@ describe 'mesos' do
   it { should contain_class('mesos::config').that_requires('Class[mesos::install]') }
 
   it { should compile.with_all_deps }
+
+  context 'change pyton packge name' do
+    let(:python) { 'python3' }
+    let(:params) {{
+      :python_package => python
+    }}
+
+    it { should contain_package(python).with({
+      'ensure' => 'present'
+    }) }
+  end
 end
