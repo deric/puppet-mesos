@@ -37,6 +37,7 @@ Parameters:
         - this directory will be completely managed by Puppet
  - `env_var` - shared master/slave execution environment variables (see example under slave)
  - `version` - install specific version of Mesos
+ - `manage_python` - Control whether mesos module should install python
 
 ### Master
 

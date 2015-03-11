@@ -18,5 +18,13 @@ describe 'mesos::install' do
     }) }
 
     it { should contain_class('mesos::repo') }
+    it { should contain_package('python') }
+  end
+
+  context 'do not manage python' do
+    let(:params){{
+        :manage_python => false,
+      }}
+    it { should_not contain_package('python') }
   end
 end
