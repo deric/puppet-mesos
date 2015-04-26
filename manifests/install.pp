@@ -10,7 +10,7 @@
 # required by 'mesos::master' and 'mesos::slave'
 #
 class mesos::install(
-  $ensure         = $mesos::ensure,
+  $ensure         = 'present',
   $repo_source    = undef,
   $manage_python  = false,
   $python_package = 'python',
