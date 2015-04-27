@@ -65,6 +65,17 @@ describe 'mesos::config' do
     }
   end
 
+  context 'with manage_zk_file false' do
+    let(:params){{
+      :manage_zk_file => false,
+      :zookeeper      => 'zk://192.168.1.100:2181/mesos',
+    }}
+    it { should_not contain_file(
+      '/etc/mesos/zk'
+      )
+    }
+  end
+
   context 'setting environment variables' do
     let(:params){{
       :env_var => {

@@ -25,6 +25,7 @@ class mesos(
   # TODO: currently not used
   $log_dir        = '/var/log/mesos',
   $conf_dir       = '/etc/mesos',
+  $manage_zk_file = true,
   # e.g. zk://localhost:2181/mesos
   $zookeeper      = '',
   # if "zk" is empty, master value is used
@@ -55,14 +56,15 @@ class mesos(
   }
 
   class {'mesos::config':
-    log_dir   => $log_dir,
-    conf_dir  => $conf_dir,
-    owner     => $owner,
-    group     => $group,
-    zookeeper => $zookeeper,
-    env_var   => $env_var,
-    ulimit    => $ulimit,
-    require   => Class['mesos::install']
+    log_dir        => $log_dir,
+    conf_dir       => $conf_dir,
+    manage_zk_file => $manage_zk_file,
+    owner          => $owner,
+    group          => $group,
+    zookeeper      => $zookeeper,
+    env_var        => $env_var,
+    ulimit         => $ulimit,
+    require        => Class['mesos::install']
   }
 
 }

@@ -32,12 +32,13 @@ Parameters:
  - `zookeeper` - ZooKeeper URL which is used for slaves connecting to the master and also for leader election, e.g.:
 	- single ZooKeeper: `zk://127.0.0.1:2181/mesos` (which isn't fault tolerant)
         - multiple ZooKeepers: `zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos` (usually 3 or 5 ZooKeepers should be enough)
-        - ZooKeeper URL will be stored in `/etc/mesos/zk`
+        - ZooKeeper URL will be stored in `/etc/mesos/zk`, `/etc/default/mesos-master` and/or `/etc/default/mesos-slave`
  - `conf_dir` - directory with simple configuration files containing master/slave parameters (name of the file is a key, contents its value)
         - this directory will be completely managed by Puppet
  - `env_var` - shared master/slave execution environment variables (see example under slave)
  - `version` - install specific version of Mesos
  - `manage_python` - Control whether mesos module should install python
+ - `manage_zk_file` - Control whether module manages /etc/mesos/zk (default: true)
 
 ### Master
 
