@@ -15,6 +15,7 @@
 class mesos::config(
   $log_dir        = '/var/log/mesos',
   $ulimit         = 8192,
+  $use_syslog     = false,
   $conf_dir       = '/etc/mesos',
   $manage_zk_file = true,
   $owner          = 'root',
