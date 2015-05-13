@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'mesos::master' do
+describe 'mesos::master', :type => :class do
   let(:owner) { 'mesos' }
   let(:group) { 'mesos' }
   let(:conf) { '/etc/mesos-master' }

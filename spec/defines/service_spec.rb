@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'mesos::service' do
+describe 'mesos::service', :type => :define do
   let(:title) { 'slave' }
 
   shared_examples 'mesos-service' do |family, os, codename|

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'mesos' do
+describe 'mesos', :type => :class do
 
   context 'with ensure' do
     let(:version) { '0.14' }

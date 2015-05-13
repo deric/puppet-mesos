@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'mesos::property' do
+describe 'mesos::property', :type => :define do
   let(:title) { 'some-property' }
   let(:directory) { '/tmp/mesos-conf' }
 

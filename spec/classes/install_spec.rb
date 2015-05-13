@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'mesos::install' do
+describe 'mesos::install', :type => :class do
 
   context 'with given version' do
     let(:version) { '0.14' }

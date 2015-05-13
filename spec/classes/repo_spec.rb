@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'mesos::repo' do
+describe 'mesos::repo', :type => :class do
 
   shared_examples 'debian' do |operatingsystem, lsbdistcodename|
     let(:params) {{

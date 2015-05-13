@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'mesos::config' do
+describe 'mesos::config', :type => :class do
 
   let(:owner) { 'mesos' }
   let(:group) { 'mesos' }
