@@ -68,4 +68,14 @@ describe 'mesos' do
       'ensure' => 'present'
     }) }
   end
+
+  context 'set use_syslog variable' do
+    let(:file) { '/etc/default/mesos' }
+    let(:params) {{
+      :use_syslog => true
+    }}
+
+    it { should contain_file(file).with_content(/USE_SYSLOG="true"/) }
+  end
+
 end

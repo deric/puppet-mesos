@@ -92,4 +92,13 @@ describe 'mesos::config' do
       '/etc/default/mesos'
     ).with_content(/export MESOS_HOME="\/var\/lib\/mesos"/) }
   end
+
+  context 'set use_syslog variable' do
+    let(:file) { '/etc/default/mesos' }
+    let(:params) {{
+      :use_syslog => true
+    }}
+
+    it { should contain_file(file).with_content(/USE_SYSLOG="true"/) }
+  end
 end
