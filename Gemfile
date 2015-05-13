@@ -11,6 +11,7 @@ group :rake do
   gem 'rspec-system-serverspec', :require => false
   gem 'librarian-puppet' , '< 2.0'
   gem 'highline', '~> 1.6.21' # 1.7 is not compatible with ruby 1.8.7
+  gem 'rspec-puppet', '~> 2.0'
 end
 
 group :development do
