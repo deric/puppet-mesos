@@ -44,7 +44,6 @@ class mesos::slave (
   $isolation      = '',
   $conf_dir       = '/etc/mesos-slave',
   $conf_file      = '/etc/default/mesos-slave',
-  $use_syslog     = false,
   $master         = $mesos::master,
   $master_port    = $mesos::master_port,
   $zookeeper      = $mesos::zookeeper,
