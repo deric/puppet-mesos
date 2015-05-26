@@ -23,7 +23,7 @@ class mesos::repo(
               location    => "http://repos.mesosphere.io/${distro}",
               release     => $::lsbdistcodename,
               repos       => 'main',
-              key         => 'E56151BF',
+              key         => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
               key_server  => 'keyserver.ubuntu.com',
               include_src => false,
             }

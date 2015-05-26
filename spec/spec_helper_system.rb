@@ -14,7 +14,6 @@ RSpec.configure do |c|
 
   c.include RSpecSystemPuppet::Helpers
 
-
   # This is where we 'setup' the nodes before running our tests
   c.before :suite do
     # Install puppet
@@ -23,5 +22,6 @@ RSpec.configure do |c|
     # Install modules and dependencies
     puppet_module_install(:source => proj_root, :module_name => 'mesos')
     shell('puppet module install puppetlabs-stdlib')
+    shell('puppet module install puppetlabs-apt')
   end
 end
