@@ -19,10 +19,7 @@ describe 'mesos::repo', :type => :class do
      'repos'      => 'main',
      'release'    => "#{lsbdistcodename}",
      'key'        => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
-     'key_server' => 'keyserver.ubuntu.com',
     )}
-
-    it { should contain_class('apt') }
 
     context "undef source" do
       let(:params) {{
