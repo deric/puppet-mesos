@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'mesos::repo', :type => :class do
 
-  shared_examples 'debian' do |operatingsystem, lsbdistcodename|
+  shared_examples 'debian' do |operatingsystem, lsbdistcodename, puppet|
     let(:params) {{
       :source => 'mesosphere',
     }}
@@ -12,6 +12,7 @@ describe 'mesos::repo', :type => :class do
       :osfamily => 'Debian',
       :lsbdistcodename => lsbdistcodename,
       :lsbdistid => operatingsystem,
+      :puppetversion => puppet,
     }}
 
     it { should contain_apt__source('mesosphere').with(
@@ -30,8 +31,10 @@ describe 'mesos::repo', :type => :class do
   end
 
   context 'on Debian based systems' do
-    it_behaves_like 'debian', 'Debian', 'wheezy'
-    it_behaves_like 'debian', 'Ubuntu', 'precise'
+    puppet = `puppet --version`
+
+    it_behaves_like 'debian', 'Debian', 'wheezy', puppet
+    it_behaves_like 'debian', 'Ubuntu', 'precise', puppet
   end
 
   shared_examples 'redhat' do |operatingsystem, lsbdistcodename, mrel|
