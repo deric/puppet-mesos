@@ -20,7 +20,7 @@ describe 'mesos::repo', :type => :class do
      'repos'       => 'main',
      'release'     => "#{lsbdistcodename}",
      'key'         => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
-     'include_src' => false
+     'src' => false
     )}
 
     context "undef source" do
