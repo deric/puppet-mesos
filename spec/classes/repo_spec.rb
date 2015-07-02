@@ -19,8 +19,8 @@ describe 'mesos::repo', :type => :class do
      'location'    => "http://repos.mesosphere.io/#{operatingsystem.downcase}",
      'repos'       => 'main',
      'release'     => "#{lsbdistcodename}",
-     'key'         => {'id'=>'81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'subkeys.pgp.net'},
-     'include_src' => false
+     'key'         => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
+     'src'         => false
     )}
 
     context "undef source" do
