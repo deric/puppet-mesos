@@ -19,7 +19,7 @@ describe 'mesos::repo', :type => :class do
      'location'    => "http://repos.mesosphere.io/#{operatingsystem.downcase}",
      'repos'       => 'main',
      'release'     => "#{lsbdistcodename}",
-     'key'         => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
+     'key'         => {'id'=>'81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'subkeys.pgp.net'},
      'include_src' => false
     )}
 
