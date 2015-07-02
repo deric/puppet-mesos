@@ -12,7 +12,6 @@ group :rake do
   gem 'librarian-puppet' , '>=2.0'
   gem 'highline', '~> 1.6.21' # 1.7 is not compatible with ruby 1.8.7
   gem 'rspec-puppet', '~> 2.0'
-  gem 'syck' # for backwards compatibility - syck was removed in ruby 2.2
 end
 
 group :development do
