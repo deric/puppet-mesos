@@ -337,6 +337,7 @@ You can build package by yourself and upload package to your software repository
 ## Dependencies
 
   * [stdlib](https://forge.puppetlabs.com/puppetlabs/stdlib) version `>= 4.2.0` - we need function `is_bool`
+  * [apt](https://github.com/puppetlabs/puppetlabs-apt) is required for Debian servers
 
 ## Installation
 

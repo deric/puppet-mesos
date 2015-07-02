@@ -10,12 +10,12 @@
   "description": "Apache Mesos is a cluster manager that provides efficient resource isolation and sharing across distributed applications",
   "dependencies": [
     {
-      "name": "puppetlabs/stdlib",
+      "name": "puppetlabs-stdlib",
       "version_requirement": ">= 4.2.0"
     },
     {
-      "name": "puppetlabs/apt",
-      "version_requirement": ">= 2.0.0"
+      "name": "puppetlabs-apt",
+      "version_requirement": ">= 2.1.0"
     }
   ],
   "operatingsystem_support": [
