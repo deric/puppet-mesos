@@ -16,11 +16,11 @@ describe 'mesos::repo', :type => :class do
     }}
 
     it { should contain_apt__source('mesosphere').with(
-     'location'    => "http://repos.mesosphere.io/#{operatingsystem.downcase}",
-     'repos'       => 'main',
-     'release'     => "#{lsbdistcodename}",
-     'key'         => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
-     'src'         => false
+     'location' => "http://repos.mesosphere.io/#{operatingsystem.downcase}",
+     'repos'    => 'main',
+     'release'  => "#{lsbdistcodename}",
+     'key'      => {'id' => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'subkeys.pgp.net'},
+     'include'  => {'src' => false}
     )}
 
     context "undef source" do
