@@ -20,10 +20,13 @@ class mesos::repo(
           undef: {} #nothing to do
           'mesosphere': {
             apt::source { 'mesosphere':
-              location    => "http://repos.mesosphere.io/${distro}",
-              release     => $::lsbdistcodename,
-              repos       => 'main',
-              key         => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
+              location => "http://repos.mesosphere.io/${distro}",
+              release  => $::lsbdistcodename,
+              repos    => 'main',
+              key      => {
+                'id'     => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
+                'server' => 'subkeys.pgp.net',
+              },
               include_src => false
             }
           }
