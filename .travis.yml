@@ -9,15 +9,9 @@ rvm:
   - 2.1.5
   #- 2.2.2 puppet 3 won't be compatible with ruby 2.2: https://tickets.puppetlabs.com/browse/PUP-3796
 env:
-  - PUPPET_VERSION="~> 2.7.0"
+  - PUPPET_VERSION="~> 3.3.0"
   - PUPPET_VERSION="~> 3.4.0"
   - PUPPET_VERSION="~> 3.5.0" STRICT_VARIABLES=yes
   - PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=yes
   - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=yes
   #- PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=yes FUTURE_PARSER=yes
-matrix:
-  exclude:
-    - rvm: 2.0.0
-      env: PUPPET_VERSION="~> 2.7.0"
-    - rvm: 2.1.5
-      env: PUPPET_VERSION="~> 2.7.0"

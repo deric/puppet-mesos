@@ -332,7 +332,7 @@ You can build package by yourself and upload package to your software repository
 
 ## Requirements
 
-  * Puppet > 2.6
+  * Puppet > 3.0 and < 5.0
 
 ## Dependencies
 
@@ -344,7 +344,7 @@ You can build package by yourself and upload package to your software repository
 Preferred installation is via [puppet-librarian](https://github.com/rodjek/librarian-puppet) just add to `Puppetfile`:
 
 ```ruby
-mod 'deric/mesos', '>= 0.4.0'
+mod 'deric/mesos', '>= 0.6.0'
 ```
 
 for latest version from git:
