@@ -12,10 +12,16 @@ define mesos::service(
   $enable         = false,
   $force_provider = undef,
 ) {
+  
+  if $enable {
+    $ensure_service = running
+  } else {
+    $ensure_service = stopped
+  }
 
   if ($force_provider != 'none') {
     service { "mesos-${name}":
-      ensure     => 'running',
+      ensure     => $ensure_service,
       hasstatus  => true,
       hasrestart => true,
       enable     => $enable,
