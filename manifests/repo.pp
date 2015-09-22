@@ -30,7 +30,7 @@ class mesos::repo(
               include  => { 'src' => false }
             }
           include apt::update
-          Exec['apt_update'] -> Package <| |>
+          Exec['apt_update'] -> Package['mesos']
           }
           default: {
             notify { "APT repository '${source}' is not supported for ${::osfamily}": }
