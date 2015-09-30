@@ -8,7 +8,6 @@
 #  [*manage_zk_file*] - flag whether module manages /etc/mesos/zk (default: true)
 #  [*owner*]          - owner of configuration files
 #  [*group*]          - group of configuration files
-#  [*use_syslog*]     - will set ENV variable USE_SYSLOG (might not be supported by all packagings)
 #
 # This class should not be included directly,
 # always use 'mesos::slave' or 'mesos:master'

@@ -22,6 +22,7 @@ class mesos::master(
   $owner          = $mesos::owner,
   $group          = $mesos::group,
   $listen_address = $mesos::listen_address,
+  $manage_service = $mesos::manage_service,
   $env_var        = {},
   $options        = {},
   $force_provider = undef, #temporary workaround for starting services
@@ -29,6 +30,7 @@ class mesos::master(
 
   validate_hash($env_var)
   validate_hash($options)
+  validate_bool($manage_service)
 
   file { $conf_dir:
     ensure  => directory,
@@ -77,6 +79,7 @@ class mesos::master(
   mesos::service { 'master':
     enable         => $enable,
     force_provider => $force_provider,
+    manage         => $manage_service,
     require        => File[$conf_file],
   }
 }

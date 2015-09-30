@@ -11,7 +11,7 @@ describe 'mesos::service', :type => :define do
     }}
 
     it { should contain_service('mesos-slave').with(
-        :ensure     => 'running',
+        :ensure     => 'stopped',
         :enable     => false,
         :hasstatus  => true,
         :hasrestart => true
@@ -22,7 +22,20 @@ describe 'mesos::service', :type => :define do
       }}
 
       it { should contain_service('mesos-slave').with(
-        :enable => true
+        :enable => true,
+        :ensure => 'running',
+      )}
+    end
+
+    context 'do not manage service' do
+      let(:params) {{
+        :enable => true,
+        :manage => false, # won't start service if it's not running
+      }}
+
+      it { should contain_service('mesos-slave').with(
+        :enable => true,
+        :ensure => nil,
       )}
     end
   end

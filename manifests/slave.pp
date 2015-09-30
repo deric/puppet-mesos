@@ -50,6 +50,7 @@ class mesos::slave (
   $owner          = $mesos::owner,
   $group          = $mesos::group,
   $listen_address = $mesos::listen_address,
+  $manage_service = $mesos::manage_service,
   $env_var        = {},
   $cgroups        = {},
   $options        = {},
@@ -64,6 +65,7 @@ class mesos::slave (
   validate_hash($resources)
   validate_hash($attributes)
   validate_string($isolation)
+  validate_bool($manage_service)
 
   file { $conf_dir:
     ensure  => directory,
@@ -161,6 +163,7 @@ class mesos::slave (
   mesos::service { 'slave':
     enable         => $enable,
     force_provider => $force_provider,
+    manage         => $manage_service,
     require        => File[$conf_file],
   }
 }

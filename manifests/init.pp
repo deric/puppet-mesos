@@ -26,6 +26,7 @@ class mesos(
   $log_dir        = '/var/log/mesos',
   $conf_dir       = '/etc/mesos',
   $manage_zk_file = true,
+  $manage_service = true,
   # e.g. zk://localhost:2181/mesos
   $zookeeper      = '',
   # if "zk" is empty, master value is used
@@ -42,6 +43,8 @@ class mesos(
   $python_package = 'python',
 ) {
   validate_hash($env_var)
+  validate_bool($manage_zk_file)
+  validate_bool($manage_service)
 
   $mesos_ensure = $version ? {
     undef    => $ensure,
