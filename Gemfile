@@ -14,9 +14,9 @@ group :rake do
   gem 'rspec-puppet', '~> 2.0'
   # in order to support Ruby 1.9.3
   gem 'fog-google', '< 0.1.1'
+  gem 'metadata-json-lint',      :require => false
 end
 
 group :development do
   gem 'puppet-blacksmith',  '~> 3.0'
-  gem 'metadata-json-lint',      :require => false
 end
