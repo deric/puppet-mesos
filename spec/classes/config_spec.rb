@@ -23,7 +23,7 @@ describe 'mesos::config', :type => :class do
   it 'has default log dir' do
     should contain_file(
       '/etc/default/mesos'
-    ).with_content(/LOG_DIR="\/var\/log\/mesos"/)
+    ).with_content(/LOGS="\/var\/log\/mesos"/)
   end
 
   it 'has default ulimit' do
@@ -49,7 +49,7 @@ describe 'mesos::config', :type => :class do
     }}
     it { should contain_file(
       '/etc/default/mesos'
-      ).with_content(/LOG_DIR="\/srv\/mesos\/log"/)
+      ).with_content(/LOGS="\/srv\/mesos\/log"/)
     }
   end
 
@@ -93,12 +93,12 @@ describe 'mesos::config', :type => :class do
     ).with_content(/export MESOS_HOME="\/var\/lib\/mesos"/) }
   end
 
-  context 'set use_syslog variable' do
+  context 'set LOGS variable' do
     let(:file) { '/etc/default/mesos' }
     let(:params) {{
-      :use_syslog => true
+      :log_dir => '/var/log/mesos'
     }}
 
-    it { should contain_file(file).with_content(/USE_SYSLOG="true"/) }
+    it { should contain_file(file).with_content(/LOGS="\/var\/log\/mesos"/) }
   end
 end

@@ -3,7 +3,7 @@
 # This module manages the mesos configuration directories
 #
 # Parameters:
-#  [*log_dir*]        - directory for logging (default: /var/log/mesos)
+#  [*log_dir*]        - directory for logging, (default: '/var/log/mesos')
 #  [*conf_dir*]       - directory for configuration files (default: /etc/mesos)
 #  [*manage_zk_file*] - flag whether module manages /etc/mesos/zk (default: true)
 #  [*owner*]          - owner of configuration files
@@ -14,9 +14,8 @@
 # always use 'mesos::slave' or 'mesos:master'
 #
 class mesos::config(
-  $log_dir        = '/var/log/mesos',
+  $log_dir        = undef,
   $ulimit         = 8192,
-  $use_syslog     = false,
   $conf_dir       = '/etc/mesos',
   $manage_zk_file = true,
   $owner          = 'root',
@@ -24,11 +23,14 @@ class mesos::config(
   $zookeeper      = '',
   $env_var        = {},
 ){
+  validate_bool($manage_zk_file)
 
-  file { $log_dir:
-    ensure => directory,
-    owner  => $owner,
-    group  => $group,
+  if $log_dir {
+    file { $log_dir:
+      ensure => directory,
+      owner  => $owner,
+      group  => $group,
+    }
   }
 
   file { $conf_dir:

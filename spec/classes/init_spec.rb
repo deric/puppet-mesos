@@ -69,13 +69,12 @@ describe 'mesos', :type => :class do
     }) }
   end
 
-  context 'set use_syslog variable' do
+  context 'set LOGS variable' do
     let(:file) { '/etc/default/mesos' }
     let(:params) {{
-      :use_syslog => true
+      :log_dir => '/var/log/mesos'
     }}
 
-    it { should contain_file(file).with_content(/USE_SYSLOG="true"/) }
+    it { should contain_file(file).with_content(/LOGS="\/var\/log\/mesos"/) }
   end
-
 end

@@ -15,7 +15,7 @@
 #
 # === Copyright
 #
-# Copyright 2013-2014 Tomas Barton
+# Copyright 2013-2015 Tomas Barton
 #
 class mesos(
   $ensure         = 'present',
@@ -40,7 +40,6 @@ class mesos(
   $ulimit         = 8192,
   $manage_python  = false,
   $python_package = 'python',
-  $use_syslog     = false,
 ) {
   validate_hash($env_var)
 
@@ -65,7 +64,6 @@ class mesos(
     zookeeper      => $zookeeper,
     env_var        => $env_var,
     ulimit         => $ulimit,
-    use_syslog     => $use_syslog,
     require        => Class['mesos::install']
   }
 
