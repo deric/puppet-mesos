@@ -359,3 +359,28 @@ For more information see [Mesos project](http://mesos.apache.org/)
 ## License
 
 Apache License 2.0
+
+
+## Contributors
+
+List of contributors (not necessarily up-to-date), generate by command `git log --format='%aN' | sort -u | sed -e 's/^/\- /'`:
+
+- Andrew Teixeira
+- Chris Rebert
+- Felix Bechstein
+- jfarrell
+- Jing Dong
+- Konrad Scherer
+- krall
+- Kyle Anderson
+- Oriol Fitó
+- Paul Otto
+- Rhommel Lamas
+- Sam Stoelinga
+- Sean McLaughlin
+- Sophie Haskins
+- Tadas Vilkeliskis
+- Tomas Barton
+- Tom Stockton
+- William Leese
+
