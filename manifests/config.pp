@@ -25,7 +25,7 @@ class mesos::config(
   validate_bool($manage_zk_file)
 
   if ! empty($zookeeper) {
-	$zookeeper_url = zookeeper_servers_url($zeekooper)
+	$zookeeper_url = zookeeper_servers_url($zookeeper)
   }
 
   if $log_dir {
@@ -58,7 +58,7 @@ class mesos::config(
         true  => absent,
         false => present,
       },
-      content => $zookeeperi_url,
+      content => $zookeeper_url,
       owner   => $owner,
       group   => $group,
     }
