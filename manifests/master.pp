@@ -33,7 +33,7 @@ class mesos::master(
   validate_bool($manage_service)
 
   if ! empty($zookeeper) {
-	$zookeeper_url = zookeeper_servers_url($zookeeper)
+    $zookeeper_url = zookeeper_servers_url($zookeeper)
   }
 
   file { $conf_dir:

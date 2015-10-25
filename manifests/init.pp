@@ -47,7 +47,7 @@ class mesos(
   validate_bool($manage_service)
 
   if ! empty($zookeeper) {
-	$zookeeper_url = zookeeper_servers_url($zookeeper)
+    $zookeeper_url = zookeeper_servers_url($zookeeper)
   }
 
   $mesos_ensure = $version ? {
