@@ -8,7 +8,7 @@ For installing master
 
 ```puppet
 class{'mesos::master':
-  zookeeper  => 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos',
+  zookeeper  => [ '192.168.1.1:2181', '192.168.1.2:2181', '192.168.1.3:2181' ],
   work_dir => '/var/lib/mesos',
   options => {
     quorum   => 2
@@ -19,7 +19,7 @@ example slave configuration:
 
 ```puppet
 class{'mesos::slave':
-  zookeeper  => 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos',
+  zookeeper  => [ '192.168.1.1:2181', '192.168.1.2:2181', '192.168.1.3:2181' ],
   listen_address => $::ipaddress,
   attributes => {
     'env' => 'production',
@@ -37,9 +37,9 @@ for using Hiera and other options see below.
 
 Parameters:
 
- - `zookeeper` - ZooKeeper URL which is used for slaves connecting to the master and also for leader election, e.g.:
-	- single ZooKeeper: `zk://127.0.0.1:2181/mesos` (which isn't fault tolerant)
-        - multiple ZooKeepers: `zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos` (usually 3 or 5 ZooKeepers should be enough)
+ - `zookeeper` - Array of ZooKeeper servers (with port) which is used for slaves connecting to the master and also for leader election, e.g.:
+   - single ZooKeeper: `127.0.0.1:2181` (which isn't fault tolerant)
+        - multiple ZooKeepers: `[ '192.168.1.1:2181', '192.168.1.2:2181', '192.168.1.3:2181']` (usually 3 or 5 ZooKeepers should be enough)
         - ZooKeeper URL will be stored in `/etc/mesos/zk`, `/etc/default/mesos-master` and/or `/etc/default/mesos-slave`
  - `conf_dir` - directory with simple configuration files containing master/slave parameters (name of the file is a key, contents its value)
         - this directory will be completely managed by Puppet
@@ -78,7 +78,7 @@ class{'mesos::slave':
 or `zookeeper` node(s) to connect:
 ```puppet
 class{'mesos::slave':
-  zookeeper => 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos'
+  zookeeper => ['192.168.1.1:2181', '192.168.1.2:2181', '192.168.1.3:2181']
 }
 ```
  - `conf_dir` default value is `/etc/mesos-master` (this directory will be purged by Puppet!)
@@ -200,7 +200,7 @@ mesos::master      : '192.168.1.1'
   or [Zookeeper](http://zookeeper.apache.org/) could be use for a fault-tolerant setup (multiple instances of zookeeper are separated by comma):
 
 ```yaml
-mesos::zookeeper   : 'zk://192.168.1.1:2181/mesos'
+mesos::zookeeper   : [ '192.168.1.1:2181' ]
 ```
 
 Some parameters are shared between master and slave nodes:

@@ -40,7 +40,7 @@ describe 'mesos::master', :type => :class do
 
   context 'with zookeeper' do
     let(:params){{
-      :zookeeper => 'zk://192.168.1.100:2181/mesos',
+      :zookeeper => [ '192.168.1.100:2181' ],
     }}
     it { should contain_file(
       file).with_content(/ZK="zk:\/\/192.168.1.100:2181\/mesos"/)

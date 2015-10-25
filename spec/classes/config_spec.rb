@@ -55,7 +55,7 @@ describe 'mesos::config', :type => :class do
 
   context 'with zookeeper' do
     let(:params){{
-      :zookeeper => 'zk://192.168.1.100:2181/mesos',
+      :zookeeper => [ '192.168.1.100:2181' ],
     }}
     it { should contain_file(
       '/etc/mesos/zk'
@@ -68,7 +68,7 @@ describe 'mesos::config', :type => :class do
   context 'with manage_zk_file false' do
     let(:params){{
       :manage_zk_file => false,
-      :zookeeper      => 'zk://192.168.1.100:2181/mesos',
+      :zookeeper      => [ '192.168.1.100:2181' ],
     }}
     it { should_not contain_file(
       '/etc/mesos/zk'
