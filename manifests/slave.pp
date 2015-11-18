@@ -96,7 +96,7 @@ class mesos::slave (
 
   # stores properties in file structure
   create_resources(mesos::property,
-    mesos_hash_parser($cgroups, 'cgroups'),
+    mesos_hash_parser($cgroups, 'slave', 'cgroups'),
     {
       dir     => $conf_dir,
       service => Service['mesos-slave'],
@@ -127,7 +127,7 @@ class mesos::slave (
   }
 
   create_resources(mesos::property,
-    mesos_hash_parser($merged_options),
+    mesos_hash_parser($merged_options, 'slave'),
     {
       dir     => $conf_dir,
       service => Service['mesos-slave'],
@@ -135,7 +135,7 @@ class mesos::slave (
   )
 
   create_resources(mesos::property,
-    mesos_hash_parser($resources),
+    mesos_hash_parser($resources, 'resources'),
     {
       dir     => "${conf_dir}/resources",
       service => Service['mesos-slave'],
@@ -143,7 +143,7 @@ class mesos::slave (
   )
 
   create_resources(mesos::property,
-    mesos_hash_parser($attributes),
+    mesos_hash_parser($attributes, 'attributes'),
     {
       dir     => "${conf_dir}/attributes",
       service => Service['mesos-slave'],

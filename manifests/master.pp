@@ -59,7 +59,7 @@ class mesos::master(
   }
 
   create_resources(mesos::property,
-    mesos_hash_parser($options),
+    mesos_hash_parser($options, 'master'),
     {
       dir     => $conf_dir,
       service => Service['mesos-master'],
