@@ -15,6 +15,10 @@ define mesos::property (
     }
     $ensure = 'present'
     $content = ''
+  } elsif is_numeric($value) {
+    $filename = "${dir}/${file}"
+    $ensure = 'present'
+    $content = "${value}"
   } else {
     $filename = "${dir}/${file}"
     $ensure = empty($value) ? {
