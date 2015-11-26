@@ -23,9 +23,9 @@ class mesos::master(
   $group          = $mesos::group,
   $listen_address = $mesos::listen_address,
   $manage_service = $mesos::manage_service,
+  $force_provider = $mesos::force_provider,
   $env_var        = {},
   $options        = {},
-  $force_provider = undef, #temporary workaround for starting services
 ) inherits mesos {
 
   validate_hash($env_var)

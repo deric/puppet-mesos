@@ -41,6 +41,7 @@ class mesos(
   $ulimit         = 8192,
   $manage_python  = false,
   $python_package = 'python',
+  $force_provider = undef, #temporary workaround for starting services
 ) {
   validate_hash($env_var)
   validate_bool($manage_zk_file)
@@ -52,10 +53,11 @@ class mesos(
   }
 
   class {'mesos::install':
-    ensure         => $mesos_ensure,
-    repo_source    => $repo,
-    manage_python  => $manage_python,
-    python_package => $python_package,
+    ensure                  => $mesos_ensure,
+    repo_source             => $repo,
+    manage_python           => $manage_python,
+    python_package          => $python_package,
+    remove_package_services => $force_provider == 'none',
   }
 
   class {'mesos::config':

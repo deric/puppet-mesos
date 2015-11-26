@@ -26,4 +26,38 @@ describe 'mesos::install', :type => :class do
       }}
     it { should contain_package('python') }
   end
+
+  context 'remove packaged services' do
+    context 'keeps everything' do
+      it { should_not contain_file('/etc/init/mesos-master.conf') }
+      it { should_not contain_file('/etc/init/mesos-slave.conf') }
+    end
+
+    context 'keeps everything on RHEL 7' do
+      let(:facts) { {
+          :osfamily => 'redhat',
+          :operatingsystemmajrelease => '7',
+      } }
+      let(:params) { {
+          :remove_package_services => true,
+      } }
+
+      it { should_not contain_file('/etc/init/mesos-master.conf') }
+      it { should_not contain_file('/etc/init/mesos-slave.conf') }
+    end
+
+    context 'removes packaged upstart config on RHEL 6' do
+      let(:facts) { {
+          :osfamily => 'redhat',
+          :operatingsystemmajrelease => '6',
+      } }
+
+      let(:params) { {
+          :remove_package_services => true,
+      } }
+
+      it { should contain_file('/etc/init/mesos-master.conf').with_ensure('absent') }
+      it { should contain_file('/etc/init/mesos-slave.conf').with_ensure('absent') }
+    end
+  end
 end
