@@ -175,4 +175,57 @@ describe 'mesos::master', :type => :class do
     end
   end
 
+  context 'credentials' do
+    context 'default w/o credentials' do
+      let(:params) { {
+          :conf_dir => conf,
+          :owner => owner,
+          :group => group,
+      } }
+
+      it 'has no credentials property' do
+        should_not contain_mesos__property(
+                       'master_credentials'
+                   )
+      end
+
+      it 'has not credentials file' do
+        should contain_file(
+                   '/etc/mesos/master-credentials'
+               )
+                   .with({
+                             'ensure' => 'absent',
+                         })
+      end
+    end
+
+    context 'w/ credentials' do
+      let(:params) { {
+          :conf_dir => conf,
+          :owner => owner,
+          :group => group,
+          :credentials => [{'principal' => 'some-mesos-principal', 'secret' => 'a-very-secret'}],
+      } }
+
+      it 'has credentials property' do
+        should contain_mesos__property(
+                   'master_credentials'
+               ).with({
+                          'value' => '/etc/mesos/master-credentials',
+                      })
+      end
+
+      it 'has credentials file' do
+        should contain_file(
+                   '/etc/mesos/master-credentials'
+               ).with({
+                          'ensure' => 'file',
+                          'content' => /{"credentials":\s*\[{"principal":\s*"some-mesos-principal",\s*"secret":\s*"a-very-secret"}\]}/,
+                          'owner' => owner,
+                          'group' => group,
+                          'mode' => '0400',
+                      })
+      end
+    end
+  end
 end

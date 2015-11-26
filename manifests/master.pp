@@ -11,26 +11,42 @@
 # structure. Arguments passed via $options hash are converted to file/directories
 #
 class mesos::master(
-  $enable         = true,
-  $whitelist      = '*',
-  $cluster        = 'mesos',
-  $conf_dir       = '/etc/mesos-master',
-  $work_dir       = '/var/lib/mesos', # registrar directory, since 0.19
-  $conf_file      = '/etc/default/mesos-master',
-  $master_port    = $mesos::master_port,
-  $zookeeper      = $mesos::zookeeper,
-  $owner          = $mesos::owner,
-  $group          = $mesos::group,
-  $listen_address = $mesos::listen_address,
-  $manage_service = $mesos::manage_service,
-  $env_var        = {},
-  $options        = {},
-  $force_provider = undef, #temporary workaround for starting services
+  $enable           = true,
+  $whitelist        = '*',
+  $cluster          = 'mesos',
+  $conf_dir         = '/etc/mesos-master',
+  $work_dir         = '/var/lib/mesos', # registrar directory, since 0.19
+  $conf_file        = '/etc/default/mesos-master',
+  $credentials_file = '/etc/mesos/master-credentials',
+  $master_port      = $mesos::master_port,
+  $zookeeper        = $mesos::zookeeper,
+  $owner            = $mesos::owner,
+  $group            = $mesos::group,
+  $listen_address   = $mesos::listen_address,
+  $manage_service   = $mesos::manage_service,
+  $env_var          = {},
+  $options          = {},
+  $credentials      = [],
+  $force_provider   = undef, #temporary workaround for starting services
 ) inherits mesos {
 
   validate_hash($env_var)
   validate_hash($options)
+  validate_array($credentials)
+  validate_absolute_path($credentials_file)
   validate_bool($manage_service)
+
+  if (!empty($credentials)) {
+    $credentials_options = {'credentials' => $credentials_file}
+    $credentials_content = inline_template("<%= {:credentials => @credentials}.to_json %>")
+    $credentials_ensure = file
+  } else {
+    $credentials_options = {}
+    $credentials_content = undef
+    $credentials_ensure = absent
+  }
+
+  $merged_options = merge($options, $credentials_options)
 
   file { $conf_dir:
     ensure  => directory,
@@ -48,6 +64,14 @@ class mesos::master(
     group  => $group,
   }
 
+  file { $credentials_file:
+    ensure  => $credentials_ensure,
+    content => $credentials_content,
+    owner   => $owner,
+    group   => $group,
+    mode    => '0400',
+  }
+
   # work_dir can't be specified via options,
   # we would get a duplicate declaration error
   mesos::property {'master_work_dir':
@@ -59,7 +83,7 @@ class mesos::master(
   }
 
   create_resources(mesos::property,
-    mesos_hash_parser($options, 'master'),
+    mesos_hash_parser($merged_options, 'master'),
     {
       dir     => $conf_dir,
       service => Service['mesos-master'],

@@ -327,4 +327,59 @@ describe 'mesos::slave', :type => :class do
       })
     end
   end
+
+  context 'credentials' do
+    context 'default w/o principal/secret' do
+      let(:params) { {
+          :conf_dir => conf,
+          :owner => owner,
+          :group => group,
+      } }
+
+      it 'has no credentials property' do
+        should_not contain_mesos__property(
+                       'slave_credentials'
+                   )
+      end
+
+      it 'has not credentials file' do
+        should contain_file(
+                   '/etc/mesos/slave-credentials'
+               )
+                   .with({
+                             'ensure' => 'absent',
+                         })
+      end
+    end
+
+    context 'w/ principal/secret' do
+      let(:params) { {
+          :conf_dir => conf,
+          :owner => owner,
+          :group => group,
+          :principal => 'some-mesos-principal',
+          :secret => 'a-very-secret',
+      } }
+
+      it 'has credentials property' do
+        should contain_mesos__property(
+                   'slave_credentials'
+               ).with({
+                          'value' => '/etc/mesos/slave-credentials',
+                      })
+      end
+
+      it 'has credentials file' do
+        should contain_file(
+                   '/etc/mesos/slave-credentials'
+               ).with({
+                          'ensure' => 'file',
+                          'content' => '{"principal": "some-mesos-principal", "secret": "a-very-secret"}',
+                          'owner' => owner,
+                          'group' => group,
+                          'mode' => '0400',
+                      })
+      end
+    end
+  end
 end
