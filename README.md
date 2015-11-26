@@ -84,6 +84,8 @@ class{'mesos::slave':
  - `conf_dir` default value is `/etc/mesos-master` (this directory will be purged by Puppet!)
  	- for list of supported options see `mesos-master --help`
  - `env_var` - master's execution environment variables (see example under slave)
+ - `acls` - hash of mesos acls, `{"permissive" => true, "register_frameworks" => [..]}` (default: `{}`)
+ - `acls_file` - path to file to store acls (default: `/etc/mesos/acls`)
  - `credentials` - array of mesos credentials, `[{'principal' => 'some-principal', 'secret' => 'some-secret'}]` (default: `[]`)
  - `credentials_file` - path to file to store credentials (default: `/etc/mesos/master-credentials`)
 

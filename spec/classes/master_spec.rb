@@ -175,6 +175,58 @@ describe 'mesos::master', :type => :class do
     end
   end
 
+  context 'acls' do
+    context 'default w/o acls' do
+      let(:params) { {
+          :conf_dir => conf,
+          :owner => owner,
+          :group => group,
+      } }
+
+      it 'has no acls property' do
+        should_not contain_mesos__property(
+                       'master_acls'
+                   )
+      end
+
+      it 'has not acls file' do
+        should contain_file(
+                   '/etc/mesos/acls'
+               )
+                   .with({
+                             'ensure' => 'absent',
+                         })
+      end
+    end
+
+    context 'w/ acls' do
+      let(:params) { {
+          :conf_dir => conf,
+          :owner => owner,
+          :group => group,
+          :acls => {"some-key" => ["some-value", "some-other-value"]},
+      } }
+
+      it 'has acls property' do
+        should contain_mesos__property(
+                   'master_acls'
+               ).with('value' => '/etc/mesos/acls')
+      end
+
+      it 'has acls file' do
+        should contain_file(
+                   '/etc/mesos/acls'
+               ).with({
+                          'ensure' => 'file',
+                          'content' => /{"some-key":\s*\["some-value",\s*"some-other-value"\]}/,
+                          'owner' => owner,
+                          'group' => group,
+                          'mode' => '0444',
+                      })
+      end
+    end
+  end
+
   context 'credentials' do
     context 'default w/o credentials' do
       let(:params) { {

@@ -17,6 +17,7 @@ class mesos::master(
   $conf_dir         = '/etc/mesos-master',
   $work_dir         = '/var/lib/mesos', # registrar directory, since 0.19
   $conf_file        = '/etc/default/mesos-master',
+  $acls_file        = '/etc/mesos/acls',
   $credentials_file = '/etc/mesos/master-credentials',
   $master_port      = $mesos::master_port,
   $zookeeper        = $mesos::zookeeper,
@@ -26,19 +27,32 @@ class mesos::master(
   $manage_service   = $mesos::manage_service,
   $env_var          = {},
   $options          = {},
+  $acls             = {},
   $credentials      = [],
   $force_provider   = undef, #temporary workaround for starting services
 ) inherits mesos {
 
   validate_hash($env_var)
   validate_hash($options)
+  validate_hash($acls)
+  validate_absolute_path($acls_file)
   validate_array($credentials)
   validate_absolute_path($credentials_file)
   validate_bool($manage_service)
 
+  if (!empty($acls)) {
+    $acls_options = {'acls' => $acls_file}
+    $acls_content = inline_template("<%= require 'json'; @acls.to_json %>")
+    $acls_ensure = file
+  } else {
+    $acls_options = {}
+    $acls_content = undef
+    $acls_ensure = absent
+  }
+
   if (!empty($credentials)) {
     $credentials_options = {'credentials' => $credentials_file}
-    $credentials_content = inline_template("<%= {:credentials => @credentials}.to_json %>")
+    $credentials_content = inline_template("<%= require 'json'; {:credentials => @credentials}.to_json %>")
     $credentials_ensure = file
   } else {
     $credentials_options = {}
@@ -46,7 +60,7 @@ class mesos::master(
     $credentials_ensure = absent
   }
 
-  $merged_options = merge($options, $credentials_options)
+  $merged_options = merge($options, $acls_options, $credentials_options)
 
   file { $conf_dir:
     ensure  => directory,
@@ -62,6 +76,14 @@ class mesos::master(
     ensure => directory,
     owner  => $owner,
     group  => $group,
+  }
+
+  file { $acls_file:
+    ensure  => $acls_ensure,
+    content => $acls_content,
+    owner   => $owner,
+    group   => $group,
+    mode    => '0444',
   }
 
   file { $credentials_file:
