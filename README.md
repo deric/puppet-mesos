@@ -84,6 +84,10 @@ class{'mesos::slave':
  - `conf_dir` default value is `/etc/mesos-master` (this directory will be purged by Puppet!)
  	- for list of supported options see `mesos-master --help`
  - `env_var` - master's execution environment variables (see example under slave)
+ - `acls` - hash of mesos acls, `{"permissive" => true, "register_frameworks" => [..]}` (default: `{}`)
+ - `acls_file` - path to file to store acls (default: `/etc/mesos/acls`)
+ - `credentials` - array of mesos credentials, `[{'principal' => 'some-principal', 'secret' => 'some-secret'}]` (default: `[]`)
+ - `credentials_file` - path to file to store credentials (default: `/etc/mesos/master-credentials`)
 
 #### listen address
 
@@ -114,6 +118,9 @@ By default no IP address is set, which means that Mesos will use IP to which tra
  - `work_dir` - directory for storing task's temporary files (default: `/tmp/mesos`)
  - `env_var` - slave's execution environment variables - a Hash, if you are using
  Java, you might need e.g.:
+ - `principal` - mesos principal used for auththentication
+ - `secret` - secret used for auththentication
+ - `credentials_file` - path to file to store credentials (default: `/etc/mesos/slave-credentials`)
 
 ```puppet
 class{'mesos::slave':

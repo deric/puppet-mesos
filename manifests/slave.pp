@@ -37,26 +37,29 @@
 #
 
 class mesos::slave (
-  $enable         = true,
-  $port           = 5051,
-  $work_dir       = '/tmp/mesos',
-  $checkpoint     = false,
-  $isolation      = '',
-  $conf_dir       = '/etc/mesos-slave',
-  $conf_file      = '/etc/default/mesos-slave',
-  $master         = $mesos::master,
-  $master_port    = $mesos::master_port,
-  $zookeeper      = $mesos::zookeeper,
-  $owner          = $mesos::owner,
-  $group          = $mesos::group,
-  $listen_address = $mesos::listen_address,
-  $manage_service = $mesos::manage_service,
-  $env_var        = {},
-  $cgroups        = {},
-  $options        = {},
-  $resources      = {},
-  $attributes     = {},
-  $force_provider = undef, #temporary workaround for starting services
+  $enable           = true,
+  $port             = 5051,
+  $work_dir         = '/tmp/mesos',
+  $checkpoint       = false,
+  $isolation        = '',
+  $conf_dir         = '/etc/mesos-slave',
+  $conf_file        = '/etc/default/mesos-slave',
+  $credentials_file = '/etc/mesos/slave-credentials',
+  $master           = $mesos::master,
+  $master_port      = $mesos::master_port,
+  $zookeeper        = $mesos::zookeeper,
+  $owner            = $mesos::owner,
+  $group            = $mesos::group,
+  $listen_address   = $mesos::listen_address,
+  $manage_service   = $mesos::manage_service,
+  $env_var          = {},
+  $cgroups          = {},
+  $options          = {},
+  $resources        = {},
+  $attributes       = {},
+  $principal        = undef,
+  $secret           = undef,
+  $force_provider   = undef, #temporary workaround for starting services
 ) inherits mesos {
 
   validate_hash($env_var)
@@ -65,6 +68,9 @@ class mesos::slave (
   validate_hash($resources)
   validate_hash($attributes)
   validate_string($isolation)
+  validate_string($principal)
+  validate_string($secret)
+  validate_absolute_path($credentials_file)
   validate_bool($manage_service)
 
   file { $conf_dir:
@@ -105,10 +111,22 @@ class mesos::slave (
 
   # for backwards compatibility, prefered way is specification via $options
   if !empty($isolation) {
-    $merged_options = merge($options, {'isolation' => $isolation})
-  }else {
-    $merged_options = $options
+    $isolator_options = {'isolation' => $isolation}
+  } else {
+    $isolator_options = {}
   }
+
+  if (!empty($principal) and !empty($secret)) {
+    $credentials_options = {'credentials' => $credentials_file}
+    $credentials_content = "{\"principal\": \"${principal}\", \"secret\": \"${secret}\"}"
+    $credentials_ensure = file
+  } else {
+    $credentials_options = {}
+    $credentials_content = undef
+    $credentials_ensure = absent
+  }
+
+  $merged_options = merge($options, $isolator_options, $credentials_options)
 
   # work_dir can't be specified via options,
   # we would get a duplicate declaration error
@@ -124,6 +142,14 @@ class mesos::slave (
     ensure => directory,
     owner  => $owner,
     group  => $group,
+  }
+
+  file { $credentials_file:
+    ensure  => $credentials_ensure,
+    content => $credentials_content,
+    owner   => $owner,
+    group   => $group,
+    mode    => '0400',
   }
 
   create_resources(mesos::property,
