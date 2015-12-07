@@ -10,10 +10,11 @@
 # required by 'mesos::master' and 'mesos::slave'
 #
 class mesos::install(
-  $ensure         = 'present',
-  $repo_source    = undef,
-  $manage_python  = false,
-  $python_package = 'python',
+  $ensure                  = 'present',
+  $repo_source             = undef,
+  $manage_python           = false,
+  $python_package          = 'python',
+  $remove_package_services = false,
 ) {
   # 'ensure_packages' requires puppetlabs/stdlib
   #
@@ -37,5 +38,14 @@ class mesos::install(
   package { 'mesos':
     ensure  => $ensure,
     require => Class['mesos::repo']
+  }
+
+  if ($remove_package_services and $::osfamily == 'redhat' and $::operatingsystemmajrelease == '6') {
+    file { [
+      '/etc/init/mesos-master.conf', '/etc/init/mesos-slave.conf'
+    ]:
+      ensure  => absent,
+      require => Package['mesos'],
+    }
   }
 }

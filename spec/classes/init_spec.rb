@@ -77,4 +77,18 @@ describe 'mesos', :type => :class do
 
     it { should contain_file(file).with_content(/LOGS="\/var\/log\/mesos"/) }
   end
+
+  context 'remove packaged services' do
+    context 'keeps everything' do
+      it { should contain_class('mesos::install').with('remove_package_services' => false) }
+    end
+
+    context 'remvoes packaged upstart config' do
+      let(:params) {{
+          :force_provider => 'none'
+      }}
+
+      it { should contain_class('mesos::install').with('remove_package_services' => true) }
+    end
+  end
 end
