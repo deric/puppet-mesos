@@ -1,6 +1,9 @@
 bundler_args: --without development
 sudo: false
-cache: bundler
+cache:
+  - bundler
+  - directories:
+    - $HOME/librarian-puppet
 script:
   - RAKE_ENV=ci bundle exec rake validate
   - RAKE_ENV=ci bundle exec rake spec
@@ -11,10 +14,13 @@ rvm:
   - 2.1.5
   #- 2.2.2 puppet 3 won't be compatible with ruby 2.2: https://tickets.puppetlabs.com/browse/PUP-3796
 env:
-  - PUPPET_VERSION="~> 3.4.0"
-  - PUPPET_VERSION="~> 3.5.0" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=yes
-  - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=yes FUTURE_PARSER=yes
-  - PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=yes FUTURE_PARSER=yes
+  global:
+    - LIBRARIAN_PUPPET_TMP="$HOME/librarian-puppet"
+  matrix:
+    - PUPPET_VERSION="~> 3.4.0"
+    - PUPPET_VERSION="~> 3.5.0" STRICT_VARIABLES=yes
+    - PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=yes
+    - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=yes
+    - PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=yes
+    - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=yes FUTURE_PARSER=yes
+    - PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=yes FUTURE_PARSER=yes
