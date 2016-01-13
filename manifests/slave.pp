@@ -134,6 +134,8 @@ class mesos::slave (
     value   => $work_dir,
     dir     => $conf_dir,
     file    => 'work_dir',
+    owner   => $owner,
+    group   => $group,
     service => Service['mesos-slave'],
     require => File[$conf_dir],
   }
@@ -156,6 +158,8 @@ class mesos::slave (
     mesos_hash_parser($merged_options, 'slave'),
     {
       dir     => $conf_dir,
+      owner   => $owner,
+      group   => $group,
       service => Service['mesos-slave'],
     }
   )
@@ -164,6 +168,8 @@ class mesos::slave (
     mesos_hash_parser($resources, 'resources'),
     {
       dir     => "${conf_dir}/resources",
+      owner   => $owner,
+      group   => $group,
       service => Service['mesos-slave'],
     }
   )
@@ -172,6 +178,8 @@ class mesos::slave (
     mesos_hash_parser($attributes, 'attributes'),
     {
       dir     => "${conf_dir}/attributes",
+      owner   => $owner,
+      group   => $group,
       service => Service['mesos-slave'],
     }
   )
