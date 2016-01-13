@@ -6,6 +6,8 @@ define mesos::property (
   $dir,
   $service, #service to be notified about property changes
   $file = $title,
+  $owner = 'root',
+  $group = 'root',
 ) {
 
   if is_bool($value) {
@@ -31,6 +33,8 @@ define mesos::property (
   file { $filename:
     ensure  => $ensure,
     content => $content,
+    owner   => $owner,
+    group   => $group,
     require => File[$dir],
     notify  => $service,
   }

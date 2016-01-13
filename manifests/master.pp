@@ -100,6 +100,8 @@ class mesos::master(
     value   => $work_dir,
     dir     => $conf_dir,
     file    => 'work_dir',
+    owner   => $owner,
+    group   => $group,
     service => Service['mesos-master'],
     require => File[$conf_dir],
   }
@@ -108,6 +110,8 @@ class mesos::master(
     mesos_hash_parser($merged_options, 'master'),
     {
       dir     => $conf_dir,
+      owner   => $owner,
+      group   => $group,
       service => Service['mesos-master'],
     }
   )

@@ -8,6 +8,8 @@ describe 'mesos::property', :type => :define do
     :value   => 'foo',
     :dir     => directory,
     :service => '',
+    :owner   => 'tester',
+    :group   => 'testers',
   }}
 
   it 'should create a property file' do
@@ -15,6 +17,8 @@ describe 'mesos::property', :type => :define do
         "#{directory}/#{title}"
       ).with_content(/^foo$/).with({
       'ensure'  => 'present',
+      'owner'   => 'tester',
+      'group'   => 'testers',
       })
   end
 
