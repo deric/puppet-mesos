@@ -1,5 +1,6 @@
 bundler_args: --without development
 sudo: false
+cache: bundler
 script:
   - RAKE_ENV=ci bundle exec rake validate
   - RAKE_ENV=ci bundle exec rake spec
