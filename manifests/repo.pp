@@ -10,9 +10,7 @@ class mesos::repo(
   if $source {
     case $::osfamily {
       'Debian': {
-        if !defined(Class['apt']) {
-          class { 'apt': }
-        }
+        include apt
 
         $distro = downcase($::operatingsystem)
 
