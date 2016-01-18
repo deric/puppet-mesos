@@ -29,10 +29,10 @@ class mesos::repo(
                 'src' => false
               },
             }
-          anchor { 'mesos::repo::begin': } ->
-            Apt::Source['mesosphere'] ->
-            Class['apt::update'] ->
-          anchor { 'mesos::repo::end': }
+            anchor { 'mesos::repo::begin': } ->
+              Apt::Source['mesosphere'] ->
+              Class['apt::update'] ->
+            anchor { 'mesos::repo::end': }
           }
           default: {
             notify { "APT repository '${source}' is not supported for ${::osfamily}": }
