@@ -23,6 +23,10 @@ describe 'mesos::repo', :type => :class do
      'include'  => {'src' => false}
     )}
 
+    it { should contain_anchor('mesos::repo::begin').that_comes_before('Apt::Source[mesosphere]') }
+    it { should contain_apt__source('mesosphere').that_comes_before('Class[apt::update]') }
+    it { should contain_class('apt::update').that_comes_before('Anchor[mesos::repo::end]') }
+
     context "undef source" do
       let(:params) {{
         :source => 'undef',
