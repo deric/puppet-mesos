@@ -1,3 +1,5 @@
+# Managed by Puppet
+#
 # if zookeeper URL is not specified, slaves will connect directly
 # to specified master (not a fault-tolerant mode)
 <% if !@zookeeper.nil? && !@zookeeper.empty? -%>
@@ -9,6 +11,8 @@ MASTER="<%= @master %>:<%= @master_port %>"
 # public slave's ip, must be unique in mesos cluster
 <% if @listen_address -%>
 IP="<%= @listen_address %>"
+<% else -%>
+#IP=""
 <% end -%>
 
 # Port to listen on (default: 5051)
@@ -17,9 +21,6 @@ PORT=<%= @port %>
 <% @cgroups.sort.each do |key, val| -%>
 CGROUPS_<%= key.upcase %>="<%= val %>"
 <% end if @isolation == 'cgroups' -%>
-
-
-#OPTS="--hadoop_home=/usr/lib/hadoop-0.20/"
 
 # alternative is to use MESOS_<option> as an envar
 # option list is available with /usr/sbin/mesos-slave --help
