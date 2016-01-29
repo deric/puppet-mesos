@@ -15,7 +15,7 @@
 #
 # === Copyright
 #
-# Copyright 2013-2015 Tomas Barton
+# Copyright 2013-2016 Tomas Barton
 #
 class mesos(
   $ensure         = 'present',
