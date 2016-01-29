@@ -12,7 +12,6 @@
 #
 class mesos::master(
   $enable           = true,
-  $whitelist        = '*',
   $cluster          = 'mesos',
   $conf_dir         = '/etc/mesos-master',
   $work_dir         = '/var/lib/mesos', # registrar directory, since 0.19
