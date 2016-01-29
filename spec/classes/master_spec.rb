@@ -28,22 +28,20 @@ describe 'mesos::master', :type => :class do
   it 'shoud not set any IP address by default' do
     should_not contain_file(
       file
-    ).with_content(/^IP=/)
+    ).with_content(/^export MESOS_IP=/)
   end
 
   # no zookeeper set by default
-  it { should contain_file(file).with_content(/ZK=""/) }
+  it { should contain_file(file).with_content(/MESOS_ZK=""/) }
 
-  it { should contain_file(file).with_content(/PORT=5050/) }
-
-  it { should contain_file(file).with_content(/WHITELIST='*'/) }
+  it { should contain_file(file).with_content(/MESOS_PORT=5050/) }
 
   context 'with zookeeper' do
     let(:params){{
       :zookeeper => 'zk://192.168.1.100:2181/mesos',
     }}
     it { should contain_file(
-      file).with_content(/ZK="zk:\/\/192.168.1.100:2181\/mesos"/)
+      file).with_content(/^export MESOS_ZK="zk:\/\/192.168.1.100:2181\/mesos"/)
     }
   end
 
@@ -51,17 +49,9 @@ describe 'mesos::master', :type => :class do
     let(:params){{
       :master_port => '4040',
     }}
-    it { should contain_file(file).with_content(/PORT=4040/) }
+    it { should contain_file(file).with_content(/^export MESOS_PORT=4040/) }
   end
 
-  context 'setting whitelist' do
-    let(:params){{
-      :whitelist => '/var/lib/mesos/whitelist',
-    }}
-    it { should contain_file(
-      file).with_content(/WHITELIST='\/var\/lib\/mesos\/whitelist'/)
-    }
-  end
 
   it { should contain_file(file).with_content(/CLUSTER="mesos"/) }
 
@@ -69,7 +59,7 @@ describe 'mesos::master', :type => :class do
     let(:params){{
       :cluster => 'cluster',
     }}
-    it { should contain_file(file).with_content(/CLUSTER="cluster"/) }
+    it { should contain_file(file).with_content(/^export MESOS_CLUSTER="cluster"/) }
   end
 
   context 'setting environment variables' do

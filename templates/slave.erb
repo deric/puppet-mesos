@@ -15,26 +15,26 @@
 # If zookeeper URL is not specified, slaves will connect directly
 # to specified master (not a fault-tolerant mode)
 <% if !@zookeeper.nil? && !@zookeeper.empty? -%>
-MESOS_MASTER="<%= @zookeeper %>"
+export MESOS_MASTER="<%= @zookeeper %>"
 <% else -%>
-MESOS_MASTER="<%= @master %>:<%= @master_port %>"
+export MESOS_MASTER="<%= @master %>:<%= @master_port %>"
 <% end -%>
 
 # public slave's ip, must be unique in mesos cluster
 <% if @listen_address -%>
-MESOS_IP="<%= @listen_address %>"
+export MESOS_IP="<%= @listen_address %>"
 <% else -%>
-#MESOS_IP=""
+#export MESOS_IP=""
 <% end -%>
 
 # Port to listen on (default: 5051)
-MESOS_PORT=<%= @port %>
+export MESOS_PORT=<%= @port %>
 
 <% @cgroups.sort.each do |key, val| -%>
-MESOS_CGROUPS_<%= key.upcase %>="<%= val %>"
+export MESOS_CGROUPS_<%= key.upcase %>="<%= val %>"
 <% end if @isolation == 'cgroups' -%>
 
 # slave environment variables
 <% @env_var.sort.each do |key,val| -%>
-export MESOS_<%= key %>="<%= val %>"
+export <%= key %>="<%= val %>"
 <% end if @env_var -%>

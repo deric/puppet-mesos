@@ -12,23 +12,23 @@
 # in here precede those loaded from /etc/mesos-master (passed as command line arguments).
 
 # ZooKeeper URL (used for leader election amongst masters)
-MESOS_ZK="<%= @zookeeper %>"
+export MESOS_ZK="<%= @zookeeper %>"
 
 # Human readable name for the cluster, displayed in the webui
-MESOS_CLUSTER="<%= @cluster %>"
+export MESOS_CLUSTER="<%= @cluster %>"
 
 # IP address to listen on (in case that you start master
 # on this node, it will bind to this address)
 <% if @listen_address -%>
-MESOS_IP="<%= @listen_address %>"
+export MESOS_IP="<%= @listen_address %>"
 <% else -%>
-#MESOS_IP=""
+#export MESOS_IP=""
 <% end -%>
 
 # Port to listen on (default: 5050)
-MESOS_PORT=<%= @master_port %>
+export MESOS_PORT=<%= @master_port %>
 
 # master environment variables
 <% @env_var.sort.each do |key,val| -%>
-export MESOS_<%= key %>="<%= val %>"
+export <%= key %>="<%= val %>"
 <% end if @env_var -%>

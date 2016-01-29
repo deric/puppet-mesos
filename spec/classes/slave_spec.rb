@@ -28,7 +28,7 @@ describe 'mesos::slave', :type => :class do
   it 'does not set IP address by default' do
       should_not contain_file(
         slave_file
-      ).with_content(/^IP=/)
+      ).with_content(/^export MESOS_IP=/)
   end
 
   context 'with ip address set' do
@@ -40,14 +40,14 @@ describe 'mesos::slave', :type => :class do
     it 'has ip address from param' do
       should contain_file(
         slave_file
-      ).with_content(/^IP="192.168.1.1"$/)
+      ).with_content(/^export MESOS_IP="192.168.1.1"$/)
     end
   end
 
   it 'has default port eq to 5051' do
     should contain_file(
       slave_file
-    ).with_content(/^PORT=5051$/)
+    ).with_content(/^export MESOS_PORT=5051$/)
   end
 
   it 'checkpoint should be false' do
@@ -70,7 +70,7 @@ describe 'mesos::slave', :type => :class do
     }}
     it { should contain_file(
       slave_file
-      ).with_content(/^MASTER="192.168.1.100:5050"/)
+      ).with_content(/^export MESOS_MASTER="192.168.1.100:5050"/)
     }
     it { should contain_file(
       '/etc/mesos/zk'
@@ -85,7 +85,7 @@ describe 'mesos::slave', :type => :class do
     }}
     it { should_not contain_file(
       slave_file
-      ).with_content(/^MASTER="172.16.0.1"/)
+      ).with_content(/^export MESOS_MASTER="172.16.0.1"/)
     }
     # this would work only if we set mesos::zookeeper through hiera
     #it { should contain_file(
@@ -182,7 +182,7 @@ describe 'mesos::slave', :type => :class do
   it 'should not contain cgroups settings' do
     should_not contain_file(
       slave_file
-    ).with_content(/^CGROUPS/)
+    ).with_content(/CGROUPS/)
   end
 
   context 'setting isolation mechanism' do

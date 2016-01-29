@@ -13,5 +13,5 @@ ULIMIT="-n <%= @ulimit %>"
 
 # environment variables that apply to master and slave
 <% @env_var.sort.each do |key,val| -%>
-export MESOS_<%= key %>="<%= val %>"
+export <%= key %>="<%= val %>"
 <% end if @env_var -%>
