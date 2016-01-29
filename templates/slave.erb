@@ -1,3 +1,4 @@
+#!/bin/sh
 # Managed by Puppet
 #
 # A list of the available options can be seen by running `mesos-slave --help`. Each
@@ -14,31 +15,26 @@
 # If zookeeper URL is not specified, slaves will connect directly
 # to specified master (not a fault-tolerant mode)
 <% if !@zookeeper.nil? && !@zookeeper.empty? -%>
-MASTER="<%= @zookeeper %>"
+MESOS_MASTER="<%= @zookeeper %>"
 <% else -%>
-MASTER="<%= @master %>:<%= @master_port %>"
+MESOS_MASTER="<%= @master %>:<%= @master_port %>"
 <% end -%>
 
 # public slave's ip, must be unique in mesos cluster
 <% if @listen_address -%>
-IP="<%= @listen_address %>"
+MESOS_IP="<%= @listen_address %>"
 <% else -%>
-#IP=""
+#MESOS_IP=""
 <% end -%>
 
 # Port to listen on (default: 5051)
-PORT=<%= @port %>
+MESOS_PORT=<%= @port %>
 
 <% @cgroups.sort.each do |key, val| -%>
-CGROUPS_<%= key.upcase %>="<%= val %>"
+MESOS_CGROUPS_<%= key.upcase %>="<%= val %>"
 <% end if @isolation == 'cgroups' -%>
-
-# alternative is to use MESOS_<option> as an envar
-# option list is available with /usr/sbin/mesos-slave --help
-# EX :
-# export MESOS_log_dir=/var/log/mesos
 
 # slave environment variables
 <% @env_var.sort.each do |key,val| -%>
-export <%= key %>="<%= val %>"
+export MESOS_<%= key %>="<%= val %>"
 <% end if @env_var -%>
