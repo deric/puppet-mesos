@@ -265,6 +265,22 @@ mesos::slave::resources:
   cpus: '10'
 ```
 
+### Mesos CLI
+
+Mesos command line interface is written in Python (currently supports 2.6 and 2.7). The CLI provides serveral useful commands like `mesos ps` ,`mesos ls`. For complete list see [CLI documentation](https://pypi.python.org/pypi/mesos.cli).
+
+By default CLI is not installed with master nor slave, you should enable this manually by including
+
+```puppet
+class{'mesos::cli':
+  debug            => false,
+  response_timeout => 5,
+}
+```
+
+on any machine that can connect to mesos-master and mesos-slaves.
+
+
 ### Python installation
 
 Python is required for Mesos Web UI and for CLI as well. Installing Python with Mesos should be responsibility of binary packages (Mesos could be build without UI), therefore this behaviour is not enabled by default.
