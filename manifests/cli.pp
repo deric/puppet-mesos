@@ -13,8 +13,8 @@ class mesos::cli(
   ensure_resource('package', $packages,
     {
       'provider' => 'pip',
-      'ensure'   => $ensure
-      'require'  => Package[$pip_package]
+      'ensure'   => $ensure,
+      'require'  => Package[$pip_package],
     }
   )
 }
