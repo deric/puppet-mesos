@@ -9,11 +9,12 @@ class mesos::cli(
   $packages    = ['mesos.cli', 'mesos.interface'],
   $pip_package = 'python-pip',
 ){
-  ensure_packages([$pip_package]) ~>
+  ensure_packages([$pip_package])
   ensure_resource('package', $packages,
     {
       'provider' => 'pip',
       'ensure'   => $ensure
+      'require'  => Package[$pip_package]
     }
   )
 }
