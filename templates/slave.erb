@@ -1,6 +1,17 @@
 # Managed by Puppet
 #
-# if zookeeper URL is not specified, slaves will connect directly
+# A list of the available options can be seen by running `mesos-slave --help`. Each
+# option can be set in two ways:
+#
+#  * By creating a file in which the value resides (e.g. /etc/mesos-slave/ip or
+#    /etc/mesos-slave/resources/mem).
+#  * By setting the environment variable MESOS_OPTION_NAME (the option name with a
+#    MESOS_ prefix added to it).
+#
+# Configuration values are searched for first in the environment, thus values set
+# in here precede those loaded from /etc/mesos-slave (passed as command line arguments).
+#
+# If zookeeper URL is not specified, slaves will connect directly
 # to specified master (not a fault-tolerant mode)
 <% if !@zookeeper.nil? && !@zookeeper.empty? -%>
 MASTER="<%= @zookeeper %>"

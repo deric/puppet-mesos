@@ -1,5 +1,15 @@
 # Managed by Puppet
 #
+# A list of the available options can be seen by running `mesos-master --help`. Each
+# option can be set in two ways:
+#
+#  * By creating a file in which the value resides (e.g. /etc/mesos-master/ip).
+#  * By setting the environment variable MESOS_OPTION_NAME (the option name with a
+#    MESOS_ prefix added to it).
+#
+# Configuration values are searched for first in the environment, thus values set
+# in here precede those loaded from /etc/mesos-master (passed as command line arguments).
+
 # ZooKeeper URL (used for leader election amongst masters)
 ZK="<%= @zookeeper %>"
 
