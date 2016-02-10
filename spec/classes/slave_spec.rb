@@ -351,7 +351,7 @@ describe 'mesos::slave', :type => :class do
 
       it 'has no credentials property' do
         should_not contain_mesos__property(
-                       'slave_credentials'
+                       'slave_credential'
                    )
       end
 
@@ -376,7 +376,7 @@ describe 'mesos::slave', :type => :class do
 
       it 'has credentials property' do
         should contain_mesos__property(
-                   'slave_credentials'
+                   'slave_credential'
                ).with({
                           'value' => '/etc/mesos/slave-credentials',
                       })
