@@ -34,9 +34,11 @@ define mesos::property (
   } else {
     $filename = "${dir}/${file}"
     if $ensure == undef {
-      $real_ensure = empty($value) ? {
-        true  => absent,
-        false => present,
+      if empty($value) {
+        warning("Setting \$value to an empty value is deprecated and will be removed in the next major release, please use \$ensure => absent instead")
+        $real_ensure = absent
+      } else {
+        $real_ensure = present
       }
     } else {
       $real_ensure = $ensure
