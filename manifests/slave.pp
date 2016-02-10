@@ -131,12 +131,12 @@ class mesos::slave (
   # work_dir can't be specified via options,
   # we would get a duplicate declaration error
   mesos::property {'slave_work_dir':
-    value   => $work_dir,
-    dir     => $conf_dir,
-    file    => 'work_dir',
-    owner   => $owner,
-    group   => $group,
-    notify  => Service['mesos-slave'],
+    value  => $work_dir,
+    dir    => $conf_dir,
+    file   => 'work_dir',
+    owner  => $owner,
+    group  => $group,
+    notify => Service['mesos-slave'],
   }
 
   file { $work_dir:

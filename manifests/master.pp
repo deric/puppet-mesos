@@ -96,12 +96,12 @@ class mesos::master(
   # work_dir can't be specified via options,
   # we would get a duplicate declaration error
   mesos::property {'master_work_dir':
-    value   => $work_dir,
-    dir     => $conf_dir,
-    file    => 'work_dir',
-    owner   => $owner,
-    group   => $group,
-    notify  => Service['mesos-master'],
+    value  => $work_dir,
+    dir    => $conf_dir,
+    file   => 'work_dir',
+    owner  => $owner,
+    group  => $group,
+    notify => Service['mesos-master'],
   }
 
   create_resources(mesos::property,
