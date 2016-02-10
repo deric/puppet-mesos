@@ -301,6 +301,15 @@ describe 'mesos::slave', :type => :class do
       :group    => group,
     }}
 
+    it do
+      should contain_mesos__property('slave_work_dir').with({
+        'owner' => owner,
+        'group' => group,
+        'dir'   => conf,
+        'value' => work_dir,
+      }).that_requires("File[#{conf}]")
+    end
+
     it { should contain_file(
       "#{conf}/work_dir"
     ).with_content(/\/tmp\/mesos/) }

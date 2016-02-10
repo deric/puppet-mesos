@@ -147,6 +147,15 @@ describe 'mesos::master', :type => :class do
       'owner'   => owner,
       'group'   => group,
     }) }
+
+    it do
+      should contain_mesos__property('master_work_dir').with({
+        'owner' => owner,
+        'group' => group,
+        'dir'   => conf,
+        'value' => work_dir,
+      }).that_requires("File[#{conf}]")
+    end
   end
 
   context 'support boolean flags' do
