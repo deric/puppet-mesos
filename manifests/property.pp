@@ -4,7 +4,7 @@
 define mesos::property (
   $value,
   $dir,
-  $service, #service to be notified about property changes
+  $service = undef, #service to be notified about property changes
   $file = $title,
   $owner = 'root',
   $group = 'root',

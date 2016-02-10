@@ -7,7 +7,6 @@ describe 'mesos::property', :type => :define do
   let(:params) {{
     :value   => 'foo',
     :dir     => directory,
-    :service => '',
     :owner   => 'tester',
     :group   => 'testers',
   }}
@@ -28,7 +27,6 @@ describe 'mesos::property', :type => :define do
     let(:params) {{
       :value   => '',
       :dir     => directory,
-      :service => '',
     }}
 
     it 'should not contain a property file' do
@@ -44,7 +42,6 @@ describe 'mesos::property', :type => :define do
     let(:params) {{
       :value   => [], # TODO this is not really meaningful value
       :dir     => directory,
-      :service => '',
     }}
 
     it 'should not contain a property file' do
@@ -60,7 +57,6 @@ describe 'mesos::property', :type => :define do
     let(:params) {{
       :value   => true, # TODO this is not really meaningful value
       :dir     => directory,
-      :service => '',
     }}
 
     it 'should contain a property file' do
@@ -76,7 +72,6 @@ describe 'mesos::property', :type => :define do
     let(:params) {{
       :value   => false, # TODO this is not really meaningful value
       :dir     => directory,
-      :service => '',
     }}
 
     it 'should contain a "no-property" file' do
@@ -92,7 +87,6 @@ describe 'mesos::property', :type => :define do
     let(:params) {{
       :value   => 314,
       :dir     => directory,
-      :service => '',
     }}
 
     it 'should contain a property file' do
@@ -108,7 +102,6 @@ describe 'mesos::property', :type => :define do
     let(:params) {{
       :value   => 3.14,
       :dir     => directory,
-      :service => '',
     }}
 
     it 'should contain a property file' do
