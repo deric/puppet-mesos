@@ -12,6 +12,8 @@ describe 'mesos::property', :type => :define do
     :group   => 'testers',
   }}
 
+  it { should compile }
+
   it 'should create a property file' do
       should contain_file(
         "#{directory}/#{title}"
