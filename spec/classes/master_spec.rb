@@ -154,7 +154,13 @@ describe 'mesos::master', :type => :class do
         'group' => group,
         'dir'   => conf,
         'value' => work_dir,
-      }).that_requires("File[#{conf}]")
+      })
+    end
+
+    it do
+      should contain_file("#{conf}/work_dir")
+        .with_content(/\/var\/lib\/mesos/)
+        .that_requires("File[#{conf}]")
     end
   end
 

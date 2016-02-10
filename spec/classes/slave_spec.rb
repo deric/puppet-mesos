@@ -307,12 +307,14 @@ describe 'mesos::slave', :type => :class do
         'group' => group,
         'dir'   => conf,
         'value' => work_dir,
-      }).that_requires("File[#{conf}]")
+      })
     end
 
-    it { should contain_file(
-      "#{conf}/work_dir"
-    ).with_content(/\/tmp\/mesos/) }
+    it do
+      should contain_file("#{conf}/work_dir")
+        .with_content(/\/tmp\/mesos/)
+        .that_requires("File[#{conf}]")
+    end
 
     it { should contain_file(work_dir).with({
       'ensure'  => 'directory',

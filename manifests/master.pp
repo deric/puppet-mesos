@@ -102,7 +102,6 @@ class mesos::master(
     owner   => $owner,
     group   => $group,
     notify  => Service['mesos-master'],
-    require => File[$conf_dir],
   }
 
   create_resources(mesos::property,

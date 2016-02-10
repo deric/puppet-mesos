@@ -137,7 +137,6 @@ class mesos::slave (
     owner   => $owner,
     group   => $group,
     notify  => Service['mesos-slave'],
-    require => File[$conf_dir],
   }
 
   file { $work_dir:
