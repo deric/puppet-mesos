@@ -127,4 +127,70 @@ describe 'mesos::property', :type => :define do
       })
     end
   end
+
+  context 'ensure is set' do
+    describe 'when ensure is present and the value is empty' do
+      let(:params) {{
+        :ensure => 'present',
+        :value  => '',
+        :dir    => directory,
+      }}
+
+      it 'should contain a property file' do
+          should contain_file(
+            "#{directory}/#{title}"
+          ).with({
+          'ensure'  => 'present',
+          })
+      end
+    end
+
+    describe 'when ensure is absent and the value is empty' do
+      let(:params) {{
+        :ensure => 'absent',
+        :value  => '',
+        :dir    => directory,
+      }}
+
+      it 'should not contain a property file' do
+          should contain_file(
+            "#{directory}/#{title}"
+          ).with({
+          'ensure'  => 'absent',
+          })
+      end
+    end
+
+    describe 'when ensure is absent and the value is a boolean' do
+      let(:params) {{
+        :ensure => 'absent',
+        :value  => false,
+        :dir    => directory,
+      }}
+
+      it 'should not contain a property file' do
+          should contain_file(
+            "#{directory}/?no-#{title}"
+          ).with({
+          'ensure'  => 'absent',
+          })
+      end
+    end
+
+    describe 'when ensure is absent and the value is numeric' do
+      let(:params) {{
+        :ensure => 'absent',
+        :value  => 123,
+        :dir    => directory,
+      }}
+
+      it 'should not contain a property file' do
+          should contain_file(
+            "#{directory}/#{title}"
+          ).with({
+          'ensure'  => 'absent',
+          })
+      end
+    end
+  end
 end

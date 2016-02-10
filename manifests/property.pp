@@ -4,6 +4,7 @@
 define mesos::property (
   $value,
   $dir,
+  $ensure = undef,
   $service = undef, #service to be notified about property changes
   $file = $title,
   $owner = 'root',
@@ -18,23 +19,33 @@ define mesos::property (
       true => "${dir}/?${file}",
       false => "${dir}/?no-${file}",
     }
-    $ensure = 'present'
+    $real_ensure = $ensure ? {
+      undef   => 'present',
+      default => $ensure,
+    }
     $content = ''
   } elsif is_numeric($value) {
     $filename = "${dir}/${file}"
-    $ensure = 'present'
+    $real_ensure = $ensure ? {
+      undef   => 'present',
+      default => $ensure,
+    }
     $content = "${value}"
   } else {
     $filename = "${dir}/${file}"
-    $ensure = empty($value) ? {
-      true  => absent,
-      false => present,
+    if $ensure == undef {
+      $real_ensure = empty($value) ? {
+        true  => absent,
+        false => present,
+      }
+    } else {
+      $real_ensure = $ensure
     }
     $content = $value
   }
 
   file { $filename:
-    ensure  => $ensure,
+    ensure  => $real_ensure,
     content => $content,
     owner   => $owner,
     group   => $group,
