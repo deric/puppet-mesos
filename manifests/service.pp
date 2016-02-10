@@ -15,6 +15,8 @@ define mesos::service(
   $manage         = true,
 ) {
 
+  include ::mesos
+
   if $manage {
     if $enable {
       $ensure_service = 'running'
@@ -34,8 +36,7 @@ define mesos::service(
       enable     => $enable,
       provider   => $force_provider,
       subscribe  => [
-        File['/etc/default/mesos'],
-        File["/etc/default/mesos-${name}"],
+        File[$mesos::conf_file],
         Package['mesos']
       ],
     }
