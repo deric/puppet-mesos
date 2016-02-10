@@ -117,7 +117,7 @@ class mesos::slave (
   }
 
   if (!empty($principal) and !empty($secret)) {
-    $credentials_options = {'credentials' => $credentials_file}
+    $credentials_options = {'credential' => $credentials_file}
     $credentials_content = "{\"principal\": \"${principal}\", \"secret\": \"${secret}\"}"
     $credentials_ensure = file
   } else {
