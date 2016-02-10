@@ -15,9 +15,9 @@ define mesos::property (
   }
 
   case $ensure {
-    present: { }
-    file: { }
-    absent: { }
+    present, file, absent: {
+      $real_ensure = $ensure
+    }
     undef: { }
     default: {
       fail("\$ensure must be one of 'present', 'file', 'absent', or undef, not '${ensure}'")
@@ -29,16 +29,14 @@ define mesos::property (
       true => "${dir}/?${file}",
       false => "${dir}/?no-${file}",
     }
-    $real_ensure = $ensure ? {
-      undef   => 'present',
-      default => $ensure,
+    if $ensure == undef {
+      $real_ensure = present
     }
     $content = ''
   } elsif is_numeric($value) {
     $filename = "${dir}/${file}"
-    $real_ensure = $ensure ? {
-      undef   => 'present',
-      default => $ensure,
+    if $ensure == undef {
+      $real_ensure = present
     }
     $content = "${value}"
   } else {
@@ -50,8 +48,6 @@ define mesos::property (
       } else {
         $real_ensure = present
       }
-    } else {
-      $real_ensure = $ensure
     }
     $content = $value
   }
