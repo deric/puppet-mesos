@@ -9,6 +9,9 @@ define mesos::property (
   $owner = 'root',
   $group = 'root',
 ) {
+  if $service != undef {
+    warning("\$service is deprecated and will be removed in the next major release, please use \$notify => ${service} instead")
+  }
 
   if is_bool($value) {
     $filename = $value ? {
