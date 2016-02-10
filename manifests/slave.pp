@@ -104,8 +104,8 @@ class mesos::slave (
   create_resources(mesos::property,
     mesos_hash_parser($cgroups, 'slave', 'cgroups'),
     {
-      dir     => $conf_dir,
-      service => Service['mesos-slave'],
+      dir    => $conf_dir,
+      notify => Service['mesos-slave'],
     }
   )
 
@@ -136,7 +136,7 @@ class mesos::slave (
     file    => 'work_dir',
     owner   => $owner,
     group   => $group,
-    service => Service['mesos-slave'],
+    notify  => Service['mesos-slave'],
     require => File[$conf_dir],
   }
 
@@ -157,30 +157,30 @@ class mesos::slave (
   create_resources(mesos::property,
     mesos_hash_parser($merged_options, 'slave'),
     {
-      dir     => $conf_dir,
-      owner   => $owner,
-      group   => $group,
-      service => Service['mesos-slave'],
+      dir    => $conf_dir,
+      owner  => $owner,
+      group  => $group,
+      notify => Service['mesos-slave'],
     }
   )
 
   create_resources(mesos::property,
     mesos_hash_parser($resources, 'resources'),
     {
-      dir     => "${conf_dir}/resources",
-      owner   => $owner,
-      group   => $group,
-      service => Service['mesos-slave'],
+      dir    => "${conf_dir}/resources",
+      owner  => $owner,
+      group  => $group,
+      notify => Service['mesos-slave'],
     }
   )
 
   create_resources(mesos::property,
     mesos_hash_parser($attributes, 'attributes'),
     {
-      dir     => "${conf_dir}/attributes",
-      owner   => $owner,
-      group   => $group,
-      service => Service['mesos-slave'],
+      dir    => "${conf_dir}/attributes",
+      owner  => $owner,
+      group  => $group,
+      notify => Service['mesos-slave'],
     }
   )
 

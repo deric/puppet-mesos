@@ -101,17 +101,17 @@ class mesos::master(
     file    => 'work_dir',
     owner   => $owner,
     group   => $group,
-    service => Service['mesos-master'],
+    notify  => Service['mesos-master'],
     require => File[$conf_dir],
   }
 
   create_resources(mesos::property,
     mesos_hash_parser($merged_options, 'master'),
     {
-      dir     => $conf_dir,
-      owner   => $owner,
-      group   => $group,
-      service => Service['mesos-master'],
+      dir    => $conf_dir,
+      owner  => $owner,
+      group  => $group,
+      notify => Service['mesos-master'],
     }
   )
 
