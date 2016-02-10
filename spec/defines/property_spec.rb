@@ -7,10 +7,11 @@ describe 'mesos::property', :type => :define do
   let(:params) {{
     :value   => 'foo',
     :dir     => directory,
-    :service => '',
     :owner   => 'tester',
     :group   => 'testers',
   }}
+
+  it { should compile }
 
   it 'should create a property file' do
       should contain_file(
@@ -26,7 +27,21 @@ describe 'mesos::property', :type => :define do
     let(:params) {{
       :value   => '',
       :dir     => directory,
-      :service => '',
+    }}
+
+    it 'should not contain a property file' do
+        should contain_file(
+          "#{directory}/#{title}"
+        ).with({
+        'ensure'  => 'absent',
+        })
+    end
+  end
+
+  context 'with an undef value' do
+    let(:params) {{
+      :value   => :undef,
+      :dir     => directory,
     }}
 
     it 'should not contain a property file' do
@@ -42,7 +57,6 @@ describe 'mesos::property', :type => :define do
     let(:params) {{
       :value   => [], # TODO this is not really meaningful value
       :dir     => directory,
-      :service => '',
     }}
 
     it 'should not contain a property file' do
@@ -58,7 +72,6 @@ describe 'mesos::property', :type => :define do
     let(:params) {{
       :value   => true, # TODO this is not really meaningful value
       :dir     => directory,
-      :service => '',
     }}
 
     it 'should contain a property file' do
@@ -74,7 +87,6 @@ describe 'mesos::property', :type => :define do
     let(:params) {{
       :value   => false, # TODO this is not really meaningful value
       :dir     => directory,
-      :service => '',
     }}
 
     it 'should contain a "no-property" file' do
@@ -90,7 +102,6 @@ describe 'mesos::property', :type => :define do
     let(:params) {{
       :value   => 314,
       :dir     => directory,
-      :service => '',
     }}
 
     it 'should contain a property file' do
@@ -106,7 +117,6 @@ describe 'mesos::property', :type => :define do
     let(:params) {{
       :value   => 3.14,
       :dir     => directory,
-      :service => '',
     }}
 
     it 'should contain a property file' do

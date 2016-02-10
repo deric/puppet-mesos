@@ -151,18 +151,20 @@ class{'mesos::slave':
 As Mesos configuration flags changes with each version we don't provide directly a named parameter for each flag. `mesos::property` allows to create a parameter file or remove the file when `value` is left empty. e.g. configure value in `/etc/mesos/hostname`:
 
 ```puppet
-::mesos::property { 'hostname':
-  value => 'mesos.hostname.com',
-  dir   => '/etc/mesos'
+mesos::property { 'hostname':
+  value  => 'mesos.hostname.com',
+  dir    => '/etc/mesos-slave',
+  notify => Service['mesos-slave']
 }
 ```
 
 Remove this file simply set value to undef:
 
 ```puppet
-::mesos::property { 'hostname':
-  value => undef,
-  dir   => '/etc/mesos'
+mesos::property { 'hostname':
+  value  => undef,
+  dir    => '/etc/mesos-slave',
+  notify => Service['mesos-slave']
 }
 ```
 

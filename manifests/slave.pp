@@ -104,8 +104,8 @@ class mesos::slave (
   create_resources(mesos::property,
     mesos_hash_parser($cgroups, 'slave', 'cgroups'),
     {
-      dir     => $conf_dir,
-      service => Service['mesos-slave'],
+      dir    => $conf_dir,
+      notify => Service['mesos-slave'],
     }
   )
 
@@ -131,13 +131,12 @@ class mesos::slave (
   # work_dir can't be specified via options,
   # we would get a duplicate declaration error
   mesos::property {'slave_work_dir':
-    value   => $work_dir,
-    dir     => $conf_dir,
-    file    => 'work_dir',
-    owner   => $owner,
-    group   => $group,
-    service => Service['mesos-slave'],
-    require => File[$conf_dir],
+    value  => $work_dir,
+    dir    => $conf_dir,
+    file   => 'work_dir',
+    owner  => $owner,
+    group  => $group,
+    notify => Service['mesos-slave'],
   }
 
   file { $work_dir:
@@ -157,30 +156,30 @@ class mesos::slave (
   create_resources(mesos::property,
     mesos_hash_parser($merged_options, 'slave'),
     {
-      dir     => $conf_dir,
-      owner   => $owner,
-      group   => $group,
-      service => Service['mesos-slave'],
+      dir    => $conf_dir,
+      owner  => $owner,
+      group  => $group,
+      notify => Service['mesos-slave'],
     }
   )
 
   create_resources(mesos::property,
     mesos_hash_parser($resources, 'resources'),
     {
-      dir     => "${conf_dir}/resources",
-      owner   => $owner,
-      group   => $group,
-      service => Service['mesos-slave'],
+      dir    => "${conf_dir}/resources",
+      owner  => $owner,
+      group  => $group,
+      notify => Service['mesos-slave'],
     }
   )
 
   create_resources(mesos::property,
     mesos_hash_parser($attributes, 'attributes'),
     {
-      dir     => "${conf_dir}/attributes",
-      owner   => $owner,
-      group   => $group,
-      service => Service['mesos-slave'],
+      dir    => "${conf_dir}/attributes",
+      owner  => $owner,
+      group  => $group,
+      notify => Service['mesos-slave'],
     }
   )
 

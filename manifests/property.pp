@@ -4,11 +4,14 @@
 define mesos::property (
   $value,
   $dir,
-  $service, #service to be notified about property changes
+  $service = undef, #service to be notified about property changes
   $file = $title,
   $owner = 'root',
   $group = 'root',
 ) {
+  if $service != undef {
+    warning("\$service is deprecated and will be removed in the next major release, please use \$notify => ${service} instead")
+  }
 
   if is_bool($value) {
     $filename = $value ? {
@@ -35,7 +38,6 @@ define mesos::property (
     content => $content,
     owner   => $owner,
     group   => $group,
-    require => File[$dir],
     notify  => $service,
   }
 
