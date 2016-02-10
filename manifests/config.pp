@@ -16,6 +16,7 @@ class mesos::config(
   $log_dir        = undef,
   $ulimit         = 8192,
   $conf_dir       = '/etc/mesos',
+  $conf_file      = '/etc/default/mesos',
   $manage_zk_file = true,
   $owner          = 'root',
   $group          = 'root',
@@ -38,7 +39,7 @@ class mesos::config(
     group  => $group,
   }
 
-  file { '/etc/default/mesos':
+  file { $conf_file:
     ensure  => 'present',
     content => template('mesos/default.erb'),
     owner   => $owner,

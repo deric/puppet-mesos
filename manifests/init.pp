@@ -25,6 +25,7 @@ class mesos(
   # TODO: currently not used
   $log_dir        = '/var/log/mesos',
   $conf_dir       = '/etc/mesos',
+  $conf_file      = '/etc/default/mesos',
   $manage_zk_file = true,
   $manage_service = true,
   # e.g. zk://localhost:2181/mesos
@@ -63,6 +64,7 @@ class mesos(
   class {'mesos::config':
     log_dir        => $log_dir,
     conf_dir       => $conf_dir,
+    conf_file      => $conf_file,
     manage_zk_file => $manage_zk_file,
     owner          => $owner,
     group          => $group,

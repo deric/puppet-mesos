@@ -32,6 +32,17 @@ describe 'mesos::config', :type => :class do
     ).with_content(/ULIMIT="-n 8192"/)
   end
 
+  context 'conf_file' do
+    let(:conf_file) { '/etc/sysconfig/mesos' }
+    let(:params){{
+        :conf_file => conf_file,
+    }}
+
+    it do
+      should contain_file(conf_file)
+    end
+  end
+
   context 'setting ulimit' do
     let(:params){{
       :ulimit => 16384,
