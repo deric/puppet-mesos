@@ -38,6 +38,21 @@ describe 'mesos::property', :type => :define do
     end
   end
 
+  context 'with an undef value' do
+    let(:params) {{
+      :value   => :undef,
+      :dir     => directory,
+    }}
+
+    it 'should not contain a property file' do
+        should contain_file(
+          "#{directory}/#{title}"
+        ).with({
+        'ensure'  => 'absent',
+        })
+    end
+  end
+
   context 'with an empty array value' do
     let(:params) {{
       :value   => [], # TODO this is not really meaningful value
