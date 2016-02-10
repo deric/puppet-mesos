@@ -302,6 +302,14 @@ describe 'mesos::slave', :type => :class do
     }}
 
     it do
+      should contain_file(work_dir).with({
+        'ensure'  => 'directory',
+        'owner'   => owner,
+        'group'   => group,
+      })
+    end
+
+    it do
       should contain_mesos__property('slave_work_dir').with({
         'owner' => owner,
         'group' => group,
@@ -312,15 +320,9 @@ describe 'mesos::slave', :type => :class do
 
     it do
       should contain_file("#{conf}/work_dir")
-        .with_content(/\/tmp\/mesos/)
+        .with_content(work_dir)
         .that_requires("File[#{conf}]")
     end
-
-    it { should contain_file(work_dir).with({
-      'ensure'  => 'directory',
-      'owner'   => owner,
-      'group'   => group,
-    }) }
   end
 
   context 'support boolean flags' do

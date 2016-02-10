@@ -142,11 +142,13 @@ describe 'mesos::master', :type => :class do
     }}
 
 
-    it { should contain_file(work_dir).with({
-      'ensure'  => 'directory',
-      'owner'   => owner,
-      'group'   => group,
-    }) }
+    it do
+      should contain_file(work_dir).with({
+        'ensure'  => 'directory',
+        'owner'   => owner,
+        'group'   => group,
+      })
+    end
 
     it do
       should contain_mesos__property('master_work_dir').with({
@@ -159,7 +161,7 @@ describe 'mesos::master', :type => :class do
 
     it do
       should contain_file("#{conf}/work_dir")
-        .with_content(/\/var\/lib\/mesos/)
+        .with_content(work_dir)
         .that_requires("File[#{conf}]")
     end
   end
