@@ -35,7 +35,6 @@ define mesos::property (
     content => $content,
     owner   => $owner,
     group   => $group,
-    require => File[$dir],
     notify  => $service,
   }
 
