@@ -145,6 +145,22 @@ describe 'mesos::property', :type => :define do
       end
     end
 
+    describe 'when ensure is file and the value is empty' do
+      let(:params) {{
+        :ensure => 'file',
+        :value  => '',
+        :dir    => directory,
+      }}
+
+      it 'should contain a property file' do
+          should contain_file(
+            "#{directory}/#{title}"
+          ).with({
+          'ensure'  => 'file',
+          })
+      end
+    end
+
     describe 'when ensure is absent and the value is empty' do
       let(:params) {{
         :ensure => 'absent',
@@ -191,6 +207,16 @@ describe 'mesos::property', :type => :define do
           'ensure'  => 'absent',
           })
       end
+    end
+
+    describe 'when ensure is directory' do
+      let(:params) {{
+        :ensure => 'directory',
+        :value  => 'test',
+        :dir    => directory,
+      }}
+
+      it { should raise_error(/\$ensure must be .* not 'directory'/) }
     end
   end
 end

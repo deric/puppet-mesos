@@ -14,6 +14,16 @@ define mesos::property (
     warning("\$service is deprecated and will be removed in the next major release, please use \$notify => ${service} instead")
   }
 
+  case $ensure {
+    present: { }
+    file: { }
+    absent: { }
+    undef: { }
+    default: {
+      fail("\$ensure must be one of 'present', 'file', 'absent', or undef, not '${ensure}'")
+    }
+  }
+
   if is_bool($value) {
     $filename = $value ? {
       true => "${dir}/?${file}",
