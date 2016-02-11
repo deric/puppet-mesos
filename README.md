@@ -88,6 +88,7 @@ class{'mesos::slave':
  - `acls_file` - path to file to store acls (default: `/etc/mesos/acls`)
  - `credentials` - array of mesos credentials, `[{'principal' => 'some-principal', 'secret' => 'some-secret'}]` (default: `[]`)
  - `credentials_file` - path to file to store credentials (default: `/etc/mesos/master-credentials`)
+ - `syslog_logger` - whether to log the Mesos service's output to syslog - note that if this parameter is false then it is up to your init system to log the process's output and if Mesos fails to start properly it will not produce log files of its own (default: true)
 
 #### listen address
 
@@ -121,6 +122,7 @@ By default no IP address is set, which means that Mesos will use IP to which tra
  - `principal` - mesos principal used for auththentication
  - `secret` - secret used for auththentication
  - `credentials_file` - path to file to store credentials (default: `/etc/mesos/slave-credentials`)
+ - `syslog_logger` - whether to log the Mesos service's output to syslog (default: true)
 
 ```puppet
 class{'mesos::slave':

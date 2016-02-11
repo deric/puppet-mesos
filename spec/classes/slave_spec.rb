@@ -394,5 +394,55 @@ describe 'mesos::slave', :type => :class do
                       })
       end
     end
+
+    context 'syslog logger' do
+      describe 'when syslog_logger is true' do
+        let(:params) do
+          {
+            :conf_dir => conf,
+            :owner => owner,
+            :group => group,
+            :syslog_logger => true
+          }
+        end
+        it do
+          should contain_mesos__property('slave_logger')
+            .with(
+              :ensure => 'absent',
+              :file => 'logger',
+              :value => false,
+              :dir => conf,
+              :owner => owner,
+              :group => group
+            )
+
+          should contain_file("#{conf}/?no-logger").with_ensure('absent')
+        end
+      end
+
+      describe 'when syslog_logger is false' do
+        let(:params) do
+          {
+            :conf_dir => conf,
+            :owner => owner,
+            :group => group,
+            :syslog_logger => false
+          }
+        end
+        it do
+          should contain_mesos__property('slave_logger')
+            .with(
+              :ensure => 'present',
+              :file => 'logger',
+              :value => false,
+              :dir => conf,
+              :owner => owner,
+              :group => group
+            )
+
+          should contain_file("#{conf}/?no-logger").with_ensure('present')
+        end
+      end
+    end
   end
 end

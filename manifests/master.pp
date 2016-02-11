@@ -28,6 +28,7 @@ class mesos::master(
   $options          = {},
   $acls             = {},
   $credentials      = [],
+  $syslog_logger    = true,
   $force_provider   = undef, #temporary workaround for starting services
 ) inherits mesos {
 
@@ -38,6 +39,7 @@ class mesos::master(
   validate_array($credentials)
   validate_absolute_path($credentials_file)
   validate_bool($manage_service)
+  validate_bool($syslog_logger)
 
   if (!empty($acls)) {
     $acls_options = {'acls' => $acls_file}
@@ -121,6 +123,23 @@ class mesos::master(
     group   => $group,
     mode    => '0644',
     require => [File[$conf_dir], Package['mesos']],
+  }
+
+  # When launched by the "mesos-init-wrapper", the Mesos service's stdout/stderr
+  # are logged to syslog using logger (http://linux.die.net/man/1/logger). This
+  # is disabled using the "--no-logger" flag. There is no equivalent "--logger"
+  # flag so the option must either be present or completely removed.
+  $logger_ensure = $syslog_logger ? {
+    true  => absent,
+    false => present,
+  }
+  mesos::property { 'master_logger':
+    ensure => $logger_ensure,
+    file   => 'logger',
+    value  => false,
+    dir    => $conf_dir,
+    owner  => $owner,
+    group  => $group,
   }
 
   # Install mesos-master service
