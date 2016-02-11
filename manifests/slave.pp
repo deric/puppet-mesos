@@ -59,6 +59,7 @@ class mesos::slave (
   $attributes       = {},
   $principal        = undef,
   $secret           = undef,
+  $syslog_logger    = true,
   $force_provider   = undef, #temporary workaround for starting services
 ) inherits mesos {
 
@@ -72,6 +73,7 @@ class mesos::slave (
   validate_string($secret)
   validate_absolute_path($credentials_file)
   validate_bool($manage_service)
+  validate_bool($syslog_logger)
 
   file { $conf_dir:
     ensure  => directory,
@@ -190,6 +192,19 @@ class mesos::slave (
     group   => $group,
     mode    => '0644',
     require => [Class['mesos::config'], File[$conf_dir], Package['mesos']],
+  }
+
+  $logger_ensure = $syslog_logger ? {
+    true  => absent,
+    false => present,
+  }
+  mesos::property { 'slave_logger':
+    ensure => $logger_ensure,
+    file   => 'logger',
+    value  => false,
+    dir    => $conf_dir,
+    owner  => $owner,
+    group  => $group,
   }
 
   # Install mesos-slave service
