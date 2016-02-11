@@ -88,7 +88,7 @@ class{'mesos::slave':
  - `acls_file` - path to file to store acls (default: `/etc/mesos/acls`)
  - `credentials` - array of mesos credentials, `[{'principal' => 'some-principal', 'secret' => 'some-secret'}]` (default: `[]`)
  - `credentials_file` - path to file to store credentials (default: `/etc/mesos/master-credentials`)
- - `syslog_logger` - whether to log the Mesos service's output to syslog - note that if Mesos fails to launch and this parameter is false there will be no logs at all (including log files) (default: true)
+ - `syslog_logger` - whether to log the Mesos service's output to syslog - note that if this parameter is false then it is up to your init system to log the process's output and if Mesos fails to start properly it will not produce log files of its own (default: true)
 
 #### listen address
 
