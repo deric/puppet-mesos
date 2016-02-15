@@ -36,7 +36,7 @@ describe 'mesos::repo', :type => :class do
   end
 
   context 'on Debian based systems' do
-    puppet = `puppet --version`
+    puppet = Puppet.version
 
     it_behaves_like 'debian', 'Debian', 'wheezy', puppet
     it_behaves_like 'debian', 'Ubuntu', 'precise', puppet
