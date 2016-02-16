@@ -326,7 +326,7 @@ class{'mesos':
 by default this feature is disabled and right we support [mesosphere.io](http://mesosphere.io) repositories for:
 
   * Debian/Ubuntu
-  * RedHat
+  * RedHat/CentOS
 
 Feel free to send PR for other distributions/package sources.
 
@@ -355,7 +355,6 @@ Some reasonable values are:
 You can build package by yourself and upload package to your software repository. Or use packages from mesosphere.io:
 
   * Debian/Ubuntu
-    * [mesos deb packaging](https://github.com/deric/mesos-deb-packaging)
     * [mesosphere packages](http://mesosphere.io/downloads/)
   * RedHat/CentOS
     * [mesosphere packages](http://mesosphere.io/downloads/)
