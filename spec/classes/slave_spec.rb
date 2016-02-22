@@ -334,6 +334,40 @@ describe 'mesos::slave', :type => :class do
     end
   end
 
+  context 'common slave config' do
+    let(:params){{
+      :zookeeper      => 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos',
+      :listen_address => "$::ipaddress",
+      :attributes     => {
+        'env' => 'production',
+      },
+      :resources => {
+        'ports' => '[10000-65535]'
+      },
+    }}
+
+    it { should compile.with_all_deps }
+    it { should contain_package('mesos') }
+    it { should contain_service('mesos-slave').with(
+      :ensure => 'running',
+      :enable => true
+    ) }
+
+    it { should contain_mesos__property('resources_ports').with({
+      'dir'     => '/etc/mesos-slave/resources',
+      'file'    => 'ports',
+      'value'   => '[10000-65535]',
+    }) }
+
+
+    it { should contain_mesos__property('attributes_env').with({
+      'dir'     => '/etc/mesos-slave/attributes',
+      'file'    => 'env',
+      'value'   => 'production',
+    }) }
+
+  end
+
   context 'support boolean flags' do
     let(:my_conf_dir) { '/var/mesos-slave'}
     let(:params){{
