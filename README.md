@@ -20,12 +20,15 @@ example slave configuration:
 ```puppet
 class{'mesos::slave':
   zookeeper  => 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos',
-  listen_address => $::ipaddress,
   attributes => {
     'env' => 'production',
   },
   resources => {
     'ports' => '[10000-65535]'
+  },
+  options   => {
+    'containerizers' => 'docker,mesos',
+    'hostname'       => $::fqdn,
   }
 }
 ```
@@ -92,7 +95,7 @@ class{'mesos::slave':
 
 #### listen address
 
-If you want to change the IP address Mesos is binding to, you can either provide a Puppet Fact:
+By default Mesos will bind to `0.0.0.0`. If you want to change the IP address Mesos is binding to, you can either provide a Puppet Fact:
 
 ```puppet
 class{'mesos::master':
@@ -106,6 +109,8 @@ class{'mesos::master':
   listen_address => '192.168.1.1'
 }
 ```
+
+Note that Facter 2 will contain incorrect IP address in `$::ipaddress` fact when Docker is installed. See [FACT-380](https://tickets.puppetlabs.com/browse/FACT-380) for more information.
 
 By default no IP address is set, which means that Mesos will use IP to which translates `hostname -f` (you can influence bind address simply in `/etc/hosts`).
 
