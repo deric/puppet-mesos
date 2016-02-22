@@ -25,7 +25,7 @@ class{'mesos::slave':
     'env' => 'production',
   },
   resources => {
-    'ports' => '[2000-65535]'
+    'ports' => '[10000-65535]'
   }
 }
 ```
