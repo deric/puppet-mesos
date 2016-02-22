@@ -191,7 +191,9 @@ describe 'mesos::slave', :type => :class do
       :cgroups   => {
         'hierarchy' => '/sys/fs/cgroup',
         'root'      => 'mesos',
-      }
+      },
+      :owner     => owner,
+      :group     => group,
     }}
 
     it { should contain_file(
@@ -207,6 +209,13 @@ describe 'mesos::slave', :type => :class do
     ).with({
       'ensure'  => 'present',
     }).with_content(/^cgroups\/cpu,cgroups\/mem$/) }
+
+    it { should contain_mesos__property('slave_hierarchy').with({
+      'owner'   => owner,
+      'group'   => group,
+      'dir'     => conf,
+      'value'   => '/sys/fs/cgroup',
+    }) }
   end
 
   context 'changing slave config file location' do

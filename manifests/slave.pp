@@ -106,6 +106,8 @@ class mesos::slave (
   create_resources(mesos::property,
     mesos_hash_parser($cgroups, 'slave', 'cgroups'),
     {
+      owner  => $owner,
+      group  => $group,
       dir    => $conf_dir,
       notify => Service['mesos-slave'],
     }
