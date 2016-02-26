@@ -1,6 +1,7 @@
 # Mesos Puppet Module
 [![Puppet
-Forge](http://img.shields.io/puppetforge/v/deric/mesos.svg)](https://forge.puppetlabs.com/deric/mesos) [![Build Status](https://travis-ci.org/deric/puppet-mesos.png)](https://travis-ci.org/deric/puppet-mesos)
+Forge](http://img.shields.io/puppetforge/v/deric/mesos.svg)](https://forge.puppetlabs.com/deric/mesos) [![Build Status](https://travis-ci.org/deric/puppet-mesos.png)](https://travis-ci.org/deric/puppet-mesos) [![Puppet Forge
+Downloads](http://img.shields.io/puppetforge/dt/deric/mesos.svg)](https://forge.puppetlabs.com/deric/mesos)
 
 *COMPATIBILITY NOTE:* current version (0.6.x) requires `puppetlabs-apt >= 2.1.0` which has significantly refactored API (doesn't matter if you don't wanna use Mesosphere APT repo).
 
