@@ -36,7 +36,7 @@ class mesos(
   $version         = undef,
   # master and slave creates separate logs automatically
   # TODO: currently not used
-  $log_dir         = '/var/log/mesos',
+  $log_dir         = undef,
   $conf_dir        = '/etc/mesos',
   $conf_file       = '/etc/default/mesos',
   $manage_zk_file  = true,
