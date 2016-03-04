@@ -8,6 +8,7 @@
 #  [*manage_zk_file*] - flag whether module manages /etc/mesos/zk (default: true)
 #  [*owner*]          - owner of configuration files
 #  [*group*]          - group of configuration files
+#  [*zookeeper_url*]  - string of ZooKeeper servers e.g. `zk://10.0.0.1/mesos`
 #
 # This class should not be included directly,
 # always use 'mesos::slave' or 'mesos:master'
@@ -20,14 +21,10 @@ class mesos::config(
   $manage_zk_file = true,
   $owner          = 'root',
   $group          = 'root',
-  $zookeeper      = [],
   $env_var        = {},
+  $zookeeper_url,
 ){
   validate_bool($manage_zk_file)
-
-  if ! empty($zookeeper) {
-    $zookeeper_url = zookeeper_servers_url($zookeeper)
-  }
 
   if $log_dir {
     file { $log_dir:
@@ -55,7 +52,7 @@ class mesos::config(
   if $manage_zk_file {
     # file containing only zookeeper URL
     file { '/etc/mesos/zk':
-      ensure  => empty($zookeeper) ? {
+      ensure  => empty($zookeeper_url) ? {
         true  => absent,
         false => present,
       },

@@ -4,10 +4,23 @@
 #
 # === Examples
 #
-#      class{ 'mesos::master': }
-#  or
-#      class{ 'mesos:slave': }
+#      class{ 'mesos':
+#         zookeeper => ['192.168.1.1:2181', '192.168.1.1:2181'],
+#      }
 #
+# === Parameters
+#
+#  [*zookeeper*]
+#    An array of ZooKeeper ip's (with port) (will be converted to a zk url)
+#
+#  [*zookeeper_path*]
+#    Mesos namespace in ZooKeeper (last part of the zk:// URL, e.g. `zk://192.168.1.1/mesos`)
+#
+#  [*master*]
+#    If `zookeeper` is empty, master value is used
+#
+#  [*listen_address*]
+#    Could be a fact like `$::ipaddress` or explicit ip address (String).
 #
 # === Authors
 #
@@ -28,14 +41,12 @@ class mesos(
   $conf_file      = '/etc/default/mesos',
   $manage_zk_file = true,
   $manage_service = true,
-  # an array of zookeeper ip's (with port) (will be converted to a zk url)
   $zookeeper      = [],
-  # if "zk" is empty, master value is used
+  $zookeeper_path = 'mesos',
   $master         = '127.0.0.1',
   $master_port    = 5050,
   $owner          = 'root',
   $group          = 'root',
-  # could be a fact like $::ipaddress or explicit ip address
   $listen_address = undef,
   $repo           = undef,
   $env_var        = {},
@@ -49,7 +60,7 @@ class mesos(
   validate_bool($manage_service)
 
   if ! empty($zookeeper) {
-    $zookeeper_url = zookeeper_servers_url($zookeeper)
+    $zookeeper_url = zookeeper_servers_url($zookeeper, $zookeeper_path)
   }
 
   $mesos_ensure = $version ? {
@@ -72,7 +83,7 @@ class mesos(
     manage_zk_file => $manage_zk_file,
     owner          => $owner,
     group          => $group,
-    zookeeper      => $zookeeper,
+    zookeeper_url  => $zookeeper_url,
     env_var        => $env_var,
     ulimit         => $ulimit,
     require        => Class['mesos::install']

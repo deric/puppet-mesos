@@ -48,6 +48,7 @@ class mesos::slave (
   $master           = $mesos::master,
   $master_port      = $mesos::master_port,
   $zookeeper        = $mesos::zookeeper,
+  $zookeeper_path   = $mesos::zookeeper_path,
   $owner            = $mesos::owner,
   $group            = $mesos::group,
   $listen_address   = $mesos::listen_address,
@@ -76,7 +77,7 @@ class mesos::slave (
   validate_bool($syslog_logger)
 
   if ! empty($zookeeper) {
-    $zookeeper_url = zookeeper_servers_url($zookeeper)
+    $zookeeper_url = zookeeper_servers_url($zookeeper, $zookeeper_path)
   }
 
   file { $conf_dir:

@@ -10,6 +10,7 @@ describe 'mesos::config', :type => :class do
     :log_dir  => '/var/log/mesos',
     :owner    => owner,
     :group    => group,
+    :zookeeper_url => 'zk://10.0.0.1/mesos',
   }}
 
   it { should contain_file('/etc/default/mesos').with({
@@ -35,7 +36,8 @@ describe 'mesos::config', :type => :class do
   context 'conf_file' do
     let(:conf_file) { '/etc/sysconfig/mesos' }
     let(:params){{
-        :conf_file => conf_file,
+      :conf_file => conf_file,
+      :zookeeper_url => 'zk://10.0.0.1/mesos',
     }}
 
     it do
@@ -46,6 +48,7 @@ describe 'mesos::config', :type => :class do
   context 'setting ulimit' do
     let(:params){{
       :ulimit => 16384,
+      :zookeeper_url => 'zk://10.0.0.1/mesos',
     }}
 
     it { should contain_file(
@@ -57,33 +60,11 @@ describe 'mesos::config', :type => :class do
   context 'setting log dir' do
     let(:params){{
       :log_dir => '/srv/mesos/log',
+      :zookeeper_url => 'zk://10.0.0.1/mesos',
     }}
     it { should contain_file(
       '/etc/default/mesos'
       ).with_content(/LOGS="\/srv\/mesos\/log"/)
-    }
-  end
-
-  context 'with zookeeper' do
-    let(:params){{
-      :zookeeper => [ '192.168.1.100:2181' ],
-    }}
-    it { should contain_file(
-      '/etc/mesos/zk'
-      ).with(
-      :ensure => 'present'
-      ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
-    }
-  end
-
-  context 'with manage_zk_file false' do
-    let(:params){{
-      :manage_zk_file => false,
-      :zookeeper      => [ '192.168.1.100:2181' ],
-    }}
-    it { should_not contain_file(
-      '/etc/mesos/zk'
-      )
     }
   end
 
@@ -93,6 +74,7 @@ describe 'mesos::config', :type => :class do
         'JAVA_HOME' => '/usr/bin/java',
         'MESOS_HOME' => '/var/lib/mesos',
       },
+      :zookeeper_url => 'zk://10.0.0.1/mesos',
     }}
 
     it { should contain_file(
@@ -107,7 +89,8 @@ describe 'mesos::config', :type => :class do
   context 'set LOGS variable' do
     let(:file) { '/etc/default/mesos' }
     let(:params) {{
-      :log_dir => '/var/log/mesos'
+      :log_dir => '/var/log/mesos',
+      :zookeeper_url => 'zk://10.0.0.1/mesos',
     }}
 
     it { should contain_file(file).with_content(/LOGS="\/var\/log\/mesos"/) }

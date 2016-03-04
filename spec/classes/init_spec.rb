@@ -92,6 +92,29 @@ describe 'mesos', :type => :class do
     end
   end
 
+  context 'with zookeeper' do
+    let(:params){{
+      :zookeeper => [ '192.168.1.100:2181' ],
+    }}
+    it { should contain_file(
+      '/etc/mesos/zk'
+      ).with(
+      :ensure => 'present'
+      ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
+    }
+  end
+
+  context 'with manage_zk_file false' do
+    let(:params){{
+      :manage_zk_file => false,
+      :zookeeper      => [ '192.168.1.100:2181' ],
+    }}
+    it { should_not contain_file(
+      '/etc/mesos/zk'
+      )
+    }
+  end
+
   context 'zookeeper URL - allow passing directly ZooKeeper\'s URI (backward compatibility 0.x)' do
     let(:params){{
       :zookeeper => 'zk://192.168.1.100:2181/mesos',
@@ -101,6 +124,19 @@ describe 'mesos', :type => :class do
       ).with(
       :ensure => 'present'
       ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
+    }
+  end
+
+  context 'allow changing zookeeper\'s namespace' do
+    let(:params){{
+      :zookeeper => ['192.168.1.100:2181', '192.168.1.105:2181'],
+      :zookeeper_path => 'my_mesos',
+    }}
+    it { should contain_file(
+      '/etc/mesos/zk'
+      ).with(
+      :ensure => 'present'
+      ).with_content(/^zk:\/\/192.168.1.100:2181,192.168.1.105:2181\/my_mesos/)
     }
   end
 
