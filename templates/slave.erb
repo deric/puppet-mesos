@@ -14,8 +14,8 @@
 #
 # If zookeeper URL is not specified, slaves will connect directly
 # to specified master (not a fault-tolerant mode)
-<% if !@zookeeper.nil? && !@zookeeper.empty? -%>
-export MESOS_MASTER="<%= @zookeeper %>"
+<% if !@zookeeper_url.nil? && !@zookeeper_url.empty? -%>
+export MESOS_MASTER="<%= @zookeeper_url %>"
 <% else -%>
 export MESOS_MASTER="<%= @master %>:<%= @master_port %>"
 <% end -%>

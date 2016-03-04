@@ -48,6 +48,8 @@ class mesos::slave (
   $master           = $mesos::master,
   $master_port      = $mesos::master_port,
   $zookeeper        = $mesos::zookeeper,
+  $zk_path          = $mesos::zk_path,
+  $zk_default_port  = $mesos::zk_default_port,
   $owner            = $mesos::owner,
   $group            = $mesos::group,
   $listen_address   = $mesos::listen_address,
@@ -74,6 +76,10 @@ class mesos::slave (
   validate_absolute_path($credentials_file)
   validate_bool($manage_service)
   validate_bool($syslog_logger)
+
+  if !empty($zookeeper) {
+    $zookeeper_url = zookeeper_servers_url($zookeeper, $zk_path, $zk_default_port)
+  }
 
   file { $conf_dir:
     ensure  => directory,

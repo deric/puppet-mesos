@@ -91,4 +91,66 @@ describe 'mesos', :type => :class do
       it { should contain_class('mesos::install').with('remove_package_services' => true) }
     end
   end
+
+  context 'with zookeeper' do
+    let(:params){{
+      :zookeeper => [ '192.168.1.100:2181' ],
+    }}
+    it { should contain_file(
+      '/etc/mesos/zk'
+      ).with(
+      :ensure => 'present'
+      ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
+    }
+  end
+
+  context 'with manage_zk_file false' do
+    let(:params){{
+      :manage_zk_file => false,
+      :zookeeper      => [ '192.168.1.100:2181' ],
+    }}
+    it { should_not contain_file(
+      '/etc/mesos/zk'
+      )
+    }
+  end
+
+  context 'zookeeper URL - allow passing directly ZooKeeper\'s URI (backward compatibility 0.x)' do
+    let(:params){{
+      :zookeeper => 'zk://192.168.1.100:2181/mesos',
+    }}
+    it { should contain_file(
+      '/etc/mesos/zk'
+      ).with(
+      :ensure => 'present'
+      ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
+    }
+  end
+
+  context 'allow changing zookeeper\'s namespace' do
+    let(:params){{
+      :zookeeper => ['192.168.1.100:2181', '192.168.1.105:2181'],
+      :zk_path   => 'my_mesos',
+    }}
+    it { should contain_file(
+      '/etc/mesos/zk'
+      ).with(
+      :ensure => 'present'
+      ).with_content(/^zk:\/\/192.168.1.100:2181,192.168.1.105:2181\/my_mesos/)
+    }
+  end
+
+  context 'allow changing zookeeper\'s default port' do
+    let(:params){{
+      :zookeeper       => ['192.168.1.100', '192.168.1.105'],
+      :zk_default_port => 2828,
+    }}
+    it { should contain_file(
+      '/etc/mesos/zk'
+      ).with(
+      :ensure => 'present'
+      ).with_content(/^zk:\/\/192.168.1.100:2828,192.168.1.105:2828\/mesos/)
+    }
+  end
+
 end
