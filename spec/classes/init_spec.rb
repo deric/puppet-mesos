@@ -130,13 +130,26 @@ describe 'mesos', :type => :class do
   context 'allow changing zookeeper\'s namespace' do
     let(:params){{
       :zookeeper => ['192.168.1.100:2181', '192.168.1.105:2181'],
-      :zookeeper_path => 'my_mesos',
+      :zk_path   => 'my_mesos',
     }}
     it { should contain_file(
       '/etc/mesos/zk'
       ).with(
       :ensure => 'present'
       ).with_content(/^zk:\/\/192.168.1.100:2181,192.168.1.105:2181\/my_mesos/)
+    }
+  end
+
+  context 'allow changing zookeeper\'s default port' do
+    let(:params){{
+      :zookeeper       => ['192.168.1.100', '192.168.1.105'],
+      :zk_default_port => 2828,
+    }}
+    it { should contain_file(
+      '/etc/mesos/zk'
+      ).with(
+      :ensure => 'present'
+      ).with_content(/^zk:\/\/192.168.1.100:2828,192.168.1.105:2828\/mesos/)
     }
   end
 

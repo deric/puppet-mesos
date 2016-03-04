@@ -44,6 +44,14 @@ describe 'zookeeper_servers_url' do
       )
     end
 
+    it 'allows changing default port' do
+      param = [ '192.168.1.1:2180','192.168.1.2', '192.168.1.3' ]
+
+      subject.should run.with_params(param, 'bar', 2222).and_return(
+        "zk://192.168.1.1:2180,192.168.1.2:2222,192.168.1.3:2222/bar"
+      )
+    end
+
   end
 
 end

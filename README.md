@@ -10,7 +10,7 @@ For installing master
 ```puppet
 class{'mesos':
   repo => 'mesosphere',
-  zookeeper  => [ '192.168.1.1:2181', '192.168.1.2:2181', '192.168.1.3:2181' ],
+  zookeeper => [ '192.168.1.1', '192.168.1.2', '192.168.1.3'],
 }
 
 class{'mesos::master':
@@ -20,7 +20,9 @@ class{'mesos::master':
   }
 }
 ```
-example slave configuration:
+From ZooKeeper array an URI is created `zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos`. In order to customize this use either `server:port` or see `zk_path` and `zk_default_port` variable.
+
+Example slave configuration:
 
 ```puppet
 class{'mesos::slave':

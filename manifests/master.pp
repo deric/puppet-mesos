@@ -20,7 +20,8 @@ class mesos::master(
   $credentials_file = '/etc/mesos/master-credentials',
   $master_port      = $mesos::master_port,
   $zookeeper        = $mesos::zookeeper,
-  $zookeeper_path   = $mesos::zookeeper_path,
+  $zk_path          = $mesos::zk_path,
+  $zk_default_port  = $mesos::zk_default_port,
   $owner            = $mesos::owner,
   $group            = $mesos::group,
   $listen_address   = $mesos::listen_address,
@@ -64,8 +65,8 @@ class mesos::master(
 
   $merged_options = merge($options, $acls_options, $credentials_options)
 
-  if ! empty($zookeeper) {
-    $zookeeper_url = zookeeper_servers_url($zookeeper, $zookeeper_path)
+  if !empty($zookeeper) {
+    $zookeeper_url = zookeeper_servers_url($zookeeper, $zk_path, $zk_default_port)
   }
 
   file { $conf_dir:

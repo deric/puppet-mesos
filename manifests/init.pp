@@ -31,36 +31,37 @@
 # Copyright 2013-2016 Tomas Barton
 #
 class mesos(
-  $ensure         = 'present',
+  $ensure          = 'present',
   # if version is not defined, ensure will be used
-  $version        = undef,
+  $version         = undef,
   # master and slave creates separate logs automatically
   # TODO: currently not used
-  $log_dir        = '/var/log/mesos',
-  $conf_dir       = '/etc/mesos',
-  $conf_file      = '/etc/default/mesos',
-  $manage_zk_file = true,
-  $manage_service = true,
-  $zookeeper      = [],
-  $zookeeper_path = 'mesos',
-  $master         = '127.0.0.1',
-  $master_port    = 5050,
-  $owner          = 'root',
-  $group          = 'root',
-  $listen_address = undef,
-  $repo           = undef,
-  $env_var        = {},
-  $ulimit         = 8192,
-  $manage_python  = false,
-  $python_package = 'python',
-  $force_provider = undef, #temporary workaround for starting services
+  $log_dir         = '/var/log/mesos',
+  $conf_dir        = '/etc/mesos',
+  $conf_file       = '/etc/default/mesos',
+  $manage_zk_file  = true,
+  $manage_service  = true,
+  $zookeeper       = [],
+  $zk_path         = 'mesos',
+  $zk_default_port = 2181,
+  $master          = '127.0.0.1',
+  $master_port     = 5050,
+  $owner           = 'root',
+  $group           = 'root',
+  $listen_address  = undef,
+  $repo            = undef,
+  $env_var         = {},
+  $ulimit          = 8192,
+  $manage_python   = false,
+  $python_package  = 'python',
+  $force_provider  = undef, #temporary workaround for starting services
 ) {
   validate_hash($env_var)
   validate_bool($manage_zk_file)
   validate_bool($manage_service)
 
-  if ! empty($zookeeper) {
-    $zookeeper_url = zookeeper_servers_url($zookeeper, $zookeeper_path)
+  if !empty($zookeeper) {
+    $zookeeper_url = zookeeper_servers_url($zookeeper, $zk_path, $zk_default_port)
   }
 
   $mesos_ensure = $version ? {
