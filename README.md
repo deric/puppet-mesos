@@ -1,7 +1,7 @@
 # Mesos Puppet Module
 [![Puppet
 Forge](http://img.shields.io/puppetforge/v/deric/mesos.svg)](https://forge.puppetlabs.com/deric/mesos) [![Build Status](https://travis-ci.org/deric/puppet-mesos.png)](https://travis-ci.org/deric/puppet-mesos) [![Puppet Forge
-Downloads](http://img.shields.io/puppetforge/dt/deric/mesos.svg)](https://forge.puppetlabs.com/deric/mesos)
+Downloads](http://img.shields.io/puppetforge/dt/deric/mesos.svg)](https://forge.puppetlabs.com/deric/mesos/scores)
 
 *COMPATIBILITY NOTE:* current version (0.6.x) requires `puppetlabs-apt >= 2.1.0` which has significantly refactored API (doesn't matter if you don't wanna use Mesosphere APT repo).
 
@@ -9,11 +9,11 @@ For installing master
 
 ```puppet
 class{'mesos':
-  repo => 'mesosphere'
+  repo => 'mesosphere',
+  zookeeper  => 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos',
 }
 
 class{'mesos::master':
-  zookeeper  => 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos',
   work_dir => '/var/lib/mesos',
   options => {
     quorum   => 2
@@ -24,7 +24,6 @@ example slave configuration:
 
 ```puppet
 class{'mesos::slave':
-  zookeeper  => 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos',
   attributes => {
     'env' => 'production',
   },
