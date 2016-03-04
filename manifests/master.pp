@@ -66,6 +66,9 @@ class mesos::master(
   $merged_options = merge($options, $acls_options, $credentials_options)
 
   if !empty($zookeeper) {
+    if is_string($zookeeper) {
+      warning('\$zookeeper parameter should be an array of IP addresses, please update your configuration.')
+    }
     $zookeeper_url = zookeeper_servers_url($zookeeper, $zk_path, $zk_default_port)
   }
 

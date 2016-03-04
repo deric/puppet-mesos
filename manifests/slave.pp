@@ -78,6 +78,9 @@ class mesos::slave (
   validate_bool($syslog_logger)
 
   if !empty($zookeeper) {
+    if is_string($zookeeper) {
+      warning('\$zookeeper parameter should be an array of IP addresses, please update your configuration.')
+    }
     $zookeeper_url = zookeeper_servers_url($zookeeper, $zk_path, $zk_default_port)
   }
 
