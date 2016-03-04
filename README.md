@@ -220,7 +220,10 @@ mesos::master      : '192.168.1.1'
   or [Zookeeper](http://zookeeper.apache.org/) could be use for a fault-tolerant setup (multiple instances of zookeeper are separated by comma):
 
 ```yaml
-mesos::zookeeper   : [ '192.168.1.1:2181' ]
+mesos::zookeeper:
+  - '192.168.1.1:2181'
+  - '192.168.1.2:2181'
+  - '192.168.1.3:2181'
 ```
 
 Some parameters are shared between master and slave nodes:
