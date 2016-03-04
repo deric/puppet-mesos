@@ -25,6 +25,13 @@ describe 'zookeeper_servers_url' do
       param = { 'test' => 1 }
       subject.should run.with_params(param).and_raise_error(Puppet::ParseError)
     end
+
+    it 'should be backwards compatible' do
+      param = 'zk://192.168.1.1:2181/mesos'
+
+      subject.should run.with_params(param).and_return("zk://192.168.1.1:2181/mesos")
+    end
+
   end
 
 end

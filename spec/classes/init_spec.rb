@@ -91,4 +91,17 @@ describe 'mesos', :type => :class do
       it { should contain_class('mesos::install').with('remove_package_services' => true) }
     end
   end
+
+  context 'zookeeper URL - allow passing directly ZooKeeper\'s URI (backward compatibility 0.x)' do
+    let(:params){{
+      :zookeeper => 'zk://192.168.1.100:2181/mesos',
+    }}
+    it { should contain_file(
+      '/etc/mesos/zk'
+      ).with(
+      :ensure => 'present'
+      ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
+    }
+  end
+
 end

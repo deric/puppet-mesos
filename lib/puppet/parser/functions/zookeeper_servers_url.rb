@@ -16,7 +16,8 @@ EOS
       when 'Array'
         zookeeper_servers = args[0].clone
       when 'String'
-        zookeeper_servers = Array.new(1, args[0].clone)
+        # backward compatibility, will be removed in 1.x
+        return args[0]
       else
         raise(Puppet::ParseError, "zookeeper_servers_url() accepts an Array, you passed a " + args[0].class.name)
     end
