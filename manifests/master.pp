@@ -32,6 +32,7 @@ class mesos::master(
   $credentials      = [],
   $syslog_logger    = true,
   $force_provider   = undef, #temporary workaround for starting services
+  $use_hiera        = $mesos::use_hiera,
 ) inherits mesos {
 
   validate_hash($env_var)
@@ -63,7 +64,14 @@ class mesos::master(
     $credentials_ensure = absent
   }
 
-  $merged_options = merge($options, $acls_options, $credentials_options)
+  if $use_hiera {
+    # In Puppet 3 automatic lookup won't merge options across multiple config
+    # files, see https://www.devco.net/archives/2016/02/03/puppet-4-data-lookup-strategies.php
+    $opts = hiera_hash('mesos::master::options', $options)
+    $merged_options = merge($opts, $acls_options, $credentials_options)
+  } else {
+    $merged_options = merge($options, $acls_options, $credentials_options)
+  }
 
   if !empty($zookeeper) {
     if is_string($zookeeper) {

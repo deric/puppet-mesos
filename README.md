@@ -211,9 +211,9 @@ class{'mesos::slave':
 
 ## Hiera support
 
-  All configuration could be handled by hiera.
+All configuration could be handled by Hiera. Simple parameter are looked up by default in Puppet 3, however hashes won't get merged. In order to merge options from multiple Hiera files set `mesos::use_hiera: true`.
 
-  Either specify one master
+Either specify one master
 
 ```yaml
 mesos::master      : '192.168.1.1'

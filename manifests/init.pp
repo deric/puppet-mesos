@@ -55,6 +55,7 @@ class mesos(
   $manage_python   = false,
   $python_package  = 'python',
   $force_provider  = undef, #temporary workaround for starting services
+  $use_hiera       = false,
 ) {
   validate_hash($env_var)
   validate_bool($manage_zk_file)

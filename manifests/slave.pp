@@ -3,30 +3,36 @@
 # This module manages Mesos slave
 #
 # Parameters:
-#  [*enable*] - install Mesos slave service
-#              (default: true)
-#  [*master*] - ip address of Mesos master
-#              (default: localhost)
-#  [*master_port*] - Mesos master's port
-#              (default 5050)
-#  [*zookeeper*] - Zookeeper URL string (which keeps track
-#                of current Mesos master)
-#  [*work_dir*] - directory for storing task's temporary files
-#              (default: /tmp/mesos)
-#  [*isolation*] - isolation mechanism - either 'process' or 'cgroups'
-#                  newer versions of Mesos > 0.18 support isolation mechanism
-#                  'cgroups/cpu,cgroups/mem' or posix/cpu,posix/mem
+#  [*enable*]
+#    Install Mesos slave service (default: true)
 #
+#  [*master*]
+#    IP address of Mesos master (default: localhost)
 #
-#  [*options*] any extra arguments that are not named here could be
-#              stored in a hash:
+#  [*master_port*]
+#    Mesos master's port (default 5050)
 #
-#                options => { "key" => "value" }
+#  [*zookeeper*]
+#    Zookeeper URL string (which keeps track of current Mesos master)
 #
-#              (as value you can pass either string, boolean or numeric value)
-#              which is serialized to disk and then passed to mesos-slave as:
+#  [*work_dir*]
+#    Directory for storing task's temporary files (default: /tmp/mesos)
 #
-#                --key=value
+#  [*isolation*]
+#    Isolation mechanism - either 'process' or 'cgroups' newer versions
+#    of Mesos > 0.18 support isolation mechanism 'cgroups/cpu,cgroups/mem'
+#    or posix/cpu,posix/mem
+#
+#  [*options*]
+#    Any extra arguments that are not named here could be
+#    stored in a hash:
+#
+#      options => { "key" => "value" }
+#
+#    (as value you can pass either string, boolean or numeric value)
+#    which is serialized to disk and then passed to mesos-slave as:
+#
+#      --key=value
 #
 # Sample Usage:
 #
@@ -63,6 +69,7 @@ class mesos::slave (
   $secret           = undef,
   $syslog_logger    = true,
   $force_provider   = undef, #temporary workaround for starting services
+  $use_hiera        = $mesos::use_hiera,
 ) inherits mesos {
 
   validate_hash($env_var)
@@ -139,7 +146,14 @@ class mesos::slave (
     $credentials_ensure = absent
   }
 
-  $merged_options = merge($options, $isolator_options, $credentials_options)
+  if $use_hiera {
+    # In Puppet 3 automatic lookup won't merge options across multiple config
+    # files, see https://www.devco.net/archives/2016/02/03/puppet-4-data-lookup-strategies.php
+    $opts = hiera_hash('mesos::slave::options', $options)
+    $merged_options = merge($opts, $isolator_options, $credentials_options)
+  } else {
+    $merged_options = merge($options, $isolator_options, $credentials_options)
+  }
 
   # work_dir can't be specified via options,
   # we would get a duplicate declaration error

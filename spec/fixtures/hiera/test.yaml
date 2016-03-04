@@ -1,0 +1,3 @@
+---
+mesos::master::options:
+  quorum: 2

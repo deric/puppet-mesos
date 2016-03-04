@@ -1,0 +1,3 @@
+---
+mesos::master::options:
+  advertise_ip: '10.0.0.1'

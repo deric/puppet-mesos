@@ -337,4 +337,24 @@ describe 'mesos::master', :type => :class do
       end
     end
   end
+
+  context 'test merging hashes from hiera' do
+    let(:params){{
+      :use_hiera => true,
+    }}
+
+    # quorum defined in spec/fixtures/hiera/test.yaml
+    it 'defines quorum' do
+      should contain_file("#{conf}/quorum").with_ensure('present')
+      should contain_mesos__property('master_quorum')
+        .with(:value => 2)
+    end
+    # advertise_ip defined in spec/fixtures/hiera/default.yaml
+    it 'with advertised IP config' do
+      should contain_file("#{conf}/advertise_ip").with_ensure('present')
+      should contain_mesos__property('master_advertise_ip')
+        .with(:value => '10.0.0.1')
+    end
+  end
+
 end
