@@ -22,7 +22,7 @@ class mesos::config(
   $owner          = 'root',
   $group          = 'root',
   $env_var        = {},
-  $zookeeper_url,
+  $zookeeper_url  = undef,
 ){
   validate_bool($manage_zk_file)
 

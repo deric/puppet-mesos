@@ -10,7 +10,6 @@ describe 'mesos::config', :type => :class do
     :log_dir  => '/var/log/mesos',
     :owner    => owner,
     :group    => group,
-    :zookeeper_url => 'zk://10.0.0.1/mesos',
   }}
 
   it { should contain_file('/etc/default/mesos').with({
@@ -48,7 +47,6 @@ describe 'mesos::config', :type => :class do
   context 'setting ulimit' do
     let(:params){{
       :ulimit => 16384,
-      :zookeeper_url => 'zk://10.0.0.1/mesos',
     }}
 
     it { should contain_file(
@@ -74,7 +72,6 @@ describe 'mesos::config', :type => :class do
         'JAVA_HOME' => '/usr/bin/java',
         'MESOS_HOME' => '/var/lib/mesos',
       },
-      :zookeeper_url => 'zk://10.0.0.1/mesos',
     }}
 
     it { should contain_file(
@@ -90,7 +87,6 @@ describe 'mesos::config', :type => :class do
     let(:file) { '/etc/default/mesos' }
     let(:params) {{
       :log_dir => '/var/log/mesos',
-      :zookeeper_url => 'zk://10.0.0.1/mesos',
     }}
 
     it { should contain_file(file).with_content(/LOGS="\/var\/log\/mesos"/) }
