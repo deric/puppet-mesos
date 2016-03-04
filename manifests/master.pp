@@ -63,6 +63,10 @@ class mesos::master(
 
   $merged_options = merge($options, $acls_options, $credentials_options)
 
+  if ! empty($zookeeper) {
+    $zookeeper_url = zookeeper_servers_url($zookeeper)
+  }
+
   file { $conf_dir:
     ensure  => directory,
     owner   => $owner,

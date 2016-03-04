@@ -81,7 +81,7 @@ describe 'mesos::slave', :type => :class do
   context 'zookeeper should be preferred before single master' do
     let(:params){{
       :master    => '172.16.0.1',
-      :zookeeper => 'zk://192.168.1.100:2181/mesos',
+      :zookeeper => [ '192.168.1.100:2181' ],
     }}
     it { should_not contain_file(
       slave_file

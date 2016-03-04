@@ -28,8 +28,8 @@ class mesos(
   $conf_file      = '/etc/default/mesos',
   $manage_zk_file = true,
   $manage_service = true,
-  # e.g. zk://localhost:2181/mesos
-  $zookeeper      = '',
+  # an array of zookeeper ip's (with port) (will be converted to a zk url)
+  $zookeeper      = [],
   # if "zk" is empty, master value is used
   $master         = '127.0.0.1',
   $master_port    = 5050,
@@ -47,6 +47,10 @@ class mesos(
   validate_hash($env_var)
   validate_bool($manage_zk_file)
   validate_bool($manage_service)
+
+  if ! empty($zookeeper) {
+    $zookeeper_url = zookeeper_servers_url($zookeeper)
+  }
 
   $mesos_ensure = $version ? {
     undef    => $ensure,
