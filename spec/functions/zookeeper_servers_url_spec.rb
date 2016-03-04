@@ -8,13 +8,17 @@ describe 'zookeeper_servers_url' do
     it 'convert zookeeper server list to zookeeper url only 1 server' do
       param = [ '192.168.1.1:2181' ]
 
-      subject.should run.with_params(param).and_return("zk://192.168.1.1:2181/mesos")
+      subject.should run.with_params(param).and_return(
+        'zk://192.168.1.1:2181/mesos'
+      )
     end
 
     it 'convert zookeeper server list to zookeeper url with more than 1 server' do
       param = [ '192.168.1.1:2181', '192.168.1.2:2181' ]
 
-      subject.should run.with_params(param).and_return("zk://192.168.1.1:2181,192.168.1.2:2181/mesos")
+      subject.should run.with_params(param).and_return(
+        'zk://192.168.1.1:2181,192.168.1.2:2181/mesos'
+      )
     end
 
     it 'should raise an error if run with extra arguments' do
@@ -29,7 +33,15 @@ describe 'zookeeper_servers_url' do
     it 'should be backwards compatible' do
       param = 'zk://192.168.1.1:2181/mesos'
 
-      subject.should run.with_params(param).and_return("zk://192.168.1.1:2181/mesos")
+      subject.should run.with_params(param).and_return('zk://192.168.1.1:2181/mesos')
+    end
+
+    it 'allow changing zookeeper path' do
+      param = [ '192.168.1.1:2181','192.168.1.2:2181' ]
+
+      subject.should run.with_params(param, 'foo').and_return(
+        "zk://192.168.1.1:2181,192.168.1.2:2181/foo"
+      )
     end
 
   end
