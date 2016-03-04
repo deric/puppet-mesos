@@ -20,10 +20,14 @@ class mesos::config(
   $manage_zk_file = true,
   $owner          = 'root',
   $group          = 'root',
-  $zookeeper      = '',
+  $zookeeper      = [],
   $env_var        = {},
 ){
   validate_bool($manage_zk_file)
+
+  if ! empty($zookeeper) {
+    $zookeeper_url = zookeeper_servers_url($zookeeper)
+  }
 
   if $log_dir {
     file { $log_dir:
@@ -55,7 +59,7 @@ class mesos::config(
         true  => absent,
         false => present,
       },
-      content => $zookeeper,
+      content => $zookeeper_url,
       owner   => $owner,
       group   => $group,
     }

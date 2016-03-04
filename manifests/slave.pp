@@ -75,6 +75,10 @@ class mesos::slave (
   validate_bool($manage_service)
   validate_bool($syslog_logger)
 
+  if ! empty($zookeeper) {
+    $zookeeper_url = zookeeper_servers_url($zookeeper)
+  }
+
   file { $conf_dir:
     ensure  => directory,
     owner   => $owner,
