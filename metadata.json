@@ -1,6 +1,6 @@
 {
   "name": "deric-mesos",
-  "version": "0.8.0-dev",
+  "version": "0.8.0",
   "author": "Tomas Barton",
   "summary": "Module managing Mesos master and slave instalation",
   "license": "Apache-2.0",
@@ -11,11 +11,11 @@
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
-      "version_requirement": ">= 4.2.0"
+      "version_requirement": ">= 2.4.0 < 5.0.0"
     },
     {
       "name": "puppetlabs-apt",
-      "version_requirement": ">= 2.1.0"
+      "version_requirement": ">= 2.1.0 <= 3.0.0"
     }
   ],
   "operatingsystem_support": [
