@@ -1,4 +1,4 @@
-require 'spec_helper'
+ 'spec_helper'
 
 describe 'mesos::master', :type => :class do
   let(:owner) { 'mesos' }
@@ -356,5 +356,33 @@ describe 'mesos::master', :type => :class do
         .with(:value => '10.0.0.1')
     end
   end
+
+  context 'single role' do
+    it { should contain_service('mesos-master').with(
+      :ensure => 'running',
+      :enable => true
+    ) }
+
+    it { should contain_service('mesos-slave').with(
+      :enable => false
+    ) }
+
+    it {
+      should contain_mesos__service('master').with(:enable => true)
+      should contain_mesos__service('slave').with(:enable => false)
+    }
+
+    context 'disable single role' do
+      let(:params) {{
+        :single_role => false,
+      }}
+
+      it { should_not contain_service('mesos-slave').with(
+        :enable => false
+      ) }
+
+    end
+  end
+
 
 end

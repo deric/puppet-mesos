@@ -32,7 +32,6 @@ RSpec.configure do |c|
 end
 
 Puppet::Util::Log.level = :info
-#Puppet::Util::Log.level = :debug
 Puppet::Util::Log.newdestination(:console)
 
 at_exit { RSpec::Puppet::Coverage.report! }

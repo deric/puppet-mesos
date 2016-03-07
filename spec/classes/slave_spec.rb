@@ -488,4 +488,32 @@ describe 'mesos::slave', :type => :class do
       end
     end
   end
+
+  context 'single role' do
+    it { should contain_service('mesos-slave').with(
+      :ensure => 'running',
+      :enable => true
+    ) }
+
+    it { should contain_service('mesos-master').with(
+      :enable => false
+    ) }
+
+    it {
+      should contain_mesos__service('master').with(:enable => false)
+      should contain_mesos__service('slave').with(:enable => true)
+    }
+
+    context 'disable single role' do
+      let(:params) {{
+        :single_role => false,
+      }}
+
+      it { should_not contain_service('mesos-master').with(
+        :enable => false
+      ) }
+
+    end
+  end
+
 end

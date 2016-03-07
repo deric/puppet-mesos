@@ -7,6 +7,15 @@
 #
 # class{ 'mesos::master': }
 #
+# Parameters:
+#
+#  [*single_role*]
+#    Currently Mesos packages ships with both mesos-master and mesos-slave
+#    enabled by default. `single_role` assumes that you use only either of
+#    those on one machine. Default: true (mesos-slave service will be
+#    disabled on master node)
+#
+#
 # mesos-master service stores configuration in /etc/default/mesos-master in file/directory
 # structure. Arguments passed via $options hash are converted to file/directories
 #
@@ -33,6 +42,8 @@ class mesos::master(
   $syslog_logger    = true,
   $force_provider   = undef, #temporary workaround for starting services
   $use_hiera        = $mesos::use_hiera,
+  $disable_slave    = false,
+  $single_role      = $mesos::single_role,
 ) inherits mesos {
 
   validate_hash($env_var)
@@ -165,5 +176,12 @@ class mesos::master(
     force_provider => $force_provider,
     manage         => $manage_service,
     require        => File[$conf_file],
+  }
+
+  if (!defined(Class['mesos::slave']) and $single_role) {
+    mesos::service { 'slave':
+      enable => false,
+      manage => $manage_service,
+    }
   }
 }

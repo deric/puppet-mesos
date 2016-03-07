@@ -22,6 +22,9 @@
 #  [*listen_address*]
 #    Could be a fact like `$::ipaddress` or explicit ip address (String).
 #
+#  [*single_role*]
+#    When enabled each machine is expected to run either master or slave service.
+#
 # === Authors
 #
 # Tomas Barton <barton.tomas@gmail.com>
@@ -56,6 +59,7 @@ class mesos(
   $python_package  = 'python',
   $force_provider  = undef, #temporary workaround for starting services
   $use_hiera       = false,
+  $single_role     = true,
 ) {
   validate_hash($env_var)
   validate_bool($manage_zk_file)
