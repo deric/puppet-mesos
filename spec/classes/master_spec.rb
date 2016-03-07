@@ -1,4 +1,4 @@
- 'spec_helper'
+require 'spec_helper'
 
 describe 'mesos::master', :type => :class do
   let(:owner) { 'mesos' }
