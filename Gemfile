@@ -15,6 +15,7 @@ group :rake do
   # in order to support Ruby 1.9.3
   gem 'fog-google', '< 0.1.1'
   gem 'metadata-json-lint',      :require => false
+  gem 'parallel_tests'
 end
 
 group :development do

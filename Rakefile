@@ -28,3 +28,14 @@ end
 task :spec_prep => :librarian_spec_prep
 
 task :default => [:validate, :spec, :lint]
+
+require 'parallel_tests/cli'
+
+desc 'Parallel spec tests'
+task :pspec do
+  Rake::Task[:spec_prep].invoke
+  ParallelTests::CLI.new.run('--type test
+                    -t rspec spec/classes spec/defines spec/functions spec/unit'.split)
+  Rake::Task[:spec_clean].invoke
+end
+
