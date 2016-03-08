@@ -42,7 +42,6 @@ class mesos::master(
   $syslog_logger    = true,
   $force_provider   = undef, #temporary workaround for starting services
   $use_hiera        = $mesos::use_hiera,
-  $disable_slave    = false,
   $single_role      = $mesos::single_role,
 ) inherits mesos {
 
@@ -54,6 +53,7 @@ class mesos::master(
   validate_absolute_path($credentials_file)
   validate_bool($manage_service)
   validate_bool($syslog_logger)
+  validate_bool($single_role)
 
   if (!empty($acls)) {
     $acls_options = {'acls' => $acls_file}

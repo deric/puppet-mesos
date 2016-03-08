@@ -90,6 +90,7 @@ class mesos::slave (
   validate_absolute_path($credentials_file)
   validate_bool($manage_service)
   validate_bool($syslog_logger)
+  validate_bool($single_role)
 
   if !empty($zookeeper) {
     if is_string($zookeeper) {
