@@ -8,6 +8,8 @@ class mesos::cli(
   $ensure           = 'present',
   $packages         = ['mesos.cli', 'mesos.interface'],
   $pip_package      = 'python-pip',
+  $manage_pip       = true,
+  $package_provider = undef,
   $response_timeout = 5,
   $log_file         = 'null',
   $log_level        = 'warning',
@@ -19,14 +21,26 @@ class mesos::cli(
   $master           = $mesos::master,
   $zookeeper        = $mesos::zookeeper,
 ) inherits mesos {
-  ensure_packages([$pip_package])
-  ensure_resource('package', $packages,
-    {
-      'provider' => 'pip',
-      'ensure'   => $ensure,
-      'require'  => Package[$pip_package],
+
+  if $manage_pip {
+    ensure_packages($pip_package)
+    Package[$pip_package] -> Package[$packages]
+  }
+
+  if $package_provider {
+    $package_provider_real = $package_provider
+  } else {
+    if $manage_pip {
+      $package_provider_real = 'pip'
     }
-  )
+  }
+
+  $defaults = {
+    'provider' => $package_provider_real,
+    'ensure'   => $ensure,
+  }
+
+  ensure_packages($packages, $defaults)
 
   file { '/etc/.mesos.json':
     ensure  => 'present',
