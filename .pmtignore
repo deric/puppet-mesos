@@ -1,0 +1,4 @@
+junit/
+log/
+spec/fixtures/modules/
+pkg/
