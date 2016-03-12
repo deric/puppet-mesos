@@ -175,7 +175,7 @@ class mesos::master(
     enable         => $enable,
     force_provider => $force_provider,
     manage         => $manage_service,
-    require        => File[$conf_file],
+    subscribe      => File[$conf_file],
   }
 
   if (!defined(Class['mesos::slave']) and $single_role) {
