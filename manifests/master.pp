@@ -66,7 +66,7 @@ class mesos::master(
   }
 
   if (!empty($credentials)) {
-    $credentials_options = {'credentials' => $credentials_file}
+    $credentials_options = {'credentials' => "file://${credentials_file}"}
     $credentials_content = inline_template("<%= require 'json'; {:credentials => @credentials}.to_json %>")
     $credentials_ensure = file
   } else {
