@@ -270,7 +270,7 @@ describe 'mesos::master', :type => :class do
         should contain_mesos__property(
                    'master_credentials'
                ).with({
-                          'value' => '/etc/mesos/master-credentials',
+                          'value' => 'file:///etc/mesos/master-credentials',
                       })
       end
 
