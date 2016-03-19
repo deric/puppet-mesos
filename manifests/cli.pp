@@ -3,6 +3,10 @@
 # Manages optional CLI packages providing e.g. command: `mesos ps`.
 #
 # Python 2.7 is required
+# === Parameters
+#
+#  [*zookeeper*]
+#     A zookeeper URL in format 'zk://server1:port[,server2:port]/mesos'
 #
 class mesos::cli(
   $ensure           = 'present',
@@ -19,8 +23,9 @@ class mesos::cli(
   $owner            = $mesos::owner,
   $group            = $mesos::group,
   $master           = $mesos::master,
-  $zookeeper        = $mesos::zookeeper,
+  $zookeeper        = $mesos::zookeeper_url,
 ) inherits mesos {
+  validate_array($packages)
 
   if $manage_pip {
     ensure_packages($pip_package)
