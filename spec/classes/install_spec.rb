@@ -8,6 +8,10 @@ describe 'mesos::install', :type => :class do
       :ensure => version
     }}
 
+    before(:each) do
+      puppet_debug_override
+    end
+
     it { should contain_package('mesos').with({
       'ensure' => version
     }) }

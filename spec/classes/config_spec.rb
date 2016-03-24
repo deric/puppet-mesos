@@ -12,6 +12,10 @@ describe 'mesos::config', :type => :class do
     :group    => group,
   }}
 
+  before(:each) do
+    puppet_debug_override
+  end
+
   it { should contain_file('/etc/default/mesos').with({
     'ensure'  => 'present',
     'owner'   => owner,

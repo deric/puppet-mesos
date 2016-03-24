@@ -7,3 +7,4 @@ pkg/*
 Gemfile.lock
 Puppetfile.lock
 vendor/
+.idea

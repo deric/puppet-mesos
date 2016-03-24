@@ -12,6 +12,10 @@ describe 'mesos::master', :type => :class do
     :group    => group,
   }}
 
+   before(:each) do
+     puppet_debug_override
+   end
+
   it { is_expected.to contain_package('mesos') }
   it { is_expected.to contain_class('mesos::master') }
   it { is_expected.to contain_service('mesos-master').with(
@@ -162,7 +166,7 @@ describe 'mesos::master', :type => :class do
 
     it do
       should contain_file("#{conf}/work_dir")
-        .with_content(work_dir)
+        .with_content(work_dir + "\n")
         .that_requires("File[#{conf}]")
     end
   end

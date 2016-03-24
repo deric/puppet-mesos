@@ -12,6 +12,10 @@ describe 'mesos::slave', :type => :class do
     :group    => group,
   }}
 
+  before(:each) do
+    puppet_debug_override
+  end
+
   it { should contain_package('mesos') }
   it { should contain_service('mesos-slave').with(
       :ensure => 'running',
@@ -253,23 +257,19 @@ describe 'mesos::slave', :type => :class do
     ).with_content(/^2048$/)}
   end
 
-  context 'custom ipaddress fact' do
-    let(:facts) {{
-      :ipaddress_eth0 => '192.168.1.2',
-    }}
-
+  context 'custom listen_address value' do
     let(:params){{
       :conf_dir => conf,
       :owner    => owner,
       :group    => group,
-      :listen_address => '$::ipaddress_eth0'
+      :listen_address => '192.168.1.2',
     }}
 
     # fact is not evaluated in test with newer puppet (or rspec)
-    xit 'has ip address from system fact' do
+    it 'has ip address from system fact' do
       should contain_file(
         slave_file
-      ).with_content(/^IP="192.168.1.2"$/)
+      ).with_content(/IP="192\.168\.1\.2"$/)
     end
   end
 
@@ -329,7 +329,7 @@ describe 'mesos::slave', :type => :class do
 
     it do
       should contain_file("#{conf}/work_dir")
-        .with_content(work_dir)
+        .with_content(work_dir + "\n")
         .that_requires("File[#{conf}]")
     end
   end
@@ -337,7 +337,7 @@ describe 'mesos::slave', :type => :class do
   context 'common slave config' do
     let(:params){{
       :zookeeper      => 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos',
-      :listen_address => "$::ipaddress",
+      :listen_address => '192.168.1.1',
       :attributes     => {
         'env' => 'production',
       },
