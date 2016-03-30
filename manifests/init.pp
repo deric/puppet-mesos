@@ -70,6 +70,8 @@ class mesos(
       warning('\$zookeeper parameter should be an array of IP addresses, please update your configuration.')
     }
     $zookeeper_url = zookeeper_servers_url($zookeeper, $zk_path, $zk_default_port)
+  } else {
+    $zookeeper_url = undef
   }
 
   $mesos_ensure = $version ? {
