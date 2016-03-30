@@ -2,8 +2,8 @@
 # directory structure
 
 define mesos::property (
-  $value,
   $dir,
+  $value = undef,
   $ensure = undef,
   $service = undef, #service to be notified about property changes
   $file = $title,
