@@ -33,6 +33,7 @@ class{'mesos::slave':
     'ports' => '[10000-65535]'
   },
   options   => {
+    'isolation'      => 'cgroups/cpu,cgroups/mem',
     'containerizers' => 'docker,mesos',
     'hostname'       => $::fqdn,
   }
@@ -56,7 +57,8 @@ Parameters:
  - `version` - install specific version of Mesos
  - `manage_python` - Control whether mesos module should install python
  - `manage_zk_file` - Control whether module manages /etc/mesos/zk (default: true)
- - `manage_service` - Whether Puppet should ensure service state (applies to `mesos-master` and `mesos-slave`) (default: true)
+ - `manage_service` - Whether Puppet should ensure service state (applies to `mesos-master` and `mesos-slave`) (default: `true`)
+ - `single_role` - When enabled each machine is expected to run either master or slave service (default: `true`)
 
 ### Master
 
@@ -208,6 +210,16 @@ class{'mesos::slave':
 ```
 
  *since 0.4.1*
+
+## Mesos Standalone
+
+Standalone mode (non-HA) is useful for testing, it does not require ZooKeeper URI, nor `quorum` variable. If you are running both master and slave on the same node, make sure you disable `single_role` parameter:
+
+```puppet
+class{'::mesos':
+  single_role => false,
+}
+```
 
 ## Hiera support
 
