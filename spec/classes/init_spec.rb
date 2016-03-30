@@ -79,13 +79,23 @@ describe 'mesos', :type => :class do
   end
 
   context 'remove packaged services' do
+    let(:facts) do
+      {
+        :operatingsystem => 'Debian',
+        :osfamily => 'Debian',
+      }
+    end
+
     context 'keeps everything' do
-      it { should contain_class('mesos::install').with('remove_package_services' => false) }
+      it { is_expected.to contain_class('mesos::install').with(
+          'remove_package_services' => false
+        )
+      }
     end
 
     context 'remvoes packaged upstart config' do
       let(:params) {{
-          :force_provider => 'none'
+        :force_provider => 'none'
       }}
 
       it { should contain_class('mesos::install').with('remove_package_services' => true) }
