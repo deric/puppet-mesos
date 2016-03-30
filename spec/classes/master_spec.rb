@@ -12,8 +12,9 @@ describe 'mesos::master', :type => :class do
     :group    => group,
   }}
 
-  it { should contain_package('mesos') }
-  it { should contain_service('mesos-master').with(
+  it { is_expected.to contain_package('mesos') }
+  it { is_expected.to contain_class('mesos::master') }
+  it { is_expected.to contain_service('mesos-master').with(
       :ensure => 'running',
       :enable => true
   ) }
@@ -32,7 +33,7 @@ describe 'mesos::master', :type => :class do
   end
 
   # no zookeeper set by default
-  it { should contain_file(file).with_content(/MESOS_ZK=""/) }
+  it { should_not contain_file(file).with_content(/MESOS_ZK=""/) }
 
   it { should contain_file(file).with_content(/MESOS_PORT=5050/) }
 
