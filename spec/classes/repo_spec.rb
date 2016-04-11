@@ -15,6 +15,10 @@ describe 'mesos::repo', :type => :class do
       :puppetversion => puppet,
     }}
 
+    before(:each) do
+      puppet_debug_override
+    end
+
     it { should contain_apt__source('mesosphere').with(
      'location' => "http://repos.mesosphere.io/#{operatingsystem.downcase}",
      'repos'    => 'main',

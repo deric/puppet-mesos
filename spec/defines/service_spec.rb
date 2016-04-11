@@ -3,6 +3,10 @@ require 'spec_helper'
 describe 'mesos::service', :type => :define do
   let(:title) { 'slave' }
 
+  before(:each) do
+    puppet_debug_override
+  end
+
   shared_examples 'mesos-service' do |family, os, codename|
     let(:facts) {{
       :osfamily => family,

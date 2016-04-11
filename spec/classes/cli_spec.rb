@@ -10,6 +10,10 @@ describe 'mesos::cli', :type => :class do
     :group    => group,
   }}
 
+  before(:each) do
+    puppet_debug_override
+  end
+
   it { should contain_package('python-pip') }
   it { should contain_class('mesos::cli') }
   it { should contain_package('mesos.cli').with({'provider' => 'pip'}) }

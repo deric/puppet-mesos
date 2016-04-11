@@ -9,7 +9,7 @@ fixture_path = File.expand_path(File.join(__FILE__, '..', 'fixtures'))
 RSpec.configure do |c|
   c.treat_symbols_as_metadata_keys_with_true_values = true
   c.include PuppetlabsSpec::Files
-  c.hiera_config = 'spec/fixtures/hiera/hiera.yaml'
+  c.hiera_config = File.join fixture_path, 'hiera', 'hiera.yaml'
 
   c.before :each do
     # Ensure that we don't accidentally cache facts and environment
@@ -23,7 +23,7 @@ RSpec.configure do |c|
     ENV.each_key {|k| @old_env[k] = ENV[k]}
 
     if ENV['STRICT_VARIABLES'] == 'yes'
-      Puppet.settings[:strict_variables]=true
+      Puppet.settings[:strict_variables] = true
     end
   end
   c.after :each do
@@ -31,7 +31,10 @@ RSpec.configure do |c|
   end
 end
 
-Puppet::Util::Log.level = :info
-Puppet::Util::Log.newdestination(:console)
+def puppet_debug_override
+  return unless ENV['SPEC_PUPPET_DEBUG']
+  Puppet::Util::Log.level = :debug
+  Puppet::Util::Log.newdestination(:console)
+end
 
 at_exit { RSpec::Puppet::Coverage.report! }
