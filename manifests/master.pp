@@ -99,6 +99,7 @@ class mesos::master(
     purge   => true,
     force   => true,
     require => Class['::mesos::install'],
+    notify  => Service['mesos-master'], # when key is removed we want to reload the service
   }
 
   file { $work_dir:

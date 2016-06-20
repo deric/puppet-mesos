@@ -384,6 +384,24 @@ describe 'mesos::slave', :type => :class do
     end
   end
 
+   context 'nofify service after removing a key' do
+    let(:my_conf_dir) { '/tmp/mesos-conf'}
+    let(:params){{
+      :conf_dir => my_conf_dir,
+    }}
+
+    before(:each) do
+      system("mkdir -p #{my_conf_dir} && touch #{my_conf_dir}/foo")
+    end
+
+    after(:each) do
+      system("rm -rf #{my_conf_dir}")
+    end
+
+    it { is_expected.to contain_service('mesos-slave') }
+    it { is_expected.to contain_file("#{my_conf_dir}").that_notifies('Service[mesos-slave]') }
+  end
+
   context 'credentials' do
     context 'default w/o principal/secret' do
       let(:params) { {
