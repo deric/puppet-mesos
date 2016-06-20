@@ -17,8 +17,9 @@ env:
   global:
     - LIBRARIAN_PUPPET_TMP="$HOME/librarian-puppet"
   matrix:
-    - PUPPET_VERSION="~> 3.4.0"
-    - PUPPET_VERSION="~> 3.5.0" STRICT_VARIABLES=yes
+# puppetlabs-stdlib 4.12 fails to install with these:
+#    - PUPPET_VERSION="~> 3.4.0"
+#    - PUPPET_VERSION="~> 3.5.0" STRICT_VARIABLES=yes
     - PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=yes
     - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=yes
     - PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=yes
