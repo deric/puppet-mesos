@@ -39,7 +39,7 @@ class mesos::repo(
           }
         }
       }
-      'redhat': {
+      'RedHat': {
         case $source {
           undef: {} #nothing to do
           'mesosphere': {
