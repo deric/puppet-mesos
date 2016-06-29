@@ -267,14 +267,17 @@ class mesos::slave (
       }
     }
 
-    mesos::property { 'slave_systemd_enable_support':
-      ensure  => present,
-      file    => 'systemd_enable_support',
-      value   => $systemd_supported,
-      dir     => $conf_dir,
-      owner   => $owner,
-      group   => $group,
-      require => File[$conf_dir],
+    # otherwise rely on mesos-slave defaults
+    if !$systemd_supported {
+      mesos::property { 'slave_systemd_enable_support':
+        ensure  => present,
+        file    => 'systemd_enable_support',
+        value   => false,
+        dir     => $conf_dir,
+        owner   => $owner,
+        group   => $group,
+        require => File[$conf_dir],
+      }
     }
   }
 

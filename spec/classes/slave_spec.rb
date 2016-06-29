@@ -589,7 +589,7 @@ describe 'mesos::slave', :type => :class do
       end
 
       it do
-        is_expected.to contain_mesos__property('slave_systemd_enable_support')
+        is_expected.not_to contain_mesos__property('slave_systemd_enable_support')
           .with(
             :ensure => 'present',
             :file => 'systemd_enable_support',
@@ -599,7 +599,7 @@ describe 'mesos::slave', :type => :class do
             :group => group
           )
 
-        is_expected.to contain_file("#{conf}/?systemd_enable_support").with_ensure('present')
+        is_expected.not_to contain_file("#{conf}/?systemd_enable_support").with_ensure('present')
       end
     end
 
@@ -626,6 +626,7 @@ describe 'mesos::slave', :type => :class do
           )
 
         is_expected.not_to contain_file("#{conf}/?no-systemd_enable_support").with_ensure('present')
+        is_expected.not_to contain_file("#{conf}/systemd_enable_support").with_ensure('present')
       end
     end
 
