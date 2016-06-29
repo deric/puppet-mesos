@@ -242,7 +242,7 @@ class mesos::slave (
     require => File[$conf_dir],
   }
 
-  if $::mesos_version and (versioncmp($::mesos_version, '0.28.0') >= 0) {
+  if ($::mesos_version != undef) and (versioncmp($::mesos_version, '0.28.0') >= 0) {
     # TODO: move this to params?
     case $::osfamily {
       'Debian': {
