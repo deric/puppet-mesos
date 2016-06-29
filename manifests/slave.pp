@@ -233,12 +233,13 @@ class mesos::slave (
     false => present,
   }
   mesos::property { 'slave_logger':
-    ensure => $logger_ensure,
-    file   => 'logger',
-    value  => false,
-    dir    => $conf_dir,
-    owner  => $owner,
-    group  => $group,
+    ensure  => $logger_ensure,
+    file    => 'logger',
+    value   => false,
+    dir     => $conf_dir,
+    owner   => $owner,
+    group   => $group,
+    require => File[$conf_dir],
   }
 
   if $::mesos_version and (versioncmp($::mesos_version, '0.28.0') >= 0) {
