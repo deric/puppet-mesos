@@ -12,6 +12,15 @@ describe 'mesos::slave', :type => :class do
     :group    => group,
   }}
 
+  let(:facts) do
+    {
+      :mesos_version => '0.28.2',
+      :osfamily => 'Debian',
+      :lsbdistcodename => 'Debian',
+      :operatingsystemmajrelease => 'jessie',
+    }
+  end
+
   before(:each) do
     puppet_debug_override
   end
