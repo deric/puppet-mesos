@@ -552,4 +552,83 @@ describe 'mesos::slave', :type => :class do
     end
   end
 
+  context 'systemd support' do
+    context 'diable systemd support where systemd is not present' do
+      let(:facts) do
+        {
+          :mesos_version => '0.28.0',
+          :osfamily => 'Debian',
+          :lsbdistcodename => 'Ubuntu',
+          :operatingsystemmajrelease => 'precise',
+        }
+      end
+
+      it do
+        is_expected.to contain_mesos__property('slave_systemd_enable_support')
+          .with(
+            :ensure => 'present',
+            :file => 'systemd_enable_support',
+            :value => false,
+            :dir => conf,
+            :owner => owner,
+            :group => group
+          )
+
+        is_expected.to contain_file("#{conf}/?no-systemd_enable_support").with_ensure('present')
+      end
+    end
+
+    context 'enable systemd support' do
+      let(:facts) do
+        {
+          :mesos_version => '0.28.0',
+          :osfamily => 'Debian',
+          :lsbdistcodename => 'Debian',
+          :operatingsystemmajrelease => 'jessie',
+        }
+      end
+
+      it do
+        is_expected.to contain_mesos__property('slave_systemd_enable_support')
+          .with(
+            :ensure => 'present',
+            :file => 'systemd_enable_support',
+            :value => true,
+            :dir => conf,
+            :owner => owner,
+            :group => group
+          )
+
+        is_expected.to contain_file("#{conf}/?systemd_enable_support").with_ensure('present')
+      end
+    end
+
+
+    context 'do not use systemd_enable_support flag for earlier versions than 0.28' do
+      let(:facts) do
+        {
+          :mesos_version => '0.27.0',
+          :osfamily => 'Debian',
+          :lsbdistcodename => 'Ubuntu',
+          :operatingsystemmajrelease => 'precise',
+        }
+      end
+
+      it do
+        is_expected.not_to contain_mesos__property('slave_systemd_enable_support')
+          .with(
+            :ensure => 'present',
+            :file => 'systemd_enable_support',
+            :value => false,
+            :dir => conf,
+            :owner => owner,
+            :group => group
+          )
+
+        is_expected.not_to contain_file("#{conf}/?no-systemd_enable_support").with_ensure('present')
+      end
+    end
+
+  end
+
 end

@@ -241,6 +241,42 @@ class mesos::slave (
     group  => $group,
   }
 
+  if $::mesos_version and (versioncmp($::mesos_version, '0.28.0') >= 0) {
+    # TODO: move this to params?
+    case $::osfamily {
+      'Debian': {
+        case $::lsbdistcodename {
+          'Ubuntu': {
+            case $::operatingsystemmajrelease {
+              'precise': {
+                $systemd_supported = false
+              }
+              default: {
+                $systemd_supported = true
+              }
+            }
+          }
+          default: {
+            $systemd_supported = true
+          }
+        }
+      }
+      default: {
+        $systemd_supported = true
+      }
+    }
+
+    mesos::property { 'slave_systemd_enable_support':
+      ensure  => present,
+      file    => 'systemd_enable_support',
+      value   => $systemd_supported,
+      dir     => $conf_dir,
+      owner   => $owner,
+      group   => $group,
+      require => File[$conf_dir],
+    }
+  }
+
   # Install mesos-slave service
   mesos::service { 'slave':
     enable         => $enable,
