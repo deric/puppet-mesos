@@ -68,6 +68,9 @@ class mesos::repo(
               }
             }
           }
+          default: {
+            notify { "Repository \"${source}\" is not supported yet.": }
+          }
         }
       }
       default: {

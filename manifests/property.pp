@@ -89,7 +89,9 @@ define mesos::property (
   } else {
     $file_path = "${dir}/${file_name}"
     if empty($value) {
-      warning("Setting \$value to an empty value is deprecated and will be removed in the next major release, please use \$ensure => absent instead")
+      # TODO: remove in 0.9
+      warning("Setting \$value to an empty value is deprecated and will be removed \
+        in the next major release, please use \$ensure => absent instead")
       if $ensure == 'file' {
         $file_ensure = 'present'
       } else {
