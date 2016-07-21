@@ -77,6 +77,7 @@ class mesos::slave (
   $force_provider   = undef, #temporary workaround for starting services
   $use_hiera        = $mesos::use_hiera,
   $single_role      = $mesos::single_role,
+  $service_provider = $mesos::service_provider,
 ) inherits mesos {
 
   validate_hash($env_var)
@@ -243,32 +244,8 @@ class mesos::slave (
   }
 
   if ($::mesos_version != undef) and (versioncmp($::mesos_version, '0.28.0') >= 0) {
-    # TODO: move this to params?
-    case $::osfamily {
-      'Debian': {
-        case $::lsbdistcodename {
-          'Ubuntu': {
-            case $::operatingsystemmajrelease {
-              'precise': {
-                $systemd_supported = false
-              }
-              default: {
-                $systemd_supported = true
-              }
-            }
-          }
-          default: {
-            $systemd_supported = true
-          }
-        }
-      }
-      default: {
-        $systemd_supported = true
-      }
-    }
-
     # otherwise rely on mesos-slave defaults
-    if !$systemd_supported {
+    if $service_provider != 'systemd' {
       mesos::property { 'slave_systemd_enable_support':
         ensure  => present,
         file    => 'systemd_enable_support',

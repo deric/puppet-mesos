@@ -568,6 +568,7 @@ describe 'mesos::slave', :type => :class do
           :mesos_version => '0.28.0',
           :osfamily => 'Debian',
           :lsbdistcodename => 'Ubuntu',
+          :majdistrelease => '12.04',
           :operatingsystemmajrelease => 'precise',
         }
       end
