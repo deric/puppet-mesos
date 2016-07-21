@@ -362,11 +362,11 @@ Some Mesos packages does not respect conventions on given OS for starting servic
 
 ```puppet
 class{'mesos::master':
-  force_provider => 'upstart'
+  service_provider => 'upstart'
 }
 ```
 
-If you want to create the service resource yourself, set `force_provider` to `none`.
+If you want to create the service resource yourself, set `service_provider` to `none`.
 
 Some reasonable values are:
 
@@ -375,6 +375,7 @@ Some reasonable values are:
   * `systemd`
   * `runit`
   * `none` - service won't be installed
+  * `undef` - (default) detected provider by Puppet
 
 ### Packages
 
