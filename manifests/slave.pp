@@ -246,15 +246,15 @@ class mesos::slave (
   if ($::mesos_version != undef) and (versioncmp($::mesos_version, '0.28.0') >= 0) {
     # otherwise rely on mesos-slave defaults
     if $service_provider != 'systemd' and !defined('mesos::property::slave_systemd_enable_support') {
-      mesos::property { 'slave_systemd_enable_support':
-        ensure  => present,
-        file    => 'systemd_enable_support',
-        value   => false,
-        dir     => $conf_dir,
-        owner   => $owner,
-        group   => $group,
-        require => File[$conf_dir],
-      }
+      create_resources(mesos::property,
+        mesos_hash_parser({'systemd_enable_support' => false}, 'slave'),
+        {
+          dir    => $conf_dir,
+          owner  => $owner,
+          group  => $group,
+          notify => Service['mesos-slave'],
+        }
+      )
     }
   }
 
