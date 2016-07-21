@@ -11,6 +11,7 @@ group :rake do
   gem 'rspec-system-serverspec', :require => false
   gem 'librarian-puppet' , '>=2.0'
   gem 'highline'
+  gem 'json', '< 2.0' # newer versions requires at least ruby 2.0
   gem 'rspec-puppet'
   # in order to support Ruby 1.9.3
   gem 'fog-google', '< 0.1.1'
