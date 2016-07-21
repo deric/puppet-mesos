@@ -156,13 +156,21 @@ class mesos::slave (
     $credentials_ensure = absent
   }
 
+  if ($::mesos_version != undef) and (versioncmp($::mesos_version, '0.28.0') >= 0)
+    and $service_provider != 'systemd' {
+    # otherwise rely on mesos-slave defaults
+      $systemd_support = {'systemd_enable_support' => false}
+  } else {
+    $systemd_support = {}
+  }
+
   if $use_hiera {
     # In Puppet 3 automatic lookup won't merge options across multiple config
     # files, see https://www.devco.net/archives/2016/02/03/puppet-4-data-lookup-strategies.php
     $opts = hiera_hash('mesos::slave::options', $options)
-    $merged_options = merge($opts, $isolator_options, $credentials_options)
+    $merged_options = merge($systemd_support, $opts, $isolator_options, $credentials_options)
   } else {
-    $merged_options = merge($options, $isolator_options, $credentials_options)
+    $merged_options = merge($systemd_support, $options, $isolator_options, $credentials_options)
   }
 
   # work_dir can't be specified via options,
@@ -241,21 +249,6 @@ class mesos::slave (
     owner   => $owner,
     group   => $group,
     require => File[$conf_dir],
-  }
-
-  if ($::mesos_version != undef) and (versioncmp($::mesos_version, '0.28.0') >= 0) {
-    # otherwise rely on mesos-slave defaults
-    if $service_provider != 'systemd' and !defined('mesos::property::slave_systemd_enable_support') {
-      create_resources(mesos::property,
-        mesos_hash_parser({'systemd_enable_support' => false}, 'slave'),
-        {
-          dir    => $conf_dir,
-          owner  => $owner,
-          group  => $group,
-          notify => Service['mesos-slave'],
-        }
-      )
-    }
   }
 
   # TODO: remove in 0.9
