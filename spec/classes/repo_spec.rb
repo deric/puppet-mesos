@@ -61,17 +61,22 @@ describe 'mesos::repo', :type => :class do
       :lsbdistid                 => operatingsystem,
     }}
 
-    it { should contain_package('mesosphere-el-repo').with({
+    it { is_expected.to contain_package('mesosphere-el-repo').with({
      'ensure'   => 'present',
      'provider' => 'rpm',
      'source'   => "http://repos.mesosphere.io/el/#{osrel}/noarch/RPMS/mesosphere-el-repo-#{osrel}-#{mrel}.noarch.rpm",
     })}
 
+    it do is_expected.to contain_exec('yum-clean-expire-cache').with({
+        :command => 'yum clean expire-cache',
+      })
+    end
+
     context "undef source" do
       let(:params) {{
         :source => 'undef',
       }}
-      it { should_not contain_package('mesosphere-el-repo') }
+      it { is_expected.not_to contain_package('mesosphere-el-repo') }
     end
   end
 
