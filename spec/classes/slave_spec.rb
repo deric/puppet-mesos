@@ -642,4 +642,38 @@ describe 'mesos::slave', :type => :class do
 
   end
 
+  context 'auto-detect service provider' do
+    let(:facts) do
+    {
+      :mesos_version => '0.28.2',
+      :osfamily => 'RedHat',
+      :lsbdistcodename => '6.7',
+      :operatingsystemmajrelease => '6',
+    }
+    end
+
+    it { is_expected.to contain_service('mesos-slave').with(
+      :ensure => 'running',
+      :provider => 'upstart',
+      :enable => true
+    ) }
+
+    context 'on CentOS 7' do
+      let(:facts) do
+      {
+        :mesos_version => '0.28.2',
+        :osfamily => 'RedHat',
+        :lsbdistcodename => '7',
+        :operatingsystemmajrelease => '7',
+      }
+      end
+
+      it { is_expected.to contain_service('mesos-slave').with(
+        :ensure => 'running',
+        :provider => 'systemd',
+        :enable => true
+      ) }
+    end
+  end
+
 end

@@ -31,7 +31,8 @@ class mesos::params {
     }
     'Redhat': {
       case $::operatingsystemmajrelease {
-        '6': { $initstyle = 'redhat' }
+        #'6': { $initstyle = 'redhat' } # TODO: mesosphere packages works with upstart
+        '6': { $initstyle = 'upstart' } # see issue #28
         '7': { $initstyle = 'systemd' }
         default: { $initstyle = undef }
       }
