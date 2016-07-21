@@ -16,7 +16,9 @@ describe 'mesos::slave', :type => :class do
     {
       :mesos_version => '0.28.2',
       :osfamily => 'Debian',
-      :lsbdistcodename => 'Debian',
+      :operatingsystem => 'Debian',
+      :lsbdistcodename => 'jessie',
+      :majdistrelease => '8',
       :operatingsystemmajrelease => 'jessie',
     }
   end
@@ -567,6 +569,7 @@ describe 'mesos::slave', :type => :class do
         {
           :mesos_version => '0.28.0',
           :osfamily => 'Debian',
+          :operatingsystem => 'Debian',
           :lsbdistcodename => 'Ubuntu',
           :majdistrelease => '12.04',
           :operatingsystemmajrelease => 'precise',
@@ -593,8 +596,10 @@ describe 'mesos::slave', :type => :class do
         {
           :mesos_version => '0.28.0',
           :osfamily => 'Debian',
-          :lsbdistcodename => 'Debian',
+          :operatingsystem => 'Debian',
+          :lsbdistcodename => 'jessie',
           :operatingsystemmajrelease => 'jessie',
+          :majdistrelease => '8',
         }
       end
 
@@ -619,6 +624,7 @@ describe 'mesos::slave', :type => :class do
         {
           :mesos_version => '0.27.0',
           :osfamily => 'Debian',
+          :operatingsystem => 'Ubuntu',
           :lsbdistcodename => 'Ubuntu',
           :operatingsystemmajrelease => 'precise',
         }
@@ -647,6 +653,7 @@ describe 'mesos::slave', :type => :class do
     {
       :mesos_version => '0.28.2',
       :osfamily => 'RedHat',
+      :operatingsystem => 'CentOS',
       :lsbdistcodename => '6.7',
       :operatingsystemmajrelease => '6',
     }
@@ -663,6 +670,7 @@ describe 'mesos::slave', :type => :class do
       {
         :mesos_version => '0.28.2',
         :osfamily => 'RedHat',
+        :operatingsystem => 'CentOS',
         :lsbdistcodename => '7',
         :operatingsystemmajrelease => '7',
       }

@@ -12,6 +12,14 @@ describe 'mesos::master', :type => :class do
     :group    => group,
   }}
 
+  let(:facts) {{
+    :operatingsystem => 'Debian',
+    :osfamily => 'Debian',
+    :lsbdistcodename => 'jessie',
+    :majdistrelease => '8',
+    :operatingsystemmajrelease => 'jessie',
+  }}
+
    before(:each) do
      puppet_debug_override
    end

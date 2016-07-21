@@ -7,14 +7,16 @@ describe 'mesos::service', :type => :define do
     puppet_debug_override
   end
 
-  shared_examples 'mesos-service' do |family, os, codename|
+  shared_examples 'mesos-service' do |family, os, codename, majdistrelease, release|
     let(:facts) {{
       :osfamily => family,
       :operatingsystem => os,
       :lsbdistcodename => codename,
+      :majdistrelease => majdistrelease,
+      :operatingsystemmajrelease => release,
     }}
 
-    it { should contain_service('mesos-slave').with(
+    it { is_expected.to contain_service('mesos-slave').with(
         :ensure     => 'stopped',
         :enable     => false,
         :hasstatus  => true,
@@ -25,7 +27,7 @@ describe 'mesos::service', :type => :define do
         :enable => true,
       }}
 
-      it { should contain_service('mesos-slave').with(
+      it { is_expected.to contain_service('mesos-slave').with(
         :enable => true,
         :ensure => 'running',
       )}
@@ -37,7 +39,7 @@ describe 'mesos::service', :type => :define do
         :manage => false, # won't start service if it's not running
       }}
 
-      it { should contain_service('mesos-slave').with(
+      it { is_expected.to contain_service('mesos-slave').with(
         :enable => true,
         :ensure => nil,
       )}
@@ -46,13 +48,13 @@ describe 'mesos::service', :type => :define do
 
   context 'on debian-like system' do
     # last argument should be service provider
-    it_behaves_like 'mesos-service', 'Debian', 'Debian'
-    it_behaves_like 'mesos-service', 'Debian', 'Ubuntu'
+    it_behaves_like 'mesos-service', 'Debian', 'Debian', '7', 'wheezy'
+    it_behaves_like 'mesos-service', 'Debian', 'Ubuntu', '12.04','precise'
   end
 
   context 'on red-hat-like system' do
-    it_behaves_like 'mesos-service', 'RedHat', 'RedHat'
-    it_behaves_like 'mesos-service', 'RedHat', 'CentOS'
+    it_behaves_like 'mesos-service', 'RedHat', 'RedHat', '6', '6'
+    it_behaves_like 'mesos-service', 'RedHat', 'CentOS', '7', '7'
   end
 
 end

@@ -2,6 +2,14 @@ require 'spec_helper'
 
 describe 'mesos', :type => :class do
 
+  let(:facts) {{
+    :operatingsystem => 'Debian',
+    :osfamily => 'Debian',
+    :lsbdistcodename => 'jessie',
+    :majdistrelease => '8',
+    :operatingsystemmajrelease => 'jessie',
+  }}
+
   context 'with ensure' do
     let(:version) { '0.14' }
     let(:params) {{
@@ -87,6 +95,9 @@ describe 'mesos', :type => :class do
       {
         :operatingsystem => 'Debian',
         :osfamily => 'Debian',
+        :lsbdistcodename => 'jessie',
+        :majdistrelease => '8',
+        :operatingsystemmajrelease => 'jessie',
       }
     end
 
