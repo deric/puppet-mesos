@@ -356,6 +356,44 @@ by default this feature is disabled and right we support [mesosphere.io](http://
 
 Feel free to send PR for other distributions/package sources.
 
+#### Custom APT repository
+
+Default APT repository is configured following way:
+
+```puppet
+class{'mesos':
+  repo => {
+    location => "http://repos.mesosphere.io/${osfamily}",
+    release  => $::lsbdistcodename,
+    repos    => 'main',
+    key      => {
+      'id'     => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
+      'server' => 'keyserver.ubuntu.com',
+    },
+    include  => {
+      'src' => false
+    },
+  }
+}
+```
+where the `repo` hash is passsed to `apt::source` (from offcial [apt module](https://github.com/puppetlabs/puppetlabs-apt#add-an-apt-source-to-etcaptsourceslistd)).
+
+In case you want to override some settings, only the modified values needs to be passed e.g.:
+
+```puppet
+class{'mesos':
+  repo => {
+    location => "http://myrepo.example.com",
+    key      => {
+      'id'     => '{mykey}',
+      'server' => 'keyserver.ubuntu.com',
+    },
+  }
+}
+```
+
+*since 0.8.2*
+
 ### Overriding service providers
 
 Some Mesos packages does not respect conventions on given OS for starting services. For both `mesos::master` and `mesos::slave` you can specify mechanism which will be used for starting services.

@@ -121,4 +121,32 @@ describe 'mesos::repo', :type => :class do
     )}
   end
 
+  context 'allow passing only values different from the default' do
+    let(:params) do
+      {
+        'source' => {
+          'key'      => {
+            'id'     => '00026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
+            'server' => 'keyserver.example.com',
+          },
+        }
+      }
+    end
+    let(:facts) {{
+      :operatingsystem => 'Debian',
+      :osfamily => 'Debian',
+      :lsbdistcodename => 'jessie',
+      :lsbdistid => 'Debian',
+      :puppetversion => Puppet.version,
+    }}
+
+    it { is_expected.to contain_apt__source('mesos-custom').with(
+     'location' => "http://repos.mesosphere.io/debian",
+     'repos'    => 'main',
+     'release'  => 'jessie',
+     'key'      => {'id' => '00026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.example.com'},
+     'include'  => {'src' => false}
+    )}
+  end
+
 end

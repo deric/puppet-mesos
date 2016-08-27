@@ -16,10 +16,24 @@ class mesos::repo(
         include ::apt
 
         $distro = downcase($::operatingsystem)
+        $mesosphere_apt = {
+          location => "http://repos.mesosphere.io/${distro}",
+          release  => $::lsbdistcodename,
+          repos    => 'main',
+          key      => {
+            'id'     => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
+            'server' => 'keyserver.ubuntu.com',
+          },
+          include  => {
+            'src' => false
+          },
+        }
 
         # custom configuration
         if is_hash($source) {
-          ensure_resource('apt::source', 'mesos-custom', $source)
+          # merge configuration with mesosphere's defaults
+          $repo_config = deep_merge($mesosphere_apt, $source)
+          ensure_resource('apt::source', 'mesos-custom', $repo_config)
           anchor { 'mesos::repo::begin': } ->
             Apt::Source['mesos-custom'] ->
             Class['apt::update'] ->
@@ -28,18 +42,7 @@ class mesos::repo(
           case $source {
             undef: {} #nothing to do
             'mesosphere': {
-              apt::source { 'mesosphere':
-                location => "http://repos.mesosphere.io/${distro}",
-                release  => $::lsbdistcodename,
-                repos    => 'main',
-                key      => {
-                  'id'     => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
-                  'server' => 'keyserver.ubuntu.com',
-                },
-                include  => {
-                  'src' => false
-                },
-              }
+              ensure_resource('apt::source', 'mesosphere', $mesosphere_apt)
               anchor { 'mesos::repo::begin': } ->
                 Apt::Source['mesosphere'] ->
                 Class['apt::update'] ->
