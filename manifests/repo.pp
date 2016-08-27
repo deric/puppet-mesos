@@ -2,6 +2,9 @@
 #
 # This class manages apt/yum repository for Mesos packages
 #
+# [source] - either a string (e.g.: 'mesoshpere') or a hash containing
+#   repository configuration (currently only for Debian)
+#
 
 class mesos::repo(
   $source = undef
@@ -10,35 +13,44 @@ class mesos::repo(
   if $source {
     case $::osfamily {
       'Debian': {
-        include apt
+        include ::apt
 
         $distro = downcase($::operatingsystem)
 
-        case $source {
-          undef: {} #nothing to do
-          'mesosphere': {
-            apt::source { 'mesosphere':
-              location => "http://repos.mesosphere.io/${distro}",
-              release  => $::lsbdistcodename,
-              repos    => 'main',
-              key      => {
-                'id'     => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
-                'server' => 'keyserver.ubuntu.com',
-              },
-              include  => {
-                'src' => false
-              },
+        # custom configuration
+        if is_hash($source) {
+          ensure_resource('apt::source', 'mesos-custom', $source)
+          anchor { 'mesos::repo::begin': } ->
+            Apt::Source['mesos-custom'] ->
+            Class['apt::update'] ->
+          anchor { 'mesos::repo::end': }
+        } else {
+          case $source {
+            undef: {} #nothing to do
+            'mesosphere': {
+              apt::source { 'mesosphere':
+                location => "http://repos.mesosphere.io/${distro}",
+                release  => $::lsbdistcodename,
+                repos    => 'main',
+                key      => {
+                  'id'     => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
+                  'server' => 'keyserver.ubuntu.com',
+                },
+                include  => {
+                  'src' => false
+                },
+              }
+              anchor { 'mesos::repo::begin': } ->
+                Apt::Source['mesosphere'] ->
+                Class['apt::update'] ->
+              anchor { 'mesos::repo::end': }
             }
-            anchor { 'mesos::repo::begin': } ->
-              Apt::Source['mesosphere'] ->
-              Class['apt::update'] ->
-            anchor { 'mesos::repo::end': }
-          }
-          default: {
-            notify { "APT repository '${source}' is not supported for ${::osfamily}": }
-          }
+            default: {
+              notify { "APT repository '${source}' is not supported for ${::osfamily}": }
+            }
+          } # case $source
         }
-      }
+      } # case Debian
       'RedHat': {
         case $source {
           undef: {} #nothing to do

@@ -19,7 +19,7 @@ describe 'mesos::repo', :type => :class do
       puppet_debug_override
     end
 
-    it { should contain_apt__source('mesosphere').with(
+    it { is_expected.to contain_apt__source('mesosphere').with(
      'location' => "http://repos.mesosphere.io/#{operatingsystem.downcase}",
      'repos'    => 'main',
      'release'  => "#{lsbdistcodename}",
@@ -27,15 +27,15 @@ describe 'mesos::repo', :type => :class do
      'include'  => {'src' => false}
     )}
 
-    it { should contain_anchor('mesos::repo::begin').that_comes_before('Apt::Source[mesosphere]') }
-    it { should contain_apt__source('mesosphere').that_comes_before('Class[apt::update]') }
-    it { should contain_class('apt::update').that_comes_before('Anchor[mesos::repo::end]') }
+    it { is_expected.to contain_anchor('mesos::repo::begin').that_comes_before('Apt::Source[mesosphere]') }
+    it { is_expected.to contain_apt__source('mesosphere').that_comes_before('Class[apt::update]') }
+    it { is_expected.to contain_class('apt::update').that_comes_before('Anchor[mesos::repo::end]') }
 
     context "undef source" do
       let(:params) {{
         :source => 'undef',
       }}
-      it { should_not contain_apt__source('mesosphere') }
+      it { is_expected.not_to contain_apt__source('mesosphere') }
     end
   end
 
@@ -83,6 +83,42 @@ describe 'mesos::repo', :type => :class do
   context 'on RedHat based systems' do
     it_behaves_like 'redhat', 'CentOS', '6', '2'
     it_behaves_like 'redhat', 'CentOS', '7', '1'
+  end
+
+  # see: https://github.com/deric/puppet-mesos/issues/77
+  context 'custom repository' do
+    let(:params) do
+      {
+        'source' => {
+          'location' => "http://myrepo.example.com/debian",
+          'release'  => 'jessie',
+          'repos'    => 'main',
+          'key'      => {
+            'id'     => '99926D0004C44CF7EF55ADF8DF7D54CBE56151BF',
+            'server' => 'keyserver.ubuntu.com',
+          },
+          'include'  => {
+           'src' => false
+          },
+        }
+      }
+    end
+
+    let(:facts) {{
+      :operatingsystem => 'Debian',
+      :osfamily => 'Debian',
+      :lsbdistcodename => 'jessie',
+      :lsbdistid => 'Debian',
+      :puppetversion => Puppet.version,
+    }}
+
+    it { is_expected.to contain_apt__source('mesos-custom').with(
+     'location' => "http://myrepo.example.com/debian",
+     'repos'    => 'main',
+     'release'  => 'jessie',
+     'key'      => {'id' => '99926D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com'},
+     'include'  => {'src' => false}
+    )}
   end
 
 end
