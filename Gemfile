@@ -15,6 +15,8 @@ group :rake do
   gem 'rspec-puppet'
   # in order to support Ruby 1.9.3
   gem 'fog-google', '< 0.1.1'
+  # in order to support Ruby 1.9.3
+  gem 'json_pure', '< 2.0.0'
   gem 'metadata-json-lint',      :require => false
   gem 'parallel_tests'
 end
