@@ -8,7 +8,7 @@ class mesos::params {
     'Debian': {
       case $::operatingsystem {
         'Debian': {
-          case $::majdistrelease {
+          case $::operatingsystemmajrelease {
             '7': { $initstyle = 'init' }
             '8': { $initstyle = 'systemd' }
             default: { $initstyle = undef }

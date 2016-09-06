@@ -598,8 +598,7 @@ describe 'mesos::slave', :type => :class do
           :osfamily => 'Debian',
           :operatingsystem => 'Debian',
           :lsbdistcodename => 'jessie',
-          :operatingsystemmajrelease => 'jessie',
-          :majdistrelease => '8',
+          :operatingsystemmajrelease => '8',
         }
       end
 
@@ -615,8 +614,37 @@ describe 'mesos::slave', :type => :class do
           )
 
         is_expected.not_to contain_file("#{conf}/?systemd_enable_support").with_ensure('present')
+        is_expected.not_to contain_file("#{conf}/?no-systemd_enable_support").with_ensure('present')
       end
     end
+
+    context 'do not use systemd flag' do
+      let(:facts) do
+        {
+          :mesos_version => '1.0.1',
+          :osfamily => 'Debian',
+          :operatingsystem => 'Debian',
+          :lsbdistcodename => 'jessie',
+          :operatingsystemmajrelease => '8',
+        }
+      end
+
+      it do
+        is_expected.not_to contain_mesos__property('slave_systemd_enable_support')
+          .with(
+            :ensure => 'present',
+            :file => 'systemd_enable_support',
+            :value => true,
+            :dir => conf,
+            :owner => owner,
+            :group => group
+          )
+
+        is_expected.not_to contain_file("#{conf}/?systemd_enable_support").with_ensure('present')
+        is_expected.not_to contain_file("#{conf}/?no-systemd_enable_support").with_ensure('present')
+      end
+    end
+
 
 
     context 'do not use systemd_enable_support flag for earlier versions than 0.28' do
