@@ -110,6 +110,7 @@ class mesos::slave (
     recurse => true,
     purge   => true,
     force   => true,
+    require => Class['::mesos::install'],
     notify  => Service['mesos-slave'], # when key is removed we want to reload the service
   }
 
