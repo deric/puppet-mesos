@@ -34,19 +34,19 @@ class mesos::repo(
           # merge configuration with mesosphere's defaults
           $repo_config = deep_merge($mesosphere_apt, $source)
           ensure_resource('apt::source', 'mesos-custom', $repo_config)
-          anchor { 'mesos::repo::begin': } ->
-            Apt::Source['mesos-custom'] ->
-            Class['apt::update'] ->
-          anchor { 'mesos::repo::end': }
+          anchor { 'mesos::repo::begin': }
+            -> Apt::Source['mesos-custom']
+            -> Class['apt::update']
+            -> anchor { 'mesos::repo::end': }
         } else {
           case $source {
             undef: {} #nothing to do
             'mesosphere': {
               ensure_resource('apt::source', 'mesosphere', $mesosphere_apt)
-              anchor { 'mesos::repo::begin': } ->
-                Apt::Source['mesosphere'] ->
-                Class['apt::update'] ->
-              anchor { 'mesos::repo::end': }
+              anchor { 'mesos::repo::begin': }
+                -> Apt::Source['mesosphere']
+                -> Class['apt::update']
+                -> anchor { 'mesos::repo::end': }
             }
             default: {
               notify { "APT repository '${source}' is not supported for ${::osfamily}": }
@@ -77,8 +77,8 @@ class mesos::repo(
                   path        => '/usr/bin',
                   refreshonly => true,
                   command     => 'yum clean expire-cache',
-                } ->
-                package { 'mesosphere-el-repo':
+                }
+                -> package { 'mesosphere-el-repo':
                   ensure   => present,
                   provider => 'rpm',
                   source   => "http://repos.mesosphere.io/el/${osrel}/noarch/RPMS/mesosphere-el-repo-${osrel}-${mrel}.noarch.rpm"
