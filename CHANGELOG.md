@@ -1,0 +1,56 @@
+# deric-mesos
+
+## v0.8.3
+- FIX: Install the package before managing the $conf_dir for slave #79 #72
+- [full changelog](https://github.com/deric/puppet-mesos/compare/v0.8.2...v0.8.3)
+
+## v0.8.2
+
+- FIX: /etc/init.d scripts not found on installation #28
+- FEATURE: allow passing custom APT configuration #77
+- systemd disabled on older systems #74
+- removed code duplication #75
+- expire yum cache #76
+- [full changelog](https://github.com/deric/puppet-mesos/compare/v0.8.1...v0.8.2)
+
+
+## v0.8.1
+
+- Removing configuration file should cause service reload #73
+- Refactor mesos::property and its spec #68
+- Undef property specs failing with new rspec #70
+- [full changelog](https://github.com/deric/puppet-mesos/compare/v0.8.0...v0.8.1)
+
+## v0.8.0
+
+- [**BC**] `single_role`: by default node is either master xor slave #62
+- ZooKeeper servers are defined as an array (62ebc80498c35314af3b8ec56d2637c53d15ba8f) - old syntax is as well supported
+- support alternative pip providers #63
+- fix: restart service when `/etc/default/mesos-master` or `/etc/default/mesos-slave` changes #64
+- prefix credentials file with `file://` #65
+- full [changes diff](https://github.com/deric/puppet-mesos/compare/v0.7.1...v0.8.0)
+
+## v0.7.1
+
+-  Add ability to disable logging to syslog #60
+- Add `mesos_version` fact (312d441d163fe5115252a6e2034b4026d984521c)
+- test against Puppet 4
+- [diff to previous version](https://github.com/deric/puppet-mesos/compare/v0.7.0...v0.7.1)
+
+## v0.7.0
+
+- Fix service restart when new version is installed #55
+- Support [Mesos CLI management](https://github.com/deric/puppet-mesos/commit/da5b2a784753b088571f523b4d4db97ada335d29)
+- Fix setting credential for mesos-slave #57
+- Allow changing path to `/etc/default/mesos` #58
+- Add ensure parameter to mesos::property #59
+- `mesos::property` require/notify fixes #56
+- [full diff to last patch version](https://github.com/deric/puppet-mesos/compare/v0.6.5...v0.7.0)
+- [diff to last minor version - 0.6.0](https://github.com/deric/puppet-mesos/compare/v0.6.0...v0.7.0)
+
+## v0.6.5
+
+- Support ACLs #49 - Note: Mesos `<0.26` reads secrets as base64 encoded byte array, Mesos `>=0.26` reads secrets as plain strings
+- Fix running `apt-get update` #54
+- Add owner and group parameters to `mesos::property` #52
+- [full patch version diff](https://github.com/deric/puppet-mesos/compare/v0.6.4...v0.6.5)
