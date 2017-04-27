@@ -15,7 +15,7 @@
     },
     {
       "name": "puppetlabs-apt",
-      "version_requirement": ">= 2.1.0 <= 3.0.0"
+      "version_requirement": ">= 2.1.0 < 3.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -46,15 +46,12 @@
       "operatingsystemrelease": [
         "10.04",
         "12.04",
-        "14.04"
+        "14.04",
+        "16.04",
       ]
     }
   ],
   "requirements": [
-    {
-      "name": "pe",
-      "version_requirement": ">= 3.3.0 < 5.0.0"
-    },
     {
       "name": "puppet",
       "version_requirement": ">= 3.0.0 < 5.0.0"
