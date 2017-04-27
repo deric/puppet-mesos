@@ -1,8 +1,11 @@
 # deric-mesos
 
-## v0.8.3
-- FIX: Install the package before managing the $conf_dir for slave #79 #72
+## v0.8.4
+- FIX: Install the package before managing the $conf_dir for slave [#79](https://github.com/deric/puppet-mesos/pull/79) [#72](https://github.com/deric/puppet-mesos/issues/72)
 - [full changelog](https://github.com/deric/puppet-mesos/compare/v0.8.2...v0.8.3)
+
+## v0.8.3
+- incomplete release, fixed running tests on Ruby > 2.2.0
 
 ## v0.8.2
 
