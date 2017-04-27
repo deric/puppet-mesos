@@ -129,7 +129,7 @@ By default no IP address is set, which means that Mesos will use IP to which tra
  - `port` - slave's port for incoming connections (default: `5051`)
  - `master`- ip address of Mesos master (default: `localhost`)
  - `master_port` - Mesos master's port (default: `5050`)
- - `work_dir` - directory for storing task's temporary files (default: `/tmp/mesos`)
+ - `work_dir` - directory for storing task's temporary files (default: `/var/lib/mesos`)
  - `env_var` - slave's execution environment variables - a Hash, if you are using
  Java, you might need e.g.:
  - `principal` - mesos principal used for auththentication

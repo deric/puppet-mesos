@@ -73,10 +73,10 @@ describe 'mesos::slave', :type => :class do
     })
   end
 
-  it 'should have workdir in /tmp/mesos' do
+  it 'should have workdir in /var/lib/mesos' do
     should contain_file(
       "#{conf}/work_dir"
-    ).with_content(/^\/tmp\/mesos$/)
+    ).with_content(/^\/var\/lib\/mesos$/)
   end
 
   context 'one master node' do

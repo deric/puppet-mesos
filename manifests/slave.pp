@@ -16,7 +16,7 @@
 #    Zookeeper URL string (which keeps track of current Mesos master)
 #
 #  [*work_dir*]
-#    Directory for storing task's temporary files (default: /tmp/mesos)
+#    Directory for storing task's temporary files (default: /var/lib/mesos)
 #
 #  [*isolation*]
 #    Isolation mechanism - either 'process' or 'cgroups' newer versions
@@ -51,7 +51,7 @@
 class mesos::slave (
   $enable           = true,
   $port             = 5051,
-  $work_dir         = '/tmp/mesos',
+  $work_dir         = '/var/lib/mesos',
   $checkpoint       = false,
   $isolation        = '',
   $conf_dir         = '/etc/mesos-slave',
