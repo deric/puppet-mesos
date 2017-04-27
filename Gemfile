@@ -19,7 +19,6 @@ group :rake do
   end
   gem 'rspec-puppet'
   gem 'metadata-json-lint',      :require => false
-  gem 'parallel_tests'
   if RUBY_VERSION >= "2.2.0"
     gem 'safe_yaml'
   end
