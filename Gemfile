@@ -5,7 +5,8 @@ group :rake do
   gem 'puppet', puppetversion
   gem 'puppet-lint'
   gem 'puppetlabs_spec_helper', '>=0.2.0'
-  gem 'rake',         '>=0.9.2.2'
+  # removed method last_comment (requires rspec 3.5.0)
+  gem 'rake', '< 12.0.0'
   gem 'rspec-system-puppet',     :require => false
   gem 'serverspec',              :require => false
   gem 'rspec-system-serverspec', :require => false
@@ -19,6 +20,9 @@ group :rake do
   gem 'rspec-puppet'
   gem 'metadata-json-lint',      :require => false
   gem 'parallel_tests'
+  if RUBY_VERSION >= "2.2.0"
+    gem 'safe_yaml'
+  end
 end
 
 group :development do
