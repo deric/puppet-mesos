@@ -9,10 +9,10 @@ script:
   - RAKE_ENV=ci bundle exec rake spec
   - RAKE_ENV=ci bundle exec rake lint
 rvm:
-  - 1.9.3
   - 2.0.0
   - 2.1.10
   - 2.2.7
+  - 2.3.3
 env:
   global:
     - LIBRARIAN_PUPPET_TMP="$HOME/librarian-puppet"
@@ -33,6 +33,10 @@ env:
 matrix:
 #- 2.2.2 puppet 3 won't be compatible with ruby 2.2: https://tickets.puppetlabs.com/browse/PUP-3796
   exclude:
+    - rvm: 2.0.0
+      env: PUPPET_VERSION="~> 4.9.0" STRICT_VARIABLES=yes
+    - rvm: 2.0.0
+      env: PUPPET_VERSION="~> 4.10.0" STRICT_VARIABLES=yes
     - rvm: 2.2.7
       env: PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=yes
     - rvm: 2.2.7
@@ -42,4 +46,14 @@ matrix:
     - rvm: 2.2.7
       env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=yes FUTURE_PARSER=yes
     - rvm: 2.2.7
+      env: PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=yes FUTURE_PARSER=yes
+    - rvm: 2.3.3
+      env: PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=yes
+    - rvm: 2.3.3
+      env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=yes
+    - rvm: 2.3.3
+      env: PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=yes
+    - rvm: 2.3.3
+      env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=yes FUTURE_PARSER=yes
+    - rvm: 2.3.3
       env: PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=yes FUTURE_PARSER=yes
