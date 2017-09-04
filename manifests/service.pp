@@ -5,13 +5,13 @@
 # Parameters:
 #  [*enable*] - enable service autostart
 #  [*manage*] - whether puppet should ensure running/stopping services
-#  [*force_provider*] - choose a service provider; default = undef = system default; 'none' does not create a service resource at all.
+#  [*service_provider*] - choose a service provider; default = undef = system default; 'none' does not create a service resource at all.
 #
 # Should not be called directly
 #
 define mesos::service(
   $enable              = false,
-  $force_provider      = undef,
+  $service_provider      = undef,
   $manage              = true,
   $manage_service_file = $::mesos::manage_service_file,
   $systemd_after       = $::mesos::params::systemd_after,
@@ -31,7 +31,7 @@ define mesos::service(
   }
 
   if $manage_service_file == true {
-    if $force_provider == 'systemd'  {
+    if $service_provider == 'systemd'  {
       file { "${::mesos::systemd_path}/mesos-${name}.service":
         ensure  => 'present',
         content => template("${module_name}/systemd.${name}-service.erb"),
@@ -44,13 +44,13 @@ define mesos::service(
     }
   }
 
-  if ($force_provider != 'none') {
+  if ($service_provider != 'none') {
     service { "mesos-${name}":
       ensure     => $ensure_service,
       hasstatus  => true,
       hasrestart => true,
       enable     => $enable,
-      provider   => $force_provider,
+      provider   => $service_provider,
       subscribe  => [
         File[$mesos::conf_file],
         Package['mesos']

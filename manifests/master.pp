@@ -43,7 +43,6 @@ class mesos::master(
   $acls                = {},
   $credentials         = [],
   $syslog_logger       = true,
-  $force_provider      = undef, # will be removed in 0.9, use `service_provider` instead
   $use_hiera           = $mesos::use_hiera,
   $single_role         = $mesos::single_role,
   $service_provider    = $mesos::service_provider,
@@ -173,17 +172,10 @@ class mesos::master(
     group  => $group,
   }
 
-  # TODO: remove in 0.9
-  if $force_provider {
-    $provider = $force_provider
-  } else {
-    $provider = $service_provider
-  }
-
   # Install mesos-master service
   mesos::service { 'master':
     enable              => $enable,
-    force_provider      => $provider,
+    service_provider    => $service_provider,
     manage              => $manage_service,
     subscribe           => File[$conf_file],
     manage_service_file => $manage_service_file,

@@ -49,35 +49,34 @@
 #
 
 class mesos::slave (
-  $enable           = true,
-  $port             = 5051,
-  $work_dir         = '/var/lib/mesos',
-  $checkpoint       = false,
-  $isolation        = '',
-  $conf_dir         = '/etc/mesos-slave',
-  $conf_file        = '/etc/default/mesos-slave',
-  $credentials_file = '/etc/mesos/slave-credentials',
-  $master           = $mesos::master,
-  $master_port      = $mesos::master_port,
-  $zookeeper        = $mesos::zookeeper,
-  $zk_path          = $mesos::zk_path,
-  $zk_default_port  = $mesos::zk_default_port,
-  $owner            = $mesos::owner,
-  $group            = $mesos::group,
-  $listen_address   = $mesos::listen_address,
-  $manage_service   = $mesos::manage_service,
-  $env_var          = {},
-  $cgroups          = {},
-  $options          = {},
-  $resources        = {},
-  $attributes       = {},
-  $principal        = undef,
-  $secret           = undef,
-  $syslog_logger    = true,
-  $force_provider   = undef, # will be removed in 0.9, use `service_provider` instead
-  $use_hiera        = $mesos::use_hiera,
-  $single_role      = $mesos::single_role,
-  $service_provider = $mesos::service_provider,
+  $enable              = true,
+  $port                = 5051,
+  $work_dir            = '/var/lib/mesos',
+  $checkpoint          = false,
+  $isolation           = '',
+  $conf_dir            = '/etc/mesos-slave',
+  $conf_file           = '/etc/default/mesos-slave',
+  $credentials_file    = '/etc/mesos/slave-credentials',
+  $master              = $mesos::master,
+  $master_port         = $mesos::master_port,
+  $zookeeper           = $mesos::zookeeper,
+  $zk_path             = $mesos::zk_path,
+  $zk_default_port     = $mesos::zk_default_port,
+  $owner               = $mesos::owner,
+  $group               = $mesos::group,
+  $listen_address      = $mesos::listen_address,
+  $manage_service      = $mesos::manage_service,
+  $env_var             = {},
+  $cgroups             = {},
+  $options             = {},
+  $resources           = {},
+  $attributes          = {},
+  $principal           = undef,
+  $secret              = undef,
+  $syslog_logger       = true,
+  $use_hiera           = $mesos::use_hiera,
+  $single_role         = $mesos::single_role,
+  $service_provider    = $mesos::service_provider,
   $manage_service_file = $::mesos::manage_service_file,
   $systemd_wants       = $::mesos::params::systemd_wants,
   $systemd_after       = $::mesos::params::systemd_after,
@@ -248,17 +247,10 @@ class mesos::slave (
     require => File[$conf_dir],
   }
 
-  # TODO: remove in 0.9
-  if $force_provider {
-    $provider = $force_provider
-  } else {
-    $provider = $service_provider
-  }
-
   # Install mesos-slave service
   mesos::service { 'slave':
     enable              => $enable,
-    force_provider      => $provider,
+    service_provider    => $service_provider,
     manage              => $manage_service,
     subscribe           => File[$conf_file],
     manage_service_file => $manage_service_file,
