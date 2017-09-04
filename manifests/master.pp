@@ -14,36 +14,42 @@
 #    enabled by default. `single_role` assumes that you use only either of
 #    those on one machine. Default: true (mesos-slave service will be
 #    disabled on master node)
+#  [*manage_service_file*]
+#    Whether override default service files (currently supported only for systemd)
+#    default: false
 #
 #
 # mesos-master service stores configuration in /etc/default/mesos-master in file/directory
 # structure. Arguments passed via $options hash are converted to file/directories
 #
 class mesos::master(
-  $enable           = true,
-  $cluster          = 'mesos',
-  $conf_dir         = '/etc/mesos-master',
-  $work_dir         = '/var/lib/mesos', # registrar directory, since 0.19
-  $conf_file        = '/etc/default/mesos-master',
-  $acls_file        = '/etc/mesos/acls',
-  $credentials_file = '/etc/mesos/master-credentials',
-  $master_port      = $mesos::master_port,
-  $zookeeper        = $mesos::zookeeper,
-  $zk_path          = $mesos::zk_path,
-  $zk_default_port  = $mesos::zk_default_port,
-  $owner            = $mesos::owner,
-  $group            = $mesos::group,
-  $listen_address   = $mesos::listen_address,
-  $manage_service   = $mesos::manage_service,
-  $env_var          = {},
-  $options          = {},
-  $acls             = {},
-  $credentials      = [],
-  $syslog_logger    = true,
-  $force_provider   = undef, # will be removed in 0.9, use `service_provider` instead
-  $use_hiera        = $mesos::use_hiera,
-  $single_role      = $mesos::single_role,
-  $service_provider = $mesos::service_provider,
+  $enable              = true,
+  $cluster             = 'mesos',
+  $conf_dir            = '/etc/mesos-master',
+  $work_dir            = '/var/lib/mesos', # registrar directory, since 0.19
+  $conf_file           = '/etc/default/mesos-master',
+  $acls_file           = '/etc/mesos/acls',
+  $credentials_file    = '/etc/mesos/master-credentials',
+  $master_port         = $mesos::master_port,
+  $zookeeper           = $mesos::zookeeper,
+  $zk_path             = $mesos::zk_path,
+  $zk_default_port     = $mesos::zk_default_port,
+  $owner               = $mesos::owner,
+  $group               = $mesos::group,
+  $listen_address      = $mesos::listen_address,
+  $manage_service      = $mesos::manage_service,
+  $env_var             = {},
+  $options             = {},
+  $acls                = {},
+  $credentials         = [],
+  $syslog_logger       = true,
+  $force_provider      = undef, # will be removed in 0.9, use `service_provider` instead
+  $use_hiera           = $mesos::use_hiera,
+  $single_role         = $mesos::single_role,
+  $service_provider    = $mesos::service_provider,
+  $manage_service_file = $::mesos::manage_service_file,
+  $systemd_wants       = $::mesos::params::systemd_wants,
+  $systemd_after       = $::mesos::params::systemd_after,
 ) inherits ::mesos {
 
   validate_hash($env_var)
@@ -176,10 +182,13 @@ class mesos::master(
 
   # Install mesos-master service
   mesos::service { 'master':
-    enable         => $enable,
-    force_provider => $provider,
-    manage         => $manage_service,
-    subscribe      => File[$conf_file],
+    enable              => $enable,
+    force_provider      => $provider,
+    manage              => $manage_service,
+    subscribe           => File[$conf_file],
+    manage_service_file => $manage_service_file,
+    systemd_wants       => $systemd_wants,
+    systemd_after       => $systemd_after,
   }
 
   if (!defined(Class['mesos::slave']) and $single_role) {

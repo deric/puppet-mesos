@@ -10,9 +10,12 @@
 # Should not be called directly
 #
 define mesos::service(
-  $enable         = false,
-  $force_provider = undef,
-  $manage         = true,
+  $enable              = false,
+  $force_provider      = undef,
+  $manage              = true,
+  $manage_service_file = $::mesos::manage_service_file,
+  $systemd_after       = $::mesos::params::systemd_after,
+  $systemd_wants       = $::mesos::params::systemd_wants,
 ) {
 
   include ::mesos
@@ -27,6 +30,19 @@ define mesos::service(
     $ensure_service = undef
   }
 
+  if $manage_service_file == true {
+    if $force_provider == 'systemd'  {
+      file { "${::mesos::systemd_path}/mesos-${name}.service":
+        ensure  => 'present',
+        content => template("${module_name}/systemd.${name}-service.erb"),
+      }
+      ~> exec { 'systemctl daemon-reload # for mesos-${name} service':
+        refreshonly => true,
+        path        => $::path,
+        notify      => Service["mesos-${name}"]
+      }
+    }
+  }
 
   if ($force_provider != 'none') {
     service { "mesos-${name}":

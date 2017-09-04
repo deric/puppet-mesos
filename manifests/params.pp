@@ -51,7 +51,11 @@ class mesos::params {
   $packages = $_params['packages']
   $service_provider = $_params['service_provider']
 
-  $config_file_owner = 'root'
-  $config_file_group = 'root'
-  $config_file_mode  = '0644'
+  $config_file_owner   = 'root'
+  $config_file_group   = 'root'
+  $config_file_mode    = '0644'
+  $manage_service_file = false
+  $systemd_after       = 'network.target'
+  $systemd_wants       = 'network.target'
+  $systemd_path        = '/etc/systemd/system'
 }

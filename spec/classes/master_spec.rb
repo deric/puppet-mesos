@@ -417,4 +417,50 @@ describe 'mesos::master', :type => :class do
   end
 
 
+  context 'custom systemd configuration' do
+    let(:params) do
+      {
+        :service_provider      => 'systemd',
+        :manage_service_file => true,
+        :systemd_after       => 'network-online.target openvpn-client@.service',
+        :systemd_wants       => 'network-online.target openvpn-client@.service',
+      }
+    end
+
+
+    it do
+     is_expected.to contain_service('mesos-master').with(
+        :ensure => 'running',
+        :enable => true
+      )
+    end
+
+    it do
+      is_expected.to contain_mesos__service('master').with(:enable => true)
+      is_expected.to contain_mesos__service('slave').with(:enable => false)
+    end
+
+    it do
+      is_expected.to contain_file(
+        '/etc/systemd/system/mesos-master.service'
+      ).with({
+        'ensure' => 'present',
+      })
+    end
+
+    it do
+      is_expected.to contain_file(
+        '/etc/systemd/system/mesos-master.service'
+      ).with_content(/Wants=network-online.target openvpn-client@.service/)
+    end
+
+    it do
+      is_expected.to contain_file(
+        '/etc/systemd/system/mesos-master.service'
+      ).with_content(/After=network-online.target openvpn-client@.service/)
+    end
+
+  end
+
+
 end
