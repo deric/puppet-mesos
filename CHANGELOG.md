@@ -1,5 +1,13 @@
 # deric-mesos
 
+## v0.9.0
+- [Full diff](https://github.com/deric/puppet-zookeeper/compare/v0.8.4...v0.9.0)
+- New features:
+  - [Allow passing after=, wants= parameters to systemd services](https://github.com/deric/puppet-mesos/issues/80)
+- [**Breaking Changes**]
+  - `force_provider` replaced with `service_provider`
+  - Agent's `work_dir` defaults to `/var/lib/mesos`
+
 ## v0.8.4
 - FIX: Install the package before managing the $conf_dir for slave [#79](https://github.com/deric/puppet-mesos/pull/79) [#72](https://github.com/deric/puppet-mesos/issues/72)
 - [full changelog](https://github.com/deric/puppet-mesos/compare/v0.8.2...v0.8.3)
