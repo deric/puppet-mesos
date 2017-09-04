@@ -36,7 +36,7 @@ define mesos::service(
         ensure  => 'present',
         content => template("${module_name}/systemd.${name}-service.erb"),
       }
-      ~> exec { 'systemctl daemon-reload # for mesos-${name} service':
+      ~> exec { "systemctl daemon-reload # for mesos-${name} service":
         refreshonly => true,
         path        => $::path,
         notify      => Service["mesos-${name}"]
