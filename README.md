@@ -59,6 +59,9 @@ Parameters:
  - `manage_zk_file` - Control whether module manages /etc/mesos/zk (default: true)
  - `manage_service` - Whether Puppet should ensure service state (applies to `mesos-master` and `mesos-slave`) (default: `true`)
  - `single_role` - When enabled each machine is expected to run either master or slave service (default: `true`)
+ - `manage_service_file` Provide custom service definition - only `systemd` is supported right now (default: `false`)
+ - `systemd_after` Ensures that the configured unit is started after the listed unit finished starting up (default: `network.target`)
+ - `systemd_wants` If this unit gets activated, the units listed here will be activated as well (default: `network.target`)
 
 ### Master
 
@@ -414,6 +417,17 @@ Some reasonable values are:
   * `runit`
   * `none` - service won't be installed
   * `undef` - (default) detected provider by Puppet
+
+A custom `systemd` configuration example:
+
+```puppet
+class{'mesos::master':
+  service_provider    => 'systemd',
+  manage_service_file => true,
+  systemd_wants       => 'network.target zookeeper.service',
+  systemd_after       => 'network.target zookeeper.service',
+}
+```
 
 ### Packages
 

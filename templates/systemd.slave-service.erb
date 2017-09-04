@@ -1,0 +1,16 @@
+[Unit]
+Description=Mesos Slave
+After=<%= scope.lookupvar("mesos::slave::systemd_after") %>
+Wants=<%= scope.lookupvar("mesos::slave::systemd_wants") %>
+
+[Service]
+ExecStart=/usr/bin/mesos-init-wrapper slave
+KillMode=process
+Restart=always
+RestartSec=20
+LimitNOFILE=16384
+CPUAccounting=true
+MemoryAccounting=true
+
+[Install]
+WantedBy=multi-user.target

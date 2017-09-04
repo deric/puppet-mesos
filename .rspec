@@ -2,4 +2,4 @@
 --color
 --pattern 'spec/{classes,defines,unit,functions,hosts,integration,types}/**/*_spec.rb'
 #--backtrace
---fail-fast
+#--fail-fast

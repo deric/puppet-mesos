@@ -78,6 +78,9 @@ class mesos::slave (
   $use_hiera        = $mesos::use_hiera,
   $single_role      = $mesos::single_role,
   $service_provider = $mesos::service_provider,
+  $manage_service_file = $::mesos::manage_service_file,
+  $systemd_wants       = $::mesos::params::systemd_wants,
+  $systemd_after       = $::mesos::params::systemd_after,
 ) inherits ::mesos {
 
   validate_hash($env_var)
@@ -254,10 +257,13 @@ class mesos::slave (
 
   # Install mesos-slave service
   mesos::service { 'slave':
-    enable         => $enable,
-    force_provider => $provider,
-    manage         => $manage_service,
-    subscribe      => File[$conf_file],
+    enable              => $enable,
+    force_provider      => $provider,
+    manage              => $manage_service,
+    subscribe           => File[$conf_file],
+    manage_service_file => $manage_service_file,
+    systemd_wants       => $systemd_wants,
+    systemd_after       => $systemd_after,
   }
 
   if (!defined(Class['mesos::master']) and $single_role) {

@@ -712,4 +712,47 @@ describe 'mesos::slave', :type => :class do
     end
   end
 
+  context 'custom systemd configuration' do
+    let(:params) do
+      {
+        :service_provider    => 'systemd',
+        :manage_service_file => true,
+        :systemd_after       => 'network-online.target openvpn-client@.service',
+        :systemd_wants       => 'network-online.target openvpn-client@.service',
+      }
+    end
+
+    it do
+     is_expected.to contain_service('mesos-slave').with(
+        :ensure => 'running',
+        :enable => true
+      )
+    end
+
+    it do
+      is_expected.to contain_mesos__service('slave').with(:enable => true)
+    end
+
+    it do
+      is_expected.to contain_file(
+        '/etc/systemd/system/mesos-slave.service'
+      ).with({
+        'ensure' => 'present',
+      })
+    end
+
+    it do
+      is_expected.to contain_file(
+        '/etc/systemd/system/mesos-slave.service'
+      ).with_content(/Wants=network-online.target openvpn-client@.service/)
+    end
+
+    it do
+      is_expected.to contain_file(
+        '/etc/systemd/system/mesos-slave.service'
+      ).with_content(/After=network-online.target openvpn-client@.service/)
+    end
+
+  end
+
 end
