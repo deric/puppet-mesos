@@ -11,7 +11,7 @@
 #
 define mesos::service(
   $enable              = false,
-  $service_provider      = undef,
+  $service_provider    = undef,
   $manage              = true,
   $manage_service_file = $::mesos::manage_service_file,
   $systemd_after       = $::mesos::params::systemd_after,

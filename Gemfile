@@ -22,6 +22,7 @@ group :rake do
   if RUBY_VERSION >= "2.2.0"
     gem 'safe_yaml'
   end
+  gem 'xmlrpc'
 end
 
 group :development do

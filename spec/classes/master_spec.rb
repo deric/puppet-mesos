@@ -18,6 +18,8 @@ describe 'mesos::master', :type => :class do
     :lsbdistcodename => 'jessie',
     :majdistrelease => '8',
     :operatingsystemmajrelease => 'jessie',
+    :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+    :puppetversion => Puppet.version,
   }}
 
    before(:each) do

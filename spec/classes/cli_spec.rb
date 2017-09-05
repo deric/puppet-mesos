@@ -8,6 +8,7 @@ describe 'mesos::cli', :type => :class do
   let(:params){{
     :owner    => owner,
     :group    => group,
+    :manage_pip => true,
   }}
 
   let(:facts) {{

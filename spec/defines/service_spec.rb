@@ -7,6 +7,12 @@ describe 'mesos::service', :type => :define do
     puppet_debug_override
   end
 
+  let(:params) {{
+    :manage_service_file => false,
+    :systemd_after => '',
+    :systemd_wants => '',
+  }}
+
   shared_examples 'mesos-service' do |family, os, codename, majdistrelease, release|
     let(:facts) {{
       :osfamily => family,
@@ -14,6 +20,8 @@ describe 'mesos::service', :type => :define do
       :lsbdistcodename => codename,
       :majdistrelease => majdistrelease,
       :operatingsystemmajrelease => release,
+      :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+      :puppetversion => Puppet.version,
     }}
 
     it { is_expected.to contain_service('mesos-slave').with(
@@ -25,6 +33,9 @@ describe 'mesos::service', :type => :define do
     context 'enable service' do
       let(:params) {{
         :enable => true,
+        :manage_service_file => false,
+        :systemd_after => '',
+        :systemd_wants => '',
       }}
 
       it { is_expected.to contain_service('mesos-slave').with(
@@ -37,6 +48,9 @@ describe 'mesos::service', :type => :define do
       let(:params) {{
         :enable => true,
         :manage => false, # won't start service if it's not running
+        :manage_service_file => false,
+        :systemd_after => '',
+        :systemd_wants => '',
       }}
 
       it { is_expected.to contain_service('mesos-slave').with(
