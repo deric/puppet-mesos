@@ -1,15 +1,14 @@
 source 'https://rubygems.org'
 
 group :rake do
-  puppetversion = ENV.key?('PUPPET_VERSION') ? "#{ENV['PUPPET_VERSION']}" : ['>= 3.0.0','< 4.0']
+  puppetversion = ENV.key?('PUPPET_VERSION') ? "#{ENV['PUPPET_VERSION']}" : ['>= 3.0.0','< 5.0']
   gem 'puppet', puppetversion
   gem 'puppet-lint'
   gem 'puppetlabs_spec_helper', '>=0.2.0'
   # removed method last_comment (requires rspec 3.5.0)
-  gem 'rake', '< 12.0.0'
+  gem 'rake'
+  gem 'rspec-core', '>= 3.5.0'
   gem 'rspec-system-puppet',     :require => false
-  gem 'serverspec',              :require => false
-  gem 'rspec-system-serverspec', :require => false
   gem 'librarian-puppet' , '>=2.0'
   gem 'highline'
   if RUBY_VERSION =~ /^1\.9\./ or RUBY_VERSION =~ /^1\.8\./
