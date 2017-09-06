@@ -22,7 +22,9 @@ group :rake do
   if RUBY_VERSION >= "2.2.0"
     gem 'safe_yaml'
   end
-  gem 'xmlrpc'
+  if RUBY_VERSION >= "2.3.0"
+    gem 'xmlrpc'
+  end
   if RUBY_VERSION < "2.1.0"
     gem 'nokogiri', '< 1.7.0'
   end
