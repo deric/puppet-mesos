@@ -10,28 +10,28 @@ describe 'mesos_hash_parser' do
         'isolation' => 'cgroups',
       }
 
-      subject.should run.with_params(param).and_return({
-          'isolation' => {
-            'value' => 'cgroups',
-            'file' => 'isolation',
-          }
-        })
+      is_expected.to run.with_params(param).and_return({
+        'isolation' => {
+          'value' => 'cgroups',
+          'file' => 'isolation',
+        }
+      })
     end
 
     it 'should raise an error if run with extra arguments' do
-      subject.should run.with_params(1, 2, 3, 4).and_raise_error(Puppet::ParseError)
+      is_expected.to run.with_params(1, 2, 3, 4).and_raise_error(Puppet::ParseError)
     end
 
     it 'should raise an error with incorrect type of arguments' do
-      subject.should run.with_params(1, 2).and_raise_error(Puppet::ParseError)
+      is_expected.to run.with_params(1, 2).and_raise_error(Puppet::ParseError)
     end
 
     it 'should raise an error when running without arguments' do
-      subject.should run.with_params(nil).and_raise_error(Puppet::ParseError)
+      is_expected.to run.with_params(nil).and_raise_error(Puppet::ParseError)
     end
 
     it 'works with simple hash' do
-      subject.should run.with_params({'foo' => 'bar'}).and_return({
+      is_expected.to run.with_params({'foo' => 'bar'}).and_return({
         'foo' => {
           'value' => 'bar',
           'file' => 'foo',
@@ -46,12 +46,12 @@ describe 'mesos_hash_parser' do
         'root' => '/cgroups',
       }
 
-      subject.should run.with_params(param, 'cg').and_return({
-          'cg_root' => {
-            'value' => '/cgroups',
-            'file' => 'root',
-          }
-        })
+    is_expected.to run.with_params(param, 'cg').and_return({
+        'cg_root' => {
+          'value' => '/cgroups',
+          'file' => 'root',
+        }
+     })
     end
 
     it 'should prefix files' do
@@ -59,12 +59,12 @@ describe 'mesos_hash_parser' do
         'root' => '/cgroups',
       }
 
-      subject.should run.with_params(param, 'cg', 'cg').and_return({
-          'cg_root' => {
-            'value' => '/cgroups',
-            'file' => 'cg_root',
-          }
-        })
+      is_expected.to run.with_params(param, 'cg', 'cg').and_return({
+        'cg_root' => {
+          'value' => '/cgroups',
+          'file' => 'cg_root',
+        }
+      })
     end
   end
 

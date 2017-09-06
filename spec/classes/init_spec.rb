@@ -20,11 +20,11 @@ describe 'mesos', :type => :class do
       puppet_debug_override
     end
 
-    it { should contain_package('mesos').with({
+    it { is_expected.to contain_package('mesos').with({
       'ensure' => version
     }) }
 
-    it { should_not contain_package('python').with({
+    it { is_expected.not_to contain_package('python').with({
       'ensure' => 'present'
     }) }
   end
@@ -35,7 +35,7 @@ describe 'mesos', :type => :class do
       :version => version
     }}
 
-    it { should contain_package('mesos').with({
+    it { is_expected.to contain_package('mesos').with({
       'ensure' => version
     }) }
   end
@@ -46,7 +46,7 @@ describe 'mesos', :type => :class do
       :ensure => version
     }}
 
-    it { should contain_package('mesos').with({
+    it { is_expected.to contain_package('mesos').with({
       'ensure' => version
     }) }
   end
@@ -58,16 +58,16 @@ describe 'mesos', :type => :class do
       :ulimit => ulimit
     }}
 
-    it { should contain_file(file).with_content(/ULIMIT="-n #{ulimit}"/) }
+    it { is_expected.to contain_file(file).with_content(/ULIMIT="-n #{ulimit}"/) }
   end
 
-  it { should contain_class('mesos') }
-  it { should contain_class('mesos::repo') }
-  it { should contain_class('mesos::install') }
-  it { should contain_class('mesos::config') }
-  it { should contain_class('mesos::config').that_requires('Class[mesos::install]') }
+  it { is_expected.to contain_class('mesos') }
+  it { is_expected.to contain_class('mesos::repo') }
+  it { is_expected.to contain_class('mesos::install') }
+  it { is_expected.to contain_class('mesos::config') }
+  it { is_expected.to contain_class('mesos::config').that_requires('Class[mesos::install]') }
 
-  it { should compile.with_all_deps }
+  it { is_expected.to compile.with_all_deps }
 
   context 'change pyton packge name' do
     let(:python) { 'python3' }
@@ -76,7 +76,7 @@ describe 'mesos', :type => :class do
       :python_package => python
     }}
 
-    it { should contain_package(python).with({
+    it { is_expected.to contain_package(python).with({
       'ensure' => 'present'
     }) }
   end
@@ -87,7 +87,7 @@ describe 'mesos', :type => :class do
       :log_dir => '/var/log/mesos'
     }}
 
-    it { should contain_file(file).with_content(/LOGS="\/var\/log\/mesos"/) }
+    it { is_expected.to contain_file(file).with_content(/LOGS="\/var\/log\/mesos"/) }
   end
 
   context 'remove packaged services' do
@@ -113,7 +113,7 @@ describe 'mesos', :type => :class do
         :force_provider => 'none'
       }}
 
-      it { should contain_class('mesos::install').with('remove_package_services' => true) }
+      it { is_expected.to contain_class('mesos::install').with('remove_package_services' => true) }
     end
   end
 
@@ -121,7 +121,7 @@ describe 'mesos', :type => :class do
     let(:params){{
       :zookeeper => [ '192.168.1.100:2181' ],
     }}
-    it { should contain_file(
+    it { is_expected.to contain_file(
       '/etc/mesos/zk'
       ).with(
       :ensure => 'present'
@@ -134,7 +134,7 @@ describe 'mesos', :type => :class do
       :manage_zk_file => false,
       :zookeeper      => [ '192.168.1.100:2181' ],
     }}
-    it { should_not contain_file(
+    it { is_expected.not_to contain_file(
       '/etc/mesos/zk'
       )
     }
@@ -144,7 +144,7 @@ describe 'mesos', :type => :class do
     let(:params){{
       :zookeeper => 'zk://192.168.1.100:2181/mesos',
     }}
-    it { should contain_file(
+    it { is_expected.to contain_file(
       '/etc/mesos/zk'
       ).with(
       :ensure => 'present'
@@ -157,7 +157,7 @@ describe 'mesos', :type => :class do
       :zookeeper => ['192.168.1.100:2181', '192.168.1.105:2181'],
       :zk_path   => 'my_mesos',
     }}
-    it { should contain_file(
+    it { is_expected.to contain_file(
       '/etc/mesos/zk'
       ).with(
       :ensure => 'present'
@@ -170,7 +170,7 @@ describe 'mesos', :type => :class do
       :zookeeper       => ['192.168.1.100', '192.168.1.105'],
       :zk_default_port => 2828,
     }}
-    it { should contain_file(
+    it { is_expected.to contain_file(
       '/etc/mesos/zk'
       ).with(
       :ensure => 'present'

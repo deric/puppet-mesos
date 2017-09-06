@@ -16,7 +16,7 @@ describe 'mesos::config', :type => :class do
     puppet_debug_override
   end
 
-  it { should contain_file('/etc/default/mesos').with({
+  it { is_expected.to contain_file('/etc/default/mesos').with({
     'ensure'  => 'present',
     'owner'   => owner,
     'group'   => group,
@@ -25,13 +25,13 @@ describe 'mesos::config', :type => :class do
   }) }
 
   it 'has default log dir' do
-    should contain_file(
+    is_expected.to contain_file(
       '/etc/default/mesos'
     ).with_content(/LOGS="\/var\/log\/mesos"/)
   end
 
   it 'has default ulimit' do
-    should contain_file(
+    is_expected.to contain_file(
       '/etc/default/mesos'
     ).with_content(/ULIMIT="-n 8192"/)
   end
@@ -44,7 +44,7 @@ describe 'mesos::config', :type => :class do
     }}
 
     it do
-      should contain_file(conf_file)
+      is_expected.to contain_file(conf_file)
     end
   end
 
@@ -53,7 +53,7 @@ describe 'mesos::config', :type => :class do
       :ulimit => 16384,
     }}
 
-    it { should contain_file(
+    it { is_expected.to contain_file(
       '/etc/default/mesos'
       ).with_content(/ULIMIT="-n 16384"/)
     }
@@ -64,7 +64,7 @@ describe 'mesos::config', :type => :class do
       :log_dir => '/srv/mesos/log',
       :zookeeper_url => 'zk://10.0.0.1/mesos',
     }}
-    it { should contain_file(
+    it { is_expected.to contain_file(
       '/etc/default/mesos'
       ).with_content(/LOGS="\/srv\/mesos\/log"/)
     }
@@ -78,11 +78,11 @@ describe 'mesos::config', :type => :class do
       },
     }}
 
-    it { should contain_file(
+    it { is_expected.to contain_file(
       '/etc/default/mesos'
     ).with_content(/export JAVA_HOME="\/usr\/bin\/java"/) }
 
-    it { should contain_file(
+    it { is_expected.to contain_file(
       '/etc/default/mesos'
     ).with_content(/export MESOS_HOME="\/var\/lib\/mesos"/) }
   end
@@ -93,6 +93,6 @@ describe 'mesos::config', :type => :class do
       :log_dir => '/var/log/mesos',
     }}
 
-    it { should contain_file(file).with_content(/LOGS="\/var\/log\/mesos"/) }
+    it { is_expected.to contain_file(file).with_content(/LOGS="\/var\/log\/mesos"/) }
   end
 end
