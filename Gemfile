@@ -9,6 +9,8 @@ group :rake do
   gem 'rake'
   gem 'rspec-system-puppet',     :require => false
   gem 'highline'
+  gem 'semantic_puppet'
+  gem 'librarian-puppet' , '>=2.0'
   if RUBY_VERSION <= "1.9.0"
     gem 'json', '< 2.0' # newer versions requires at least ruby 2.0
     gem 'json_pure', '< 2.0.0'
@@ -32,5 +34,4 @@ end
 
 group :development do
   gem 'puppet-blacksmith',  '>= 3.0'
-  gem 'librarian-puppet' , '>=2.0'
 end
