@@ -2,16 +2,21 @@ require 'spec_helper'
 
 describe 'mesos::repo', :type => :class do
 
-  shared_examples 'debian' do |operatingsystem, lsbdistcodename, puppet|
+  shared_examples 'debian' do |family,operatingsystem, lsbdistcodename, puppet|
     let(:params) {{
       :source => 'mesosphere',
     }}
 
     let(:facts) {{
-      :operatingsystem => operatingsystem,
-      :osfamily => 'Debian',
-      :lsbdistcodename => lsbdistcodename,
-      :lsbdistid => operatingsystem,
+      # still old fact is needed due to this
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
+      :osfamily => family,
+      :os => {
+        :family => family,
+        :name => operatingsystem,
+        :distro => { :codename => lsbdistcodename },
+        :release => { :major => '8', :minor => '9', :full => '8.9' },
+      },
       :puppetversion => puppet,
     }}
 
@@ -20,7 +25,7 @@ describe 'mesos::repo', :type => :class do
     end
 
     it { is_expected.to contain_apt__source('mesosphere').with(
-     'location' => "http://repos.mesosphere.io/#{operatingsystem.downcase}",
+     'location' => "http://repos.mesosphere.io/#{family.downcase}",
      'repos'    => 'main',
      'release'  => "#{lsbdistcodename}",
      'key'      => {'id' => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com'},
@@ -42,29 +47,32 @@ describe 'mesos::repo', :type => :class do
   context 'on Debian based systems' do
     puppet = Puppet.version
 
-    it_behaves_like 'debian', 'Debian', 'wheezy', puppet
-    it_behaves_like 'debian', 'Ubuntu', 'precise', puppet
+    it_behaves_like 'debian', 'Debian', 'Debian', 'wheezy', puppet
+    it_behaves_like 'debian', 'Debian', 'Ubuntu', 'precise', puppet
   end
 
-  shared_examples 'redhat' do |operatingsystem, lsbdistcodename, mrel|
+  shared_examples 'redhat' do |family, operatingsystem, majrel, minrel|
     let(:params) {{
       :source => 'mesosphere',
     }}
 
-    let(:osrel) { lsbdistcodename}
-
+    let(:osrel) { majrel}
     let(:facts) {{
-      :operatingsystem => operatingsystem,
-      :osfamily                  => 'RedHat',
-      :lsbdistcodename           => lsbdistcodename,
-      :operatingsystemmajrelease => lsbdistcodename,
-      :lsbdistid                 => operatingsystem,
+      # still old fact is needed due to this
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
+      :osfamily => family,
+      :os => {
+        :family => family,
+        :name => operatingsystem,
+        :release => { :major => majrel, :minor => minrel, :full => "#{majrel}.#{minrel}" },
+      },
+      :puppetversion => Puppet.version,
     }}
 
     it { is_expected.to contain_package('mesosphere-el-repo').with({
      'ensure'   => 'present',
      'provider' => 'rpm',
-     'source'   => "http://repos.mesosphere.io/el/#{osrel}/noarch/RPMS/mesosphere-el-repo-#{osrel}-#{mrel}.noarch.rpm",
+     'source'   => "http://repos.mesosphere.io/el/#{majrel}/noarch/RPMS/mesosphere-el-repo-#{majrel}-#{minrel}.noarch.rpm",
     })}
 
     it do is_expected.to contain_exec('yum-clean-expire-cache').with({
@@ -81,8 +89,8 @@ describe 'mesos::repo', :type => :class do
   end
 
   context 'on RedHat based systems' do
-    it_behaves_like 'redhat', 'CentOS', '6', '2'
-    it_behaves_like 'redhat', 'CentOS', '7', '1'
+    it_behaves_like 'redhat', 'RedHat','CentOS', '6', '2'
+    it_behaves_like 'redhat', 'RedHat','CentOS', '7', '1'
   end
 
   # see: https://github.com/deric/puppet-mesos/issues/77
@@ -105,12 +113,18 @@ describe 'mesos::repo', :type => :class do
     end
 
     let(:facts) {{
-      :operatingsystem => 'Debian',
+      # still old fact is needed due to this
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
       :osfamily => 'Debian',
-      :lsbdistcodename => 'jessie',
-      :lsbdistid => 'Debian',
+      :os => {
+        :family => 'Debian',
+        :name => 'Debian',
+        :distro => { :codename => 'stretch' },
+        :release => { :major => '9', :minor => '1', :full => '9.1' },
+      },
       :puppetversion => Puppet.version,
     }}
+
 
     it { is_expected.to contain_apt__source('mesos-custom').with(
      'location' => "http://myrepo.example.com/debian",
@@ -133,17 +147,23 @@ describe 'mesos::repo', :type => :class do
       }
     end
     let(:facts) {{
-      :operatingsystem => 'Debian',
+      # still old fact is needed due to this
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
       :osfamily => 'Debian',
-      :lsbdistcodename => 'jessie',
-      :lsbdistid => 'Debian',
+      :os => {
+        :family => 'Debian',
+        :name => 'Debian',
+        :distro => { :codename => 'stretch' },
+        :release => { :major => '9', :minor => '1', :full => '9.1' },
+      },
       :puppetversion => Puppet.version,
     }}
+
 
     it { is_expected.to contain_apt__source('mesos-custom').with(
      'location' => "http://repos.mesosphere.io/debian",
      'repos'    => 'main',
-     'release'  => 'jessie',
+     'release'  => 'stretch',
      'key'      => {'id' => '00026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.example.com'},
      'include'  => {'src' => false}
     )}

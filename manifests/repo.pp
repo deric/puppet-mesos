@@ -11,14 +11,14 @@ class mesos::repo(
 ) {
 
   if $source {
-    case $::osfamily {
+    case $facts['os']['family'] {
       'Debian': {
         include ::apt
 
-        $distro = downcase($::operatingsystem)
+        $os = downcase($facts['os']['family'])
         $mesosphere_apt = {
-          location => "http://repos.mesosphere.io/${distro}",
-          release  => $::lsbdistcodename,
+          location => "http://repos.mesosphere.io/${os}",
+          release  =>  $facts['os']['distro']['codename'],
           repos    => 'main',
           key      => {
             'id'     => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
@@ -49,7 +49,7 @@ class mesos::repo(
                 -> anchor { 'mesos::repo::end': }
             }
             default: {
-              notify { "APT repository '${source}' is not supported for ${::osfamily}": }
+              notify { "APT repository '${source}' is not supported for ${facts['os']['family']}": }
             }
           } # case $source
         }
@@ -58,18 +58,8 @@ class mesos::repo(
         case $source {
           undef: {} #nothing to do
           'mesosphere': {
-            $osrel = $::operatingsystemmajrelease
-            case $osrel {
-              '6': {
-                $mrel = '2'
-              }
-              '7': {
-                $mrel = '1'
-              }
-              default: {
-                notify { "'${mrel}' is not supported for ${source}": }
-              }
-            }
+            $osrel = $facts['os']['release']['major']
+            $mrel = $facts['os']['release']['minor']
             case $osrel {
               '6', '7': {
                 exec { 'yum-clean-expire-cache':
@@ -85,7 +75,7 @@ class mesos::repo(
                 }
               }
               default: {
-                notify { "Yum repository '${source}' is not supported for major version ${::operatingsystemmajrelease}": }
+                notify { "Yum repository '${source}' is not supported for major version ${osrel}": }
               }
             }
           }
@@ -95,7 +85,7 @@ class mesos::repo(
         }
       }
       default: {
-        fail("\"${module_name}\" provides no repository information for OSfamily \"${::osfamily}\"")
+        fail("\"${module_name}\" provides no repository information for OSfamily \"${facts['os']['family']}\"")
       }
     }
   }
