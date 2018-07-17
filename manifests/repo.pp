@@ -58,18 +58,8 @@ class mesos::repo(
         case $source {
           undef: {} #nothing to do
           'mesosphere': {
-            $osrel = $::operatingsystemmajrelease
-            case $osrel {
-              '6': {
-                $mrel = '2'
-              }
-              '7': {
-                $mrel = '1'
-              }
-              default: {
-                notify { "'${mrel}' is not supported for ${source}": }
-              }
-            }
+            $osrel = $facts['os']['release']['major']
+            $mrel = $facts['os']['release']['minor']
             case $osrel {
               '6', '7': {
                 exec { 'yum-clean-expire-cache':
@@ -81,11 +71,11 @@ class mesos::repo(
                 -> package { 'mesosphere-el-repo':
                   ensure   => present,
                   provider => 'rpm',
-                  source   => "http://repos.mesosphere.io/el/${osrel}/noarch/RPMS/mesosphere-el-repo-${osrel}-${mrel}.noarch.rpm"
+                  source   => "https://repos.mesosphere.io/el/${osrel}/noarch/RPMS/mesosphere-el-repo-${osrel}-${mrel}.noarch.rpm"
                 }
               }
               default: {
-                notify { "Yum repository '${source}' is not supported for major version ${::operatingsystemmajrelease}": }
+                notify { "Yum repository '${source}' is not supported for major version ${osrel}": }
               }
             }
           }
@@ -94,6 +84,7 @@ class mesos::repo(
           }
         }
       }
+
       default: {
         fail("\"${module_name}\" provides no repository information for OSfamily \"${::osfamily}\"")
       }

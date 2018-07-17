@@ -25,7 +25,7 @@ describe 'mesos::repo', :type => :class do
     end
 
     it { is_expected.to contain_apt__source('mesosphere').with(
-     'location' => "http://repos.mesosphere.io/#{family.downcase}",
+     'location' => "https://repos.mesosphere.io/#{family.downcase}",
      'repos'    => 'main',
      'release'  => "#{lsbdistcodename}",
      'key'      => {'id' => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com'},
@@ -72,7 +72,7 @@ describe 'mesos::repo', :type => :class do
     it { is_expected.to contain_package('mesosphere-el-repo').with({
      'ensure'   => 'present',
      'provider' => 'rpm',
-     'source'   => "http://repos.mesosphere.io/el/#{majrel}/noarch/RPMS/mesosphere-el-repo-#{majrel}-#{minrel}.noarch.rpm",
+     'source'   => "https://repos.mesosphere.io/el/#{majrel}/noarch/RPMS/mesosphere-el-repo-#{majrel}-#{minrel}.noarch.rpm",
     })}
 
     it do is_expected.to contain_exec('yum-clean-expire-cache').with({
@@ -125,7 +125,6 @@ describe 'mesos::repo', :type => :class do
       :puppetversion => Puppet.version,
     }}
 
-
     it { is_expected.to contain_apt__source('mesos-custom').with(
      'location' => "http://myrepo.example.com/debian",
      'repos'    => 'main',
@@ -159,9 +158,8 @@ describe 'mesos::repo', :type => :class do
       :puppetversion => Puppet.version,
     }}
 
-
     it { is_expected.to contain_apt__source('mesos-custom').with(
-     'location' => "http://repos.mesosphere.io/debian",
+     'location' => "https://repos.mesosphere.io/debian",
      'repos'    => 'main',
      'release'  => 'stretch',
      'key'      => {'id' => '00026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.example.com'},
@@ -169,7 +167,12 @@ describe 'mesos::repo', :type => :class do
     )}
   end
 
-  context 'puppet 4.8' do
+  context 'puppet 4.x' do
+    let(:params) do
+      {
+        'source' => 'mesosphere'
+      }
+    end
 
     let(:facts) {{
       # still old fact is needed due to this
@@ -178,10 +181,10 @@ describe 'mesos::repo', :type => :class do
       :os => {
         :family => 'Debian',
         :name => 'Debian',
-        :distro => { :lsb => { :distcodename => 'stretch' }},
+        :distro => { :codename => 'stretch'},
         :release => { :major => '9', :minor => '1', :full => '9.1' },
       },
-      :puppetversion => puppet,
+      :puppetversion => Puppet.version,
     }}
 
     before(:each) do
@@ -189,7 +192,7 @@ describe 'mesos::repo', :type => :class do
     end
 
     it { is_expected.to contain_apt__source('mesosphere').with(
-     'location' => "http://repos.mesosphere.io/debian",
+     'location' => "https://repos.mesosphere.io/debian",
      'repos'    => 'main',
      'release'  => 'stretch',
      'key'      => {'id' => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com'},
