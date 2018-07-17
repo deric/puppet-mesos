@@ -1,5 +1,10 @@
 # deric-mesos
 
+## v0.9.1
+- [Full diff](https://github.com/deric/puppet-mesos/compare/v0.9.0...v0.9.1)
+- Use https for package repositories (#88)
+- Fixed insecure dev dependency (`nokogiri`)
+
 ## v0.9.0
 - [Full diff](https://github.com/deric/puppet-mesos/compare/v0.8.4...v0.9.0)
 - New features:

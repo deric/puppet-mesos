@@ -20,7 +20,7 @@ describe 'mesos::repo', :type => :class do
     end
 
     it { is_expected.to contain_apt__source('mesosphere').with(
-     'location' => "http://repos.mesosphere.io/#{operatingsystem.downcase}",
+     'location' => "https://repos.mesosphere.io/#{operatingsystem.downcase}",
      'repos'    => 'main',
      'release'  => "#{lsbdistcodename}",
      'key'      => {'id' => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com'},
@@ -64,7 +64,7 @@ describe 'mesos::repo', :type => :class do
     it { is_expected.to contain_package('mesosphere-el-repo').with({
      'ensure'   => 'present',
      'provider' => 'rpm',
-     'source'   => "http://repos.mesosphere.io/el/#{osrel}/noarch/RPMS/mesosphere-el-repo-#{osrel}-#{mrel}.noarch.rpm",
+     'source'   => "https://repos.mesosphere.io/el/#{osrel}/noarch/RPMS/mesosphere-el-repo-#{osrel}-#{mrel}.noarch.rpm",
     })}
 
     it do is_expected.to contain_exec('yum-clean-expire-cache').with({
@@ -141,7 +141,7 @@ describe 'mesos::repo', :type => :class do
     }}
 
     it { is_expected.to contain_apt__source('mesos-custom').with(
-     'location' => "http://repos.mesosphere.io/debian",
+     'location' => "https://repos.mesosphere.io/debian",
      'repos'    => 'main',
      'release'  => 'jessie',
      'key'      => {'id' => '00026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.example.com'},
