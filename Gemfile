@@ -24,5 +24,6 @@ group :rake do
 end
 
 group :development do
-  gem 'puppet-blacksmith',  '>= 3.0'
+  gem 'rubocop', '>= 0.49.0'
+  gem 'puppet-blacksmith', '< 4.0.0'
 end
