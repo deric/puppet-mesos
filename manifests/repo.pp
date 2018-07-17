@@ -17,7 +17,7 @@ class mesos::repo(
 
         $os = downcase($facts['os']['family'])
         $mesosphere_apt = {
-          location => "http://repos.mesosphere.io/${os}",
+          location => "https://repos.mesosphere.io/${os}",
           release  =>  $facts['os']['distro']['codename'],
           repos    => 'main',
           key      => {
@@ -49,7 +49,7 @@ class mesos::repo(
                 -> anchor { 'mesos::repo::end': }
             }
             default: {
-              notify { "APT repository '${source}' is not supported for ${facts['os']['family']}": }
+              notify { "APT repository '${source}' is not supported for ${::osfamily}": }
             }
           } # case $source
         }
@@ -58,8 +58,18 @@ class mesos::repo(
         case $source {
           undef: {} #nothing to do
           'mesosphere': {
-            $osrel = $facts['os']['release']['major']
-            $mrel = $facts['os']['release']['minor']
+            $osrel = $::operatingsystemmajrelease
+            case $osrel {
+              '6': {
+                $mrel = '2'
+              }
+              '7': {
+                $mrel = '1'
+              }
+              default: {
+                notify { "'${mrel}' is not supported for ${source}": }
+              }
+            }
             case $osrel {
               '6', '7': {
                 exec { 'yum-clean-expire-cache':
@@ -75,7 +85,7 @@ class mesos::repo(
                 }
               }
               default: {
-                notify { "Yum repository '${source}' is not supported for major version ${osrel}": }
+                notify { "Yum repository '${source}' is not supported for major version ${::operatingsystemmajrelease}": }
               }
             }
           }
@@ -85,7 +95,7 @@ class mesos::repo(
         }
       }
       default: {
-        fail("\"${module_name}\" provides no repository information for OSfamily \"${facts['os']['family']}\"")
+        fail("\"${module_name}\" provides no repository information for OSfamily \"${::osfamily}\"")
       }
     }
   }
