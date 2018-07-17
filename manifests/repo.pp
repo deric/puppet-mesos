@@ -17,7 +17,7 @@ class mesos::repo(
 
         $distro = downcase($::operatingsystem)
         $mesosphere_apt = {
-          location => "http://repos.mesosphere.io/${distro}",
+          location => "https://repos.mesosphere.io/${distro}",
           release  => $::lsbdistcodename,
           repos    => 'main',
           key      => {
@@ -81,7 +81,7 @@ class mesos::repo(
                 -> package { 'mesosphere-el-repo':
                   ensure   => present,
                   provider => 'rpm',
-                  source   => "http://repos.mesosphere.io/el/${osrel}/noarch/RPMS/mesosphere-el-repo-${osrel}-${mrel}.noarch.rpm"
+                  source   => "https://repos.mesosphere.io/el/${osrel}/noarch/RPMS/mesosphere-el-repo-${osrel}-${mrel}.noarch.rpm"
                 }
               }
               default: {
