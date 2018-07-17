@@ -11,14 +11,7 @@ group :rake do
   gem 'highline'
   gem 'semantic_puppet'
   gem 'librarian-puppet' , '>=2.0'
-  if RUBY_VERSION <= "1.9.0"
-    gem 'json', '< 2.0' # newer versions requires at least ruby 2.0
-    gem 'json_pure', '< 2.0.0'
-    gem 'fog-google', '< 0.1.1'
-    gem 'rspec-core'
-  else
-    gem 'rspec-core', '>= 3.5.0'
-  end
+  gem 'rspec-core', '>= 3.5.0'
   gem 'rspec-puppet'
   gem 'metadata-json-lint',      :require => false
   if RUBY_VERSION >= "2.2.0"
@@ -27,9 +20,7 @@ group :rake do
   if RUBY_VERSION >= "2.3.0"
     gem 'xmlrpc'
   end
-  if RUBY_VERSION < "2.1.0"
-    gem 'nokogiri', '< 1.7.0'
-  end
+  gem 'nokogiri', '~> 1.8.1'
 end
 
 group :development do
