@@ -169,4 +169,33 @@ describe 'mesos::repo', :type => :class do
     )}
   end
 
+  context 'puppet 4.8' do
+
+    let(:facts) {{
+      # still old fact is needed due to this
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
+      :osfamily => 'Debian',
+      :os => {
+        :family => 'Debian',
+        :name => 'Debian',
+        :distro => { :lsb => { :distcodename => 'stretch' }},
+        :release => { :major => '9', :minor => '1', :full => '9.1' },
+      },
+      :puppetversion => puppet,
+    }}
+
+    before(:each) do
+      puppet_debug_override
+    end
+
+    it { is_expected.to contain_apt__source('mesosphere').with(
+     'location' => "http://repos.mesosphere.io/debian",
+     'repos'    => 'main',
+     'release'  => 'stretch',
+     'key'      => {'id' => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com'},
+     'include'  => {'src' => false}
+    )}
+
+  end
+
 end
