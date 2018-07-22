@@ -90,8 +90,8 @@ describe 'mesos::repo', :type => :class do
   end
 
   context 'on RedHat based systems' do
-    it_behaves_like 'redhat', 'CentOS', '6', '2'
-    it_behaves_like 'redhat', 'CentOS', '7', '1'
+    it_behaves_like 'redhat', 'RedHat', 'CentOS', '6', '2'
+    it_behaves_like 'redhat', 'RedHat', 'RedHat', '7', '1'
   end
 
   # see: https://github.com/deric/puppet-mesos/issues/77
@@ -100,7 +100,7 @@ describe 'mesos::repo', :type => :class do
       {
         'source' => {
           'location' => "http://myrepo.example.com/debian",
-          'release'  => 'jessie',
+          'release'  => 'stretch',
           'repos'    => 'main',
           'key'      => {
             'id'     => '99926D0004C44CF7EF55ADF8DF7D54CBE56151BF',
@@ -129,7 +129,7 @@ describe 'mesos::repo', :type => :class do
     it { is_expected.to contain_apt__source('mesos').with(
      'location' => "http://myrepo.example.com/debian",
      'repos'    => 'main',
-     'release'  => 'jessie',
+     'release'  => 'stretch',
      'key'      => {'id' => '99926D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com'},
      'include'  => {'src' => false}
     )}
@@ -162,7 +162,7 @@ describe 'mesos::repo', :type => :class do
     it { is_expected.to contain_apt__source('mesos').with(
      'location' => "https://repos.mesosphere.io/debian",
      'repos'    => 'main',
-     'release'  => 'jessie',
+     'release'  => 'stretch',
      'key'      => {'id' => '00026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.example.com'},
      'include'  => {'src' => false}
     )}
