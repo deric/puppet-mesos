@@ -9,23 +9,22 @@
 #     A zookeeper URL in format 'zk://server1:port[,server2:port]/mesos'
 #
 class mesos::cli(
-  $ensure           = 'present',
-  $packages         = ['mesos.cli', 'mesos.interface'],
-  $pip_package      = 'python-pip',
-  $manage_pip       = true,
-  $package_provider = undef,
-  $response_timeout = 5,
-  $log_file         = 'null',
-  $log_level        = 'warning',
-  $max_workers      = 5,
-  $debug            = false,
-  $scheme           = 'http',
-  $owner            = $mesos::owner,
-  $group            = $mesos::group,
-  $master           = $mesos::master,
-  $zookeeper        = $mesos::zookeeper_url,
+  String                      $ensure           = 'present',
+  Array[String]               $packages         = ['mesos.cli', 'mesos.interface'],
+  String                      $pip_package      = 'python-pip',
+  Boolean                     $manage_pip       = true,
+  Optional[String]            $package_provider = undef,
+  Integer                     $response_timeout = 5,
+  Optional[String]            $log_file         = undef,
+  String                      $log_level        = 'warning',
+  Integer                     $max_workers      = 5,
+  Boolean                     $debug            = false,
+  String                      $scheme           = 'http',
+  String                      $owner            = $mesos::owner,
+  String                      $group            = $mesos::group,
+  String                      $master           = $mesos::master,
+  Optional[String]            $zookeeper        = $mesos::zookeeper_url,
 ) inherits mesos {
-  validate_array($packages)
 
   if $manage_pip {
     ensure_packages($pip_package)

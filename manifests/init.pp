@@ -9,6 +9,8 @@
 #      }
 #
 # === Parameters
+#  [*ensure*]
+#   Package ensure present|absent
 #
 #  [*zookeeper*]
 #    An array of ZooKeeper ip's (with port) (will be converted to a zk url)
@@ -31,43 +33,39 @@
 #
 # === Copyright
 #
-# Copyright 2013-2017 Tomas Barton
+# Copyright 2013-2018 Tomas Barton
 #
 class mesos(
-  $ensure              = 'present',
+  String                     $ensure              = 'present',
   # if version is not defined, ensure will be used
-  $version             = undef,
+  Optional[String]           $version = undef,
   # master and slave creates separate logs automatically
   # TODO: currently not used
-  $log_dir             = undef,
-  $conf_dir            = '/etc/mesos',
-  $conf_file           = '/etc/default/mesos',
-  $manage_zk_file      = true,
-  $manage_service      = true,
-  $zookeeper           = [],
-  $zk_path             = 'mesos',
-  $zk_default_port     = 2181,
-  $master              = '127.0.0.1',
-  $master_port         = 5050,
-  $owner               = 'root',
-  $group               = 'root',
-  $listen_address      = undef,
-  $repo                = undef,
-  $env_var             = {},
-  $ulimit              = 8192,
-  $manage_python       = false,
-  $python_package      = 'python',
-  $force_provider      = undef, #temporary workaround for starting services
-  $use_hiera           = false,
-  $single_role         = true,
-  $service_provider    = $::mesos::params::service_provider,
-  $manage_service_file = $::mesos::params::manage_service_file,
-  $systemd_path        = $::mesos::params::systemd_path,
+  Optional[String]                        $log_dir = undef,
+  String                                  $conf_dir            = '/etc/mesos',
+  String                                  $conf_file           = '/etc/default/mesos',
+  Boolean                                 $manage_zk_file      = true,
+  Boolean                                 $manage_service      = true,
+  Optional[Variant[String,Array[String]]] $zookeeper           = [],
+  String                                  $zk_path             = 'mesos',
+  Integer                                 $zk_default_port     = 2181,
+  String                                  $master              = '127.0.0.1',
+  Integer                                 $master_port         = 5050,
+  String                                  $owner               = 'root',
+  String                                  $group               = 'root',
+  Optional[String]                        $listen_address      = undef,
+  Optional[String]                        $repo                = undef,
+  Hash                                    $env_var             = {},
+  Integer                                 $ulimit              = 8192,
+  Boolean                                 $manage_python       = false,
+  String                                  $python_package      = 'python',
+  Optional[String]                        $force_provider      = undef, #temporary workaround for starting services
+  Boolean                                 $use_hiera           = false,
+  Boolean                                 $single_role         = true,
+  Optional[String]                        $service_provider    = $::mesos::params::service_provider,
+  Boolean                                 $manage_service_file = $::mesos::params::manage_service_file,
+  String                                  $systemd_path        = $::mesos::params::systemd_path,
 ) inherits ::mesos::params {
-  validate_hash($env_var)
-  validate_bool($manage_zk_file)
-  validate_bool($manage_service)
-
   if !empty($zookeeper) {
     if is_string($zookeeper) {
       warning('\$zookeeper parameter should be an array of IP addresses, please update your configuration.')

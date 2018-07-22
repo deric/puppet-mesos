@@ -10,12 +10,12 @@
 # Should not be called directly
 #
 define mesos::service(
-  $enable              = false,
-  $service_provider    = undef,
-  $manage              = true,
-  $manage_service_file = $::mesos::manage_service_file,
-  $systemd_after       = $::mesos::params::systemd_after,
-  $systemd_wants       = $::mesos::params::systemd_wants,
+  Boolean          $enable              = false,
+  Optional[String] $service_provider    = undef,
+  Boolean          $manage              = true,
+  Boolean          $manage_service_file = $::mesos::manage_service_file,
+  String           $systemd_after       = $::mesos::params::systemd_after,
+  String           $systemd_wants       = $::mesos::params::systemd_wants,
 ) {
 
   include ::mesos

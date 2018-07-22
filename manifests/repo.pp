@@ -7,7 +7,7 @@
 #
 
 class mesos::repo(
-  $source = undef
+  Optional[Variant[String,Hash]] $source = undef
 ) {
 
   if $source {
