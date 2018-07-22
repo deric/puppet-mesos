@@ -24,7 +24,7 @@ describe 'mesos::service', type: :define do
           family: family,
           name: os,
           distro: { codename: codename },
-          release: { major: majdistrelease }
+          release: { major: majdistrelease, full: majdistrelease }
         },
         path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
         puppetversion: Puppet.version
