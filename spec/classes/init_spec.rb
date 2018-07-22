@@ -227,4 +227,27 @@ describe 'mesos', type: :class do
       ).with_content(/^zk:\/\/192.168.1.100:2828,192.168.1.105:2828\/mesos/)
     }
   end
+
+  context 'pass custom repo configuration' do
+    let(:params) do
+      {
+        repo: {
+          location: 'http://repos.mesosphere.io/debian',
+          release: 'jessie',
+          repos: 'main',
+          key: { 'id' => '00026D0004C44CF7EF55ADF8DF7D54CBE56151BB', 'server' => 'keyserver.example.com' },
+        }
+      }
+    end
+
+    it {
+      is_expected.to contain_apt__source('mesos').with(
+        'location' => 'http://repos.mesosphere.io/debian',
+        'repos'    => 'main',
+        'release'  => 'jessie',
+        'key'      => { 'id' => '00026D0004C44CF7EF55ADF8DF7D54CBE56151BB', 'server' => 'keyserver.example.com' },
+        'include'  => { 'src' => false }
+      )
+    }
+  end
 end
