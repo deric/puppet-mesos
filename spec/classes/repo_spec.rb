@@ -24,7 +24,7 @@ describe 'mesos::repo', :type => :class do
       puppet_debug_override
     end
 
-    it { is_expected.to contain_apt__source('mesosphere').with(
+    it { is_expected.to contain_apt__source('mesos').with(
      'location' => "https://repos.mesosphere.io/#{family.downcase}",
      'repos'    => 'main',
      'release'  => "#{lsbdistcodename}",
@@ -32,15 +32,16 @@ describe 'mesos::repo', :type => :class do
      'include'  => {'src' => false}
     )}
 
-    it { is_expected.to contain_anchor('mesos::repo::begin').that_comes_before('Apt::Source[mesosphere]') }
-    it { is_expected.to contain_apt__source('mesosphere').that_comes_before('Class[apt::update]') }
+    it { is_expected.to contain_anchor('mesos::repo::begin').that_comes_before('Apt::Source[mesos]') }
+    it { is_expected.to contain_apt__source('mesos').that_comes_before('Class[apt::update]') }
     it { is_expected.to contain_class('apt::update').that_comes_before('Anchor[mesos::repo::end]') }
 
     context "undef source" do
       let(:params) {{
-        :source => 'undef',
+        :source => nil,
       }}
-      it { is_expected.not_to contain_apt__source('mesosphere') }
+      it { is_expected.not_to contain_apt__source('mesos') }
+      # it { is_expected.to contain_file('/etc/apt/sources.list.d/mesos.list').with({'ensure' => 'absent'}) }
     end
   end
 
@@ -82,7 +83,7 @@ describe 'mesos::repo', :type => :class do
 
     context "undef source" do
       let(:params) {{
-        :source => 'undef',
+        :source => nil,
       }}
       it { is_expected.not_to contain_package('mesosphere-el-repo') }
     end
@@ -125,7 +126,7 @@ describe 'mesos::repo', :type => :class do
       :puppetversion => Puppet.version,
     }}
 
-    it { is_expected.to contain_apt__source('mesos-custom').with(
+    it { is_expected.to contain_apt__source('mesos').with(
      'location' => "http://myrepo.example.com/debian",
      'repos'    => 'main',
      'release'  => 'jessie',
@@ -158,7 +159,7 @@ describe 'mesos::repo', :type => :class do
       :puppetversion => Puppet.version,
     }}
 
-    it { is_expected.to contain_apt__source('mesos-custom').with(
+    it { is_expected.to contain_apt__source('mesos').with(
      'location' => "https://repos.mesosphere.io/debian",
      'repos'    => 'main',
      'release'  => 'stretch',
@@ -191,7 +192,7 @@ describe 'mesos::repo', :type => :class do
       puppet_debug_override
     end
 
-    it { is_expected.to contain_apt__source('mesosphere').with(
+    it { is_expected.to contain_apt__source('mesos').with(
      'location' => "https://repos.mesosphere.io/debian",
      'repos'    => 'main',
      'release'  => 'stretch',

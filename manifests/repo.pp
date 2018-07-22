@@ -33,18 +33,23 @@ class mesos::repo(
         if is_hash($source) {
           # merge configuration with mesosphere's defaults
           $repo_config = deep_merge($mesosphere_apt, $source)
-          ensure_resource('apt::source', 'mesos-custom', $repo_config)
+          ensure_resource('apt::source', 'mesos', $repo_config)
           anchor { 'mesos::repo::begin': }
-            -> Apt::Source['mesos-custom']
+            -> Apt::Source['mesos']
             -> Class['apt::update']
             -> anchor { 'mesos::repo::end': }
         } else {
           case $source {
-            undef: {} #nothing to do
+            undef: {
+              # make sure to cleanup, when no repository is defined
+              file{'/etc/apt/sources.list.d/mesos.list':
+                ensure => absent,
+              }
+            }
             'mesosphere': {
-              ensure_resource('apt::source', 'mesosphere', $mesosphere_apt)
+              ensure_resource('apt::source', 'mesos', $mesosphere_apt)
               anchor { 'mesos::repo::begin': }
-                -> Apt::Source['mesosphere']
+                -> Apt::Source['mesos']
                 -> Class['apt::update']
                 -> anchor { 'mesos::repo::end': }
             }
@@ -88,6 +93,11 @@ class mesos::repo(
       default: {
         fail("\"${module_name}\" provides no repository information for OSfamily \"${::osfamily}\"")
       }
+    }
+  } else {
+    # make sure to cleanup, when no repository is defined
+    file{'/etc/apt/sources.list.d/mesos.list':
+      ensure => absent,
     }
   }
 }
