@@ -7,18 +7,18 @@ require 'puppet-lint/tasks/puppet-lint'
 require 'rspec-system/rake_task'
 require 'puppetlabs_spec_helper/rake_tasks'
 # blacksmith does not support ruby 1.8.7 anymore
-require 'puppet_blacksmith/rake_tasks' if ENV['RAKE_ENV'] != 'ci' && RUBY_VERSION.split('.')[0,3].join.to_i > 187
+require 'puppet_blacksmith/rake_tasks' if ENV['RAKE_ENV'] != 'ci' && RUBY_VERSION.split('.')[0, 3].join.to_i > 187
 
-desc "Lint metadata.json file"
+desc 'Lint metadata.json file'
 task :meta do
-  sh "metadata-json-lint metadata.json"
+  sh 'metadata-json-lint metadata.json'
 end
 
 exclude_paths = [
-  "bundle/**/*",
-  "pkg/**/*",
-  "vendor/**/*",
-  "spec/**/*",
+  'bundle/**/*',
+  'pkg/**/*',
+  'vendor/**/*',
+  'spec/**/*'
 ]
 Rake::Task[:lint].clear
 
@@ -29,16 +29,14 @@ PuppetLint.configuration.disable_class_parameter_defaults
 PuppetLint.configuration.fail_on_warnings = true
 
 PuppetLint::RakeTask.new :lint do |config|
-    config.ignore_paths = exclude_paths
+  config.ignore_paths = exclude_paths
 end
-
 
 # use librarian-puppet to manage fixtures instead of .fixtures.yml
 # offers more possibilities like explicit version management, forge downloads,...
 task :librarian_spec_prep do
   sh 'librarian-puppet install --path=spec/fixtures/modules/'
 end
-task :spec_prep => :librarian_spec_prep
+task spec_prep: :librarian_spec_prep
 
-task :default => [:validate, :spec, :lint]
-
+task default: %i[validate spec lint]

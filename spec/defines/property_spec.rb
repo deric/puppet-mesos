@@ -1,22 +1,21 @@
 require 'spec_helper'
 
-describe 'mesos::property', :type => :define do
+describe 'mesos::property', type: :define do
   let(:title) { 'some-property' }
   let(:directory) { '/tmp/mesos-conf' }
 
-
   let(:facts) do
     {
-      :mesos_version => '1.2.0',
-      :osfamily => 'Debian',
-      :os => {
-        :family => 'Debian',
-        :name => 'Debian',
-        :distro => { :codename => 'jessie'},
-        :release => { :major => '8', :minor => '9', :full => '8.9' },
+      mesos_version: '1.2.0',
+      osfamily: 'Debian',
+      os: {
+        family: 'Debian',
+        name: 'Debian',
+        distro: { codename: 'jessie' },
+        release: { major: '8', minor: '9', full: '8.9' }
       },
-      :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-      :puppetversion => Puppet.version,
+      path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+      puppetversion: Puppet.version
     }
   end
 
@@ -27,8 +26,8 @@ describe 'mesos::property', :type => :define do
   context 'with a string value' do
     let(:params) do
       {
-          :value => 'foo',
-          :dir => directory,
+        value: 'foo',
+        dir: directory
       }
     end
 
@@ -36,8 +35,8 @@ describe 'mesos::property', :type => :define do
 
     it do
       parameters = {
-          :ensure => 'present',
-          :content => "foo\n",
+        ensure: 'present',
+        content: "foo\n"
       }
       is_expected.to contain_file("#{directory}/#{title}").with(parameters)
     end
@@ -46,8 +45,8 @@ describe 'mesos::property', :type => :define do
   context 'with an empty value' do
     let(:params) do
       {
-          :value => '',
-          :dir => directory,
+        value: '',
+        dir: directory
       }
     end
 
@@ -61,8 +60,8 @@ describe 'mesos::property', :type => :define do
   context 'with the :undef value' do
     let(:params) do
       {
-          :value => :undef,
-          :dir => directory,
+        value: :undef,
+        dir: directory
       }
     end
 
@@ -72,7 +71,6 @@ describe 'mesos::property', :type => :define do
       is_expected.to contain_file("#{directory}/#{title}").with_ensure('absent')
     end
   end
-
 
   context 'without a defined value or dir' do
     let(:params) do
@@ -89,8 +87,8 @@ describe 'mesos::property', :type => :define do
   context 'with a boolean (true) value' do
     let(:params) do
       {
-          :value => true,
-          :dir => directory,
+        value: true,
+        dir: directory
       }
     end
 
@@ -98,8 +96,8 @@ describe 'mesos::property', :type => :define do
 
     it 'should contain a positive "predicate" file' do
       parameters = {
-          :ensure => 'present',
-          :content => '',
+        ensure: 'present',
+        content: ''
       }
       is_expected.to contain_file("#{directory}/?#{title}").with(parameters)
     end
@@ -108,8 +106,8 @@ describe 'mesos::property', :type => :define do
   context 'with a boolean (false) value' do
     let(:params) do
       {
-          :value => false,
-          :dir => directory,
+        value: false,
+        dir: directory
       }
     end
 
@@ -117,8 +115,8 @@ describe 'mesos::property', :type => :define do
 
     it 'should contain a negative "predicate" file' do
       parameters = {
-          :ensure => 'present',
-          :content => '',
+        ensure: 'present',
+        content: ''
       }
       is_expected.to contain_file("#{directory}/?no-#{title}").with(parameters)
     end
@@ -127,8 +125,8 @@ describe 'mesos::property', :type => :define do
   context 'with an integer value' do
     let(:params) do
       {
-          :value => 123,
-          :dir => directory,
+        value: 123,
+        dir: directory
       }
     end
 
@@ -136,8 +134,8 @@ describe 'mesos::property', :type => :define do
 
     it 'should create a property file with the value' do
       parameters = {
-          :ensure => 'present',
-          :content => "123\n",
+        ensure: 'present',
+        content: "123\n"
       }
       is_expected.to contain_file("#{directory}/#{title}").with(parameters)
     end
@@ -146,8 +144,8 @@ describe 'mesos::property', :type => :define do
   context 'with a float value' do
     let(:params) do
       {
-          :value => 3.14,
-          :dir => directory,
+        value: 3.14,
+        dir: directory
       }
     end
 
@@ -155,8 +153,8 @@ describe 'mesos::property', :type => :define do
 
     it 'should create a property file with the value' do
       parameters = {
-          :ensure => 'present',
-          :content => "3.14\n",
+        ensure: 'present',
+        content: "3.14\n"
       }
       is_expected.to contain_file("#{directory}/#{title}").with(parameters)
     end
@@ -165,9 +163,9 @@ describe 'mesos::property', :type => :define do
   context 'ensure is set to absent' do
     let(:params) do
       {
-          :ensure => 'absent',
-          :value => 'foo',
-          :dir => directory,
+        ensure: 'absent',
+        value: 'foo',
+        dir: directory
       }
     end
 
@@ -181,9 +179,9 @@ describe 'mesos::property', :type => :define do
   describe 'when ensure is file and the value is empty' do
     let(:params) do
       {
-          :ensure => 'file',
-          :value => '',
-          :dir => directory,
+        ensure: 'file',
+        value: '',
+        dir: directory
       }
     end
 
@@ -191,8 +189,8 @@ describe 'mesos::property', :type => :define do
 
     it 'should create the property file with an empty value' do
       parameters = {
-          :ensure => 'present',
-          :content => "\n",
+        ensure: 'present',
+        content: "\n"
       }
       is_expected.to contain_file("#{directory}/#{title}").with(parameters)
     end
@@ -201,9 +199,9 @@ describe 'mesos::property', :type => :define do
   describe 'when ensure is directory' do
     let(:params) do
       {
-          :ensure => 'directory',
-          :value => 'test',
-          :dir => directory,
+        ensure: 'directory',
+        value: 'test',
+        dir: directory
       }
     end
 
@@ -218,9 +216,9 @@ describe 'mesos::property', :type => :define do
     context 'default' do
       let(:params) do
         {
-            :ensure => 'present',
-            :value => 'test',
-            :dir => directory,
+          ensure: 'present',
+          value: 'test',
+          dir: directory
         }
       end
 
@@ -229,9 +227,9 @@ describe 'mesos::property', :type => :define do
       it { is_expected.to contain_class('mesos::params') }
 
       parameters = {
-          :owner => 'root',
-          :group => 'root',
-          :mode => '0644',
+        owner: 'root',
+        group: 'root',
+        mode: '0644'
       }
 
       it { is_expected.to contain_file("#{directory}/#{title}").with(parameters) }
@@ -242,12 +240,12 @@ describe 'mesos::property', :type => :define do
     context 'custom' do
       let(:params) do
         {
-            :ensure => 'present',
-            :value => 'test',
-            :owner => 'user',
-            :group => 'group',
-            :mode => '0640',
-            :dir => directory,
+          ensure: 'present',
+          value: 'test',
+          owner: 'user',
+          group: 'group',
+          mode: '0640',
+          dir: directory
         }
       end
 
@@ -256,9 +254,9 @@ describe 'mesos::property', :type => :define do
       it { is_expected.to contain_class('mesos::params') }
 
       parameters = {
-          :owner => 'user',
-          :group => 'group',
-          :mode => '0640',
+        owner: 'user',
+        group: 'group',
+        mode: '0640'
       }
 
       it { is_expected.to contain_file("#{directory}/#{title}").with(parameters) }
@@ -270,9 +268,9 @@ describe 'mesos::property', :type => :define do
   context 'when the property file is overridden' do
     let(:params) do
       {
-          :value => 'foo',
-          :file => 'some-other-property',
-          :dir => directory,
+        value: 'foo',
+        file: 'some-other-property',
+        dir: directory
       }
     end
 
@@ -282,8 +280,8 @@ describe 'mesos::property', :type => :define do
 
     it do
       parameters = {
-          :ensure => 'present',
-          :content => "foo\n",
+        ensure: 'present',
+        content: "foo\n"
       }
       is_expected.to contain_file("#{directory}/some-other-property").with(parameters)
     end
@@ -292,10 +290,10 @@ describe 'mesos::property', :type => :define do
   context 'service notification' do
     let(:params) do
       {
-          :ensure => 'present',
-          :value => 'test',
-          :service => 'Service[my-service]',
-          :dir => directory,
+        ensure: 'present',
+        value: 'test',
+        service: 'Service[my-service]',
+        dir: directory
       }
     end
 
@@ -305,5 +303,4 @@ describe 'mesos::property', :type => :define do
       end.to raise_error /service is deprecated and will be removed in the next major release/
     end
   end
-
 end

@@ -1,16 +1,17 @@
 require 'spec_helper'
 
-describe 'mesos::config', :type => :class do
-
+describe 'mesos::config', type: :class do
   let(:owner) { 'mesos' }
   let(:group) { 'mesos' }
 
-  let(:params){{
-    :conf_dir => '/etc/mesos',
-    :log_dir  => '/var/log/mesos',
-    :owner    => owner,
-    :group    => group,
-  }}
+  let(:params)  do
+    {
+      conf_dir: '/etc/mesos',
+      log_dir: '/var/log/mesos',
+      owner: owner,
+      group: group
+    }
+  end
 
   # puppet 5 compatibility: make sure all dependent classes are loaded
   let :pre_condition do
@@ -21,13 +22,15 @@ describe 'mesos::config', :type => :class do
     puppet_debug_override
   end
 
-  it { is_expected.to contain_file('/etc/default/mesos').with({
-    'ensure'  => 'present',
-    'owner'   => owner,
-    'group'   => group,
-    'mode'    => '0644',
-    'require' => 'Package[mesos]',
-  }) }
+  it {
+    is_expected.to contain_file('/etc/default/mesos').with(
+      'ensure' => 'present',
+      'owner'   => owner,
+      'group'   => group,
+      'mode'    => '0644',
+      'require' => 'Package[mesos]'
+    )
+  }
 
   it 'has default log dir' do
     is_expected.to contain_file(
@@ -43,10 +46,12 @@ describe 'mesos::config', :type => :class do
 
   context 'conf_file' do
     let(:conf_file) { '/etc/sysconfig/mesos' }
-    let(:params){{
-      :conf_file => conf_file,
-      :zookeeper_url => 'zk://10.0.0.1/mesos',
-    }}
+    let(:params) do
+      {
+        conf_file: conf_file,
+        zookeeper_url: 'zk://10.0.0.1/mesos'
+      }
+    end
 
     it do
       is_expected.to contain_file(conf_file)
@@ -54,49 +59,63 @@ describe 'mesos::config', :type => :class do
   end
 
   context 'setting ulimit' do
-    let(:params){{
-      :ulimit => 16384,
-    }}
+    let(:params) do
+      {
+        ulimit: 16_384
+      }
+    end
 
-    it { is_expected.to contain_file(
-      '/etc/default/mesos'
+    it {
+      is_expected.to contain_file(
+        '/etc/default/mesos'
       ).with_content(/ULIMIT="-n 16384"/)
     }
   end
 
   context 'setting log dir' do
-    let(:params){{
-      :log_dir => '/srv/mesos/log',
-      :zookeeper_url => 'zk://10.0.0.1/mesos',
-    }}
-    it { is_expected.to contain_file(
-      '/etc/default/mesos'
+    let(:params) do
+      {
+        log_dir: '/srv/mesos/log',
+        zookeeper_url: 'zk://10.0.0.1/mesos'
+      }
+    end
+    it {
+      is_expected.to contain_file(
+        '/etc/default/mesos'
       ).with_content(/LOGS="\/srv\/mesos\/log"/)
     }
   end
 
   context 'setting environment variables' do
-    let(:params){{
-      :env_var => {
-        'JAVA_HOME' => '/usr/bin/java',
-        'MESOS_HOME' => '/var/lib/mesos',
-      },
-    }}
+    let(:params) do
+      {
+        env_var: {
+          'JAVA_HOME' => '/usr/bin/java',
+          'MESOS_HOME' => '/var/lib/mesos'
+        }
+      }
+    end
 
-    it { is_expected.to contain_file(
-      '/etc/default/mesos'
-    ).with_content(/export JAVA_HOME="\/usr\/bin\/java"/) }
+    it {
+      is_expected.to contain_file(
+        '/etc/default/mesos'
+      ).with_content(/export JAVA_HOME="\/usr\/bin\/java"/)
+    }
 
-    it { is_expected.to contain_file(
-      '/etc/default/mesos'
-    ).with_content(/export MESOS_HOME="\/var\/lib\/mesos"/) }
+    it {
+      is_expected.to contain_file(
+        '/etc/default/mesos'
+      ).with_content(/export MESOS_HOME="\/var\/lib\/mesos"/)
+    }
   end
 
   context 'set LOGS variable' do
     let(:file) { '/etc/default/mesos' }
-    let(:params) {{
-      :log_dir => '/var/log/mesos',
-    }}
+    let(:params) do
+      {
+        log_dir: '/var/log/mesos'
+      }
+    end
 
     it { is_expected.to contain_file(file).with_content(/LOGS="\/var\/log\/mesos"/) }
   end

@@ -1,24 +1,23 @@
-
 #
 # mesos_hash_parser.rb
 #
 
 module Puppet::Parser::Functions
-  newfunction(:mesos_hash_parser, :type => :rvalue, :doc => <<-EOS
+  newfunction(:mesos_hash_parser, type: :rvalue, doc: <<-EOS
 This function converts simple key-value structure to a Hash
 that is required by create_resources function
 
-        EOS
-  ) do |args|
+  EOS
+) do |args|
 
     # Arguments: hash key_prefix [file_prefix]
 
-    if args.size < 1 || args.size > 3
+    if args.empty? || args.size > 3
       raise(Puppet::ParseError, "mesos_hash_parser(): Wrong number of args, given #{args.size}, accepts either 1, 2 or 3")
     end
 
     if args[0].class != Hash
-      raise(Puppet::ParseError, "mesos_hash_parser(): first argument must be a Hash, you passed a " + args[0].class.to_s)
+      raise(Puppet::ParseError, 'mesos_hash_parser(): first argument must be a Hash, you passed a ' + args[0].class.to_s)
     end
 
     res = {}
@@ -28,8 +27,8 @@ that is required by create_resources function
       file = file_prefix ? "#{file_prefix}_#{key}" : key
       key = "#{key_prefix}_#{key}" if key_prefix
       res[key] = {
-          "value" => val,
-          "file" => file,
+        'value' => val,
+        'file' => file
       }
     end
     res

@@ -1,31 +1,33 @@
 require 'spec_helper'
 
-describe 'mesos::slave', :type => :class do
+describe 'mesos::slave', type: :class do
   let(:owner) { 'mesos' }
   let(:group) { 'mesos' }
   let(:conf) { '/etc/mesos-slave' }
   let(:slave_file) { '/etc/default/mesos-slave' }
 
-  let(:params){{
-    :conf_dir => conf,
-    :owner    => owner,
-    :group    => group,
-  }}
+  let(:params) do
+    {
+      conf_dir: conf,
+      owner: owner,
+      group: group
+    }
+  end
 
   let(:facts) do
     {
-      :mesos_version => '1.2.0',
+      mesos_version: '1.2.0',
       # still old fact is needed due to this
       # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
-      :osfamily => 'Debian',
-      :os => {
-        :family => 'Debian',
-        :name => 'Debian',
-        :distro => { :codename => 'stretch'},
-        :release => { :major => '9', :minor => '1', :full => '9.1' },
+      osfamily: 'Debian',
+      os: {
+        family: 'Debian',
+        name: 'Debian',
+        distro: { codename: 'stretch' },
+        release: { major: '9', minor: '1', full: '9.1' }
       },
-      :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-      :puppetversion => Puppet.version,
+      path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+      puppetversion: Puppet.version
     }
   end
 
@@ -34,29 +36,34 @@ describe 'mesos::slave', :type => :class do
   end
 
   it { should contain_package('mesos') }
-  it { should contain_service('mesos-slave').with(
-      :ensure => 'running',
-      :enable => true
-  ) }
+  it {
+    should contain_service('mesos-slave').with(
+      ensure: 'running',
+      enable: true
+    )
+  }
 
-  it { should contain_file(slave_file).with({
-    'ensure'  => 'present',
-    'owner'   => owner,
-    'group'   => group,
-    'mode'    => '0644',
-  }) }
+  it {
+    should contain_file(slave_file).with(
+      'ensure' => 'present',
+      'owner'   => owner,
+      'group'   => group,
+      'mode'    => '0644'
+    )
+  }
 
   it 'does not set IP address by default' do
-      should_not contain_file(
-        slave_file
-      ).with_content(/^export MESOS_IP=/)
+    should_not contain_file(
+      slave_file
+    ).with_content(/^export MESOS_IP=/)
   end
 
   context 'with ip address set' do
-
-    let(:params) {{
-      :listen_address => '192.168.1.1',
-    }}
+    let(:params) do
+      {
+        listen_address: '192.168.1.1'
+      }
+    end
 
     it 'has ip address from param' do
       should contain_file(
@@ -74,9 +81,9 @@ describe 'mesos::slave', :type => :class do
   it 'checkpoint should be false' do
     should_not contain_file(
       "#{conf}/?checkpoint"
-    ).with({
-      'ensure'  => 'present',
-    })
+    ).with(
+      'ensure' => 'present'
+    )
   end
 
   it 'should have workdir in /var/lib/mesos' do
@@ -86,118 +93,151 @@ describe 'mesos::slave', :type => :class do
   end
 
   context 'one master node' do
-    let(:params){{
-      :master => '192.168.1.100',
-    }}
-    it { should contain_file(
-      slave_file
+    let(:params) do
+      {
+        master: '192.168.1.100'
+      }
+    end
+    it {
+      should contain_file(
+        slave_file
       ).with_content(/^export MESOS_MASTER="192.168.1.100:5050"/)
     }
-    it { should contain_file(
-      '/etc/mesos/zk'
-      ).with(:ensure => 'absent')
+    it {
+      should contain_file(
+        '/etc/mesos/zk'
+      ).with(ensure: 'absent')
     }
   end
 
   context 'zookeeper should be preferred before single master' do
-    let(:params){{
-      :master    => '172.16.0.1',
-      :zookeeper => [ '192.168.1.100:2181' ],
-    }}
-    it { should_not contain_file(
-      slave_file
+    let(:params) do
+      {
+        master: '172.16.0.1',
+        zookeeper: ['192.168.1.100:2181']
+      }
+    end
+    it {
+      should_not contain_file(
+        slave_file
       ).with_content(/^export MESOS_MASTER="172.16.0.1"/)
     }
     # this would work only if we set mesos::zookeeper through hiera
-    #it { should contain_file(
+    # it { should contain_file(
     #  '/etc/mesos/zk'
     #  ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
-    #}
+    # }
   end
 
   context 'disabling service' do
-    let(:params){{
-      :enable => false,
-    }}
+    let(:params) do
+      {
+        enable: false
+      }
+    end
 
-    it { should contain_service('mesos-slave').with(
-      :enable => false
-    ) }
+    it {
+      should contain_service('mesos-slave').with(
+        enable: false
+      )
+    }
   end
 
   context 'changing workdir' do
-    let(:params){{
-      :work_dir => '/home/mesos',
-    }}
+    let(:params) do
+      {
+        work_dir: '/home/mesos'
+      }
+    end
 
-    it { should contain_file(
-      "#{conf}/work_dir"
-    ).with_content(/^\/home\/mesos$/) }
+    it {
+      should contain_file(
+        "#{conf}/work_dir"
+      ).with_content(/^\/home\/mesos$/)
+    }
   end
 
   context 'enabling checkpoint (enabled by default anyway)' do
-    let(:params){{
-      :options => {
-        'checkpoint' => true,
+    let(:params) do
+      {
+        options: {
+          'checkpoint' => true
+        }
       }
-    }}
+    end
 
-    it { should contain_file(
-      "#{conf}/?checkpoint"
-    ).with({
-      'ensure'  => 'present',
-    }) }
+    it {
+      should contain_file(
+        "#{conf}/?checkpoint"
+      ).with(
+        'ensure' => 'present'
+      )
+    }
   end
 
   context 'disabling checkpoint' do
-    let(:params){{
-      :options => {
-        'checkpoint' => false,
+    let(:params) do
+      {
+        options: {
+          'checkpoint' => false
+        }
       }
-    }}
+    end
 
-    it { should contain_file(
-      "#{conf}/?no-checkpoint"
-    ).with({
-      'ensure'  => 'present',
-    }) }
+    it {
+      should contain_file(
+        "#{conf}/?no-checkpoint"
+      ).with(
+        'ensure' => 'present'
+      )
+    }
   end
 
   context 'setting environment variables' do
-    let(:params){{
-      :env_var => {
-        'JAVA_HOME' => '/usr/bin/java',
-        'MESOS_HOME' => '/var/lib/mesos',
-      },
-    }}
+    let(:params) do
+      {
+        env_var: {
+          'JAVA_HOME' => '/usr/bin/java',
+          'MESOS_HOME' => '/var/lib/mesos'
+        }
+      }
+    end
 
-    it { should contain_file(
-      slave_file
-    ).with_content(/export JAVA_HOME="\/usr\/bin\/java"/) }
+    it {
+      should contain_file(
+        slave_file
+      ).with_content(/export JAVA_HOME="\/usr\/bin\/java"/)
+    }
 
-    it { should contain_file(
-      slave_file
-    ).with_content(/export MESOS_HOME="\/var\/lib\/mesos"/) }
+    it {
+      should contain_file(
+        slave_file
+      ).with_content(/export MESOS_HOME="\/var\/lib\/mesos"/)
+    }
   end
 
   it 'should not set isolation by default (value depends on mesos version)' do
     should_not contain_file(
       "#{conf}/isolation"
-    ).with({
-      'ensure'  => 'present',
-    })
+    ).with(
+      'ensure' => 'present'
+    )
   end
 
   context 'should set isolation to cgroups' do
-    let(:params){{
-      :isolation => 'cgroups/cpu,cgroups/mem',
-    }}
+    let(:params)  do
+      {
+        isolation: 'cgroups/cpu,cgroups/mem'
+      }
+    end
 
-    it { should contain_file(
-      "#{conf}/isolation"
-    ).with({
-      'ensure'  => 'present',
-    }).with_content(/^cgroups\/cpu,cgroups\/mem$/) }
+    it {
+      should contain_file(
+        "#{conf}/isolation"
+      ).with(
+        'ensure' => 'present'
+      ).with_content(/^cgroups\/cpu,cgroups\/mem$/)
+    }
   end
 
   it 'should not contain cgroups settings' do
@@ -207,80 +247,104 @@ describe 'mesos::slave', :type => :class do
   end
 
   context 'setting isolation mechanism' do
-    let(:params){{
-      :isolation => 'cgroups/cpu,cgroups/mem',
-      :cgroups   => {
-        'hierarchy' => '/sys/fs/cgroup',
-        'root'      => 'mesos',
-      },
-      :owner     => owner,
-      :group     => group,
-    }}
+    let(:params) do
+      {
+        isolation: 'cgroups/cpu,cgroups/mem',
+        cgroups: {
+          'hierarchy' => '/sys/fs/cgroup',
+          'root' => 'mesos'
+        },
+        owner: owner,
+        group: group
+      }
+    end
 
-    it { should contain_file(
-      "#{conf}/cgroups_root"
-    ).with_content(/^mesos$/)}
+    it {
+      should contain_file(
+        "#{conf}/cgroups_root"
+      ).with_content(/^mesos$/)
+    }
 
-    it { should contain_file(
-      "#{conf}/cgroups_hierarchy"
-    ).with_content(/^\/sys\/fs\/cgroup$/)}
+    it {
+      should contain_file(
+        "#{conf}/cgroups_hierarchy"
+      ).with_content(/^\/sys\/fs\/cgroup$/)
+    }
 
-    it { should contain_file(
-      "#{conf}/isolation"
-    ).with({
-      'ensure'  => 'present',
-    }).with_content(/^cgroups\/cpu,cgroups\/mem$/) }
+    it {
+      should contain_file(
+        "#{conf}/isolation"
+      ).with(
+        'ensure' => 'present'
+      ).with_content(/^cgroups\/cpu,cgroups\/mem$/)
+    }
 
-    it { should contain_mesos__property('slave_hierarchy').with({
-      'owner'   => owner,
-      'group'   => group,
-      'dir'     => conf,
-      'value'   => '/sys/fs/cgroup',
-    }) }
+    it {
+      should contain_mesos__property('slave_hierarchy').with(
+        'owner' => owner,
+        'group'   => group,
+        'dir'     => conf,
+        'value'   => '/sys/fs/cgroup'
+      )
+    }
   end
 
   context 'changing slave config file location' do
     let(:slave_file) { '/etc/mesos/slave' }
-    let(:params){{
-      :conf_file => slave_file,
-    }}
+    let(:params) do
+      {
+        conf_file: slave_file
+      }
+    end
 
-    it { should contain_file(slave_file).with({
-      'ensure'  => 'present',
-      'mode'    => '0644',
-    }) }
+    it {
+      should contain_file(slave_file).with(
+        'ensure' => 'present',
+        'mode' => '0644'
+      )
+    }
   end
 
   context 'resources specification' do
     let(:resources_dir) { '/etc/mesos-slave/resources' }
 
-    let(:params){{
-      :resources   => {
-        'cpu' => '4',
-        'mem' => '2048',
+    let(:params) do
+      {
+        resources: {
+          'cpu' => '4',
+          'mem' => '2048'
+        }
       }
-    }}
+    end
 
-    it { should contain_file(resources_dir).with({
-      'ensure'  => 'directory',
-    }) }
+    it {
+      should contain_file(resources_dir).with(
+        'ensure' => 'directory'
+      )
+    }
 
-    it { should contain_file(
-      "#{resources_dir}/cpu"
-    ).with_content(/^4$/)}
+    it {
+      should contain_file(
+        "#{resources_dir}/cpu"
+      ).with_content(/^4$/)
+    }
 
-    it { should contain_file(
-      "#{resources_dir}/mem"
-    ).with_content(/^2048$/)}
+    it {
+      should contain_file(
+        "#{resources_dir}/mem"
+      ).with_content(/^2048$/)
+    }
   end
 
   context 'custom listen_address value' do
-    let(:params){{
-      :conf_dir => conf,
-      :owner    => owner,
-      :group    => group,
-      :listen_address => '192.168.1.2',
-    }}
+    let(:params)  do
+      {
+        conf_dir: conf,
+        owner: owner,
+        group: group,
+        listen_address: '192.168.1.2'
+      }
+    end
 
     # fact is not evaluated in test with newer puppet (or rspec)
     it 'has ip address from system fact' do
@@ -290,11 +354,13 @@ describe 'mesos::slave', :type => :class do
     end
   end
 
-   context 'set isolation via options' do
-    let(:params){{
-      :conf_dir => conf,
-      :options => { 'isolation' => 'cgroups/cpu,cgroups/mem' },
-    }}
+  context 'set isolation via options' do
+    let(:params) do
+      {
+        conf_dir: conf,
+        options: { 'isolation' => 'cgroups/cpu,cgroups/mem' }
+      }
+    end
 
     it 'contains isolation file in slave directory' do
       should contain_file(
@@ -303,13 +369,14 @@ describe 'mesos::slave', :type => :class do
     end
   end
 
-
   context 'allow changing config directory' do
     let(:my_conf_dir) { '/var/mesos-slave' }
-    let(:params){{
-      :conf_dir => my_conf_dir,
-      :options => { 'isolation' => 'cgroups/cpu,cgroups/mem' },
-    }}
+    let(:params) do
+      {
+        conf_dir: my_conf_dir,
+        options: { 'isolation' => 'cgroups/cpu,cgroups/mem' }
+      }
+    end
 
     it 'contains isolation file in slave directory' do
       should contain_file(
@@ -320,28 +387,30 @@ describe 'mesos::slave', :type => :class do
 
   context 'work_dir' do
     let(:work_dir) { '/tmp/mesos' }
-    let(:params){{
-      :conf_dir => conf,
-      :work_dir => work_dir,
-      :owner    => owner,
-      :group    => group,
-    }}
-
-    it do
-      should contain_file(work_dir).with({
-        'ensure'  => 'directory',
-        'owner'   => owner,
-        'group'   => group,
-      })
+    let(:params) do
+      {
+        conf_dir: conf,
+        work_dir: work_dir,
+        owner: owner,
+        group: group
+      }
     end
 
     it do
-      should contain_mesos__property('slave_work_dir').with({
+      should contain_file(work_dir).with(
+        'ensure' => 'directory',
+        'owner'   => owner,
+        'group'   => group
+      )
+    end
+
+    it do
+      should contain_mesos__property('slave_work_dir').with(
         'owner' => owner,
         'group' => group,
         'dir'   => conf,
-        'value' => work_dir,
-      })
+        'value' => work_dir
+      )
     end
 
     it do
@@ -352,60 +421,70 @@ describe 'mesos::slave', :type => :class do
   end
 
   context 'common slave config' do
-    let(:params){{
-      :zookeeper      => 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos',
-      :listen_address => '192.168.1.1',
-      :attributes     => {
-        'env' => 'production',
-      },
-      :resources => {
-        'ports' => '[10000-65535]'
-      },
-    }}
+    let(:params)  do
+      {
+        zookeeper: 'zk://192.168.1.1:2181,192.168.1.2:2181,192.168.1.3:2181/mesos',
+        listen_address: '192.168.1.1',
+        attributes: {
+          'env' => 'production'
+        },
+        resources: {
+          'ports' => '[10000-65535]'
+        }
+      }
+    end
 
     it { should compile.with_all_deps }
     it { should contain_package('mesos') }
-    it { should contain_service('mesos-slave').with(
-      :ensure => 'running',
-      :enable => true
-    ) }
+    it {
+      should contain_service('mesos-slave').with(
+        ensure: 'running',
+        enable: true
+      )
+    }
 
-    it { should contain_mesos__property('resources_ports').with({
-      'dir'     => '/etc/mesos-slave/resources',
-      'file'    => 'ports',
-      'value'   => '[10000-65535]',
-    }) }
+    it {
+      should contain_mesos__property('resources_ports').with(
+        'dir' => '/etc/mesos-slave/resources',
+        'file'    => 'ports',
+        'value'   => '[10000-65535]'
+      )
+    }
 
-
-    it { should contain_mesos__property('attributes_env').with({
-      'dir'     => '/etc/mesos-slave/attributes',
-      'file'    => 'env',
-      'value'   => 'production',
-    }) }
-
+    it {
+      should contain_mesos__property('attributes_env').with(
+        'dir' => '/etc/mesos-slave/attributes',
+        'file'    => 'env',
+        'value'   => 'production'
+      )
+    }
   end
 
   context 'support boolean flags' do
-    let(:my_conf_dir) { '/var/mesos-slave'}
-    let(:params){{
-      :conf_dir => my_conf_dir,
-      :options => { 'strict' => false },
-    }}
+    let(:my_conf_dir) { '/var/mesos-slave' }
+    let(:params) do
+      {
+        conf_dir: my_conf_dir,
+        options: { 'strict' => false }
+      }
+    end
 
     it 'has no-strict file in config dir' do
       should contain_file(
         "#{my_conf_dir}/?no-strict"
-      ).with({
-      'ensure'  => 'present',
-      })
+      ).with(
+        'ensure' => 'present'
+      )
     end
   end
 
-   context 'nofify service after removing a key' do
-    let(:my_conf_dir) { '/tmp/mesos-conf'}
-    let(:params){{
-      :conf_dir => my_conf_dir,
-    }}
+  context 'nofify service after removing a key' do
+    let(:my_conf_dir) { '/tmp/mesos-conf' }
+    let(:params) do
+      {
+        conf_dir: my_conf_dir
+      }
+    end
 
     before(:each) do
       system("mkdir -p #{my_conf_dir} && touch #{my_conf_dir}/foo")
@@ -416,14 +495,16 @@ describe 'mesos::slave', :type => :class do
     end
 
     it { is_expected.to contain_service('mesos-slave') }
-    it { is_expected.to contain_file("#{my_conf_dir}").that_notifies('Service[mesos-slave]') }
+    it { is_expected.to contain_file(my_conf_dir.to_s).that_notifies('Service[mesos-slave]') }
   end
 
   context 'nofify service after removing a key' do
-    let(:my_conf_dir) { '/tmp/mesos-conf'}
-    let(:params){{
-      :conf_dir => my_conf_dir,
-    }}
+    let(:my_conf_dir) { '/tmp/mesos-conf' }
+    let(:params) do
+      {
+        conf_dir: my_conf_dir
+      }
+    end
 
     before(:each) do
       system("mkdir -p #{my_conf_dir}/resources && echo 2 > #{my_conf_dir}/resources/cpus")
@@ -434,60 +515,64 @@ describe 'mesos::slave', :type => :class do
     end
 
     it { is_expected.to contain_service('mesos-slave') }
-    it { is_expected.to contain_file("#{my_conf_dir}").that_notifies('Service[mesos-slave]') }
+    it { is_expected.to contain_file(my_conf_dir.to_s).that_notifies('Service[mesos-slave]') }
   end
 
   context 'credentials' do
     context 'default w/o principal/secret' do
-      let(:params) { {
-          :conf_dir => conf,
-          :owner => owner,
-          :group => group,
-      } }
+      let(:params) do
+        {
+          conf_dir: conf,
+          owner: owner,
+          group: group
+        }
+      end
 
       it 'has no credentials property' do
         should_not contain_mesos__property(
-                       'slave_credential'
-                   )
+          'slave_credential'
+        )
       end
 
       it 'has not credentials file' do
         should contain_file(
-                   '/etc/mesos/slave-credentials'
-               )
-                   .with({
-                             'ensure' => 'absent',
-                         })
+          '/etc/mesos/slave-credentials'
+        )
+          .with(
+            'ensure' => 'absent'
+          )
       end
     end
 
     context 'w/ principal/secret' do
-      let(:params) { {
-          :conf_dir => conf,
-          :owner => owner,
-          :group => group,
-          :principal => 'some-mesos-principal',
-          :secret => 'a-very-secret',
-      } }
+      let(:params) do
+        {
+          conf_dir: conf,
+          owner: owner,
+          group: group,
+          principal: 'some-mesos-principal',
+          secret: 'a-very-secret'
+        }
+      end
 
       it 'has credentials property' do
         should contain_mesos__property(
-                   'slave_credential'
-               ).with({
-                          'value' => '/etc/mesos/slave-credentials',
-                      })
+          'slave_credential'
+        ).with(
+          'value' => '/etc/mesos/slave-credentials'
+        )
       end
 
       it 'has credentials file' do
         should contain_file(
-                   '/etc/mesos/slave-credentials'
-               ).with({
-                          'ensure' => 'file',
-                          'content' => '{"principal": "some-mesos-principal", "secret": "a-very-secret"}',
-                          'owner' => owner,
-                          'group' => group,
-                          'mode' => '0400',
-                      })
+          '/etc/mesos/slave-credentials'
+        ).with(
+          'ensure' => 'file',
+          'content' => '{"principal": "some-mesos-principal", "secret": "a-very-secret"}',
+          'owner' => owner,
+          'group' => group,
+          'mode' => '0400'
+        )
       end
     end
 
@@ -495,21 +580,21 @@ describe 'mesos::slave', :type => :class do
       describe 'when syslog_logger is true' do
         let(:params) do
           {
-            :conf_dir => conf,
-            :owner => owner,
-            :group => group,
-            :syslog_logger => true
+            conf_dir: conf,
+            owner: owner,
+            group: group,
+            syslog_logger: true
           }
         end
         it do
           should contain_mesos__property('slave_logger')
             .with(
-              :ensure => 'absent',
-              :file => 'logger',
-              :value => false,
-              :dir => conf,
-              :owner => owner,
-              :group => group
+              ensure: 'absent',
+              file: 'logger',
+              value: false,
+              dir: conf,
+              owner: owner,
+              group: group
             )
 
           should contain_file("#{conf}/?no-logger").with_ensure('absent')
@@ -519,21 +604,21 @@ describe 'mesos::slave', :type => :class do
       describe 'when syslog_logger is false' do
         let(:params) do
           {
-            :conf_dir => conf,
-            :owner => owner,
-            :group => group,
-            :syslog_logger => false
+            conf_dir: conf,
+            owner: owner,
+            group: group,
+            syslog_logger: false
           }
         end
         it do
           should contain_mesos__property('slave_logger')
             .with(
-              :ensure => 'present',
-              :file => 'logger',
-              :value => false,
-              :dir => conf,
-              :owner => owner,
-              :group => group
+              ensure: 'present',
+              file: 'logger',
+              value: false,
+              dir: conf,
+              owner: owner,
+              group: group
             )
 
           should contain_file("#{conf}/?no-logger").with_ensure('present')
@@ -543,29 +628,36 @@ describe 'mesos::slave', :type => :class do
   end
 
   context 'single role' do
-    it { should contain_service('mesos-slave').with(
-      :ensure => 'running',
-      :enable => true
-    ) }
-
-    it { should contain_service('mesos-master').with(
-      :enable => false
-    ) }
+    it {
+      should contain_service('mesos-slave').with(
+        ensure: 'running',
+        enable: true
+      )
+    }
 
     it {
-      should contain_mesos__service('master').with(:enable => false)
-      should contain_mesos__service('slave').with(:enable => true)
+      should contain_service('mesos-master').with(
+        enable: false
+      )
+    }
+
+    it {
+      should contain_mesos__service('master').with(enable: false)
+      should contain_mesos__service('slave').with(enable: true)
     }
 
     context 'disable single role' do
-      let(:params) {{
-        :single_role => false,
-      }}
+      let(:params) do
+        {
+          single_role: false
+        }
+      end
 
-      it { should_not contain_service('mesos-master').with(
-        :enable => false
-      ) }
-
+      it {
+        should_not contain_service('mesos-master').with(
+          enable: false
+        )
+      }
     end
   end
 
@@ -573,30 +665,30 @@ describe 'mesos::slave', :type => :class do
     context 'diable systemd support where systemd is not present' do
       let(:facts) do
         {
-          :mesos_version => '1.2.0',
+          mesos_version: '1.2.0',
           # still old fact is needed due to this
           # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
-          :osfamily => 'Debian',
-          :os => {
-            :family => 'Debian',
-            :name => 'Debian',
-            :distro => { :codename => 'precise'},
-            :release => { :major => '12', :minor => '04', :full => '12.04' },
+          osfamily: 'Debian',
+          os: {
+            family: 'Debian',
+            name: 'Debian',
+            distro: { codename: 'precise' },
+            release: { major: '12', minor: '04', full: '12.04' }
           },
-          :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-          :puppetversion => Puppet.version,
+          path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+          puppetversion: Puppet.version
         }
       end
 
       it do
         is_expected.to contain_mesos__property('slave_systemd_enable_support')
           .with(
-            :ensure => 'present',
-            :file => 'systemd_enable_support',
-            :value => false,
-            :dir => conf,
-            :owner => owner,
-            :group => group
+            ensure: 'present',
+            file: 'systemd_enable_support',
+            value: false,
+            dir: conf,
+            owner: owner,
+            group: group
           )
 
         is_expected.to contain_file("#{conf}/?no-systemd_enable_support").with_ensure('present')
@@ -606,28 +698,28 @@ describe 'mesos::slave', :type => :class do
     context 'enable systemd support' do
       let(:facts) do
         {
-          :mesos_version => '1.2.0',
-          :osfamily => 'Debian',
-          :os => {
-            :family => 'Debian',
-            :name => 'Debian',
-            :distro => { :codename => 'jessie'},
-            :release => { :major => '8', :minor => '9', :full => '8.9' },
+          mesos_version: '1.2.0',
+          osfamily: 'Debian',
+          os: {
+            family: 'Debian',
+            name: 'Debian',
+            distro: { codename: 'jessie' },
+            release: { major: '8', minor: '9', full: '8.9' }
           },
-          :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-          :puppetversion => Puppet.version,
+          path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+          puppetversion: Puppet.version
         }
       end
 
       it do
         is_expected.not_to contain_mesos__property('slave_systemd_enable_support')
           .with(
-            :ensure => 'present',
-            :file => 'systemd_enable_support',
-            :value => true,
-            :dir => conf,
-            :owner => owner,
-            :group => group
+            ensure: 'present',
+            file: 'systemd_enable_support',
+            value: true,
+            dir: conf,
+            owner: owner,
+            group: group
           )
 
         is_expected.not_to contain_file("#{conf}/?systemd_enable_support").with_ensure('present')
@@ -638,28 +730,28 @@ describe 'mesos::slave', :type => :class do
     context 'do not use systemd flag' do
       let(:facts) do
         {
-          :mesos_version => '1.2.0',
-          :osfamily => 'Debian',
-          :os => {
-            :family => 'Debian',
-            :name => 'Debian',
-            :distro => { :codename => 'jessie'},
-            :release => { :major => '8', :minor => '9', :full => '8.9' },
+          mesos_version: '1.2.0',
+          osfamily: 'Debian',
+          os: {
+            family: 'Debian',
+            name: 'Debian',
+            distro: { codename: 'jessie' },
+            release: { major: '8', minor: '9', full: '8.9' }
           },
-          :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-          :puppetversion => Puppet.version,
+          path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+          puppetversion: Puppet.version
         }
       end
 
       it do
         is_expected.not_to contain_mesos__property('slave_systemd_enable_support')
           .with(
-            :ensure => 'present',
-            :file => 'systemd_enable_support',
-            :value => true,
-            :dir => conf,
-            :owner => owner,
-            :group => group
+            ensure: 'present',
+            file: 'systemd_enable_support',
+            value: true,
+            dir: conf,
+            owner: owner,
+            group: group
           )
 
         is_expected.not_to contain_file("#{conf}/?systemd_enable_support").with_ensure('present')
@@ -667,108 +759,109 @@ describe 'mesos::slave', :type => :class do
       end
     end
 
-
-
     context 'do not use systemd_enable_support flag for earlier versions than 0.28' do
       let(:facts) do
         {
-          :mesos_version => '0.27.0',
-          :osfamily => 'Debian',
-          :os => {
-            :family => 'Debian',
-            :name => 'Debian',
-            :distro => { :codename => 'jessie'},
-            :release => { :major => '8', :minor => '9', :full => '8.9' },
+          mesos_version: '0.27.0',
+          osfamily: 'Debian',
+          os: {
+            family: 'Debian',
+            name: 'Debian',
+            distro: { codename: 'jessie' },
+            release: { major: '8', minor: '9', full: '8.9' }
           },
-          :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-          :puppetversion => Puppet.version,
+          path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+          puppetversion: Puppet.version
         }
       end
       it do
         is_expected.not_to contain_mesos__property('slave_systemd_enable_support')
           .with(
-            :ensure => 'present',
-            :file => 'systemd_enable_support',
-            :value => false,
-            :dir => conf,
-            :owner => owner,
-            :group => group
+            ensure: 'present',
+            file: 'systemd_enable_support',
+            value: false,
+            dir: conf,
+            owner: owner,
+            group: group
           )
 
         is_expected.not_to contain_file("#{conf}/?no-systemd_enable_support").with_ensure('present')
         is_expected.not_to contain_file("#{conf}/systemd_enable_support").with_ensure('present')
       end
     end
-
   end
 
   context 'auto-detect service provider' do
     let(:facts) do
       {
-        :mesos_version => '1.2.0',
-        :osfamily => 'RedHat',
-        :os => {
-          :family => 'RedHat',
-          :name => 'CentOS',
-          :release => { :major => '6', :minor => '7', :full => '6.7' },
-        },
+        mesos_version: '1.2.0',
+        osfamily: 'RedHat',
+        os: {
+          family: 'RedHat',
+          name: 'CentOS',
+          release: { major: '6', minor: '7', full: '6.7' }
+        }
       }
     end
 
-    it { is_expected.to contain_service('mesos-slave').with(
-      :ensure => 'running',
-      :provider => 'upstart',
-      :enable => true
-    ) }
+    it {
+      is_expected.to contain_service('mesos-slave').with(
+        ensure: 'running',
+        provider: 'upstart',
+        enable: true
+      )
+    }
 
     context 'on CentOS 7' do
       let(:facts) do
         {
-          :mesos_version => '1.2.0',
-          :osfamily => 'RedHat',
-          :os => {
-            :family => 'RedHat',
-            :name => 'CentOS',
-            :release => { :major => '7', :minor => '7', :full => '7.7' },
-          },
+          mesos_version: '1.2.0',
+          osfamily: 'RedHat',
+          os: {
+            family: 'RedHat',
+            name: 'CentOS',
+            release: { major: '7', minor: '7', full: '7.7' }
+          }
         }
       end
 
-      it { is_expected.to contain_service('mesos-slave').with(
-        :ensure => 'running',
-        :provider => 'systemd',
-        :enable => true
-      ) }
+      it {
+        is_expected.to contain_service('mesos-slave').with(
+          ensure: 'running',
+          provider: 'systemd',
+          enable: true
+        )
+      }
     end
   end
 
   context 'custom systemd configuration' do
     let(:params) do
       {
-        :service_provider    => 'systemd',
-        :manage_service_file => true,
-        :systemd_after       => 'network-online.target openvpn-client@.service',
-        :systemd_wants       => 'network-online.target openvpn-client@.service',
+        service_provider: 'systemd',
+        manage_service_file: true,
+        systemd_after: 'network-online.target openvpn-client@.service',
+        systemd_wants: 'network-online.target openvpn-client@.service'
       }
     end
 
     it do
-     is_expected.to contain_service('mesos-slave').with(
-        :ensure => 'running',
-        :enable => true
+      is_expected.to contain_service('mesos-slave').with(
+        ensure: 'running',
+        enable: true
       )
     end
 
     it do
-      is_expected.to contain_mesos__service('slave').with(:enable => true)
+      is_expected.to contain_mesos__service('slave').with(enable: true)
     end
 
     it do
       is_expected.to contain_file(
         '/etc/systemd/system/mesos-slave.service'
-      ).with({
-        'ensure' => 'present',
-      })
+      ).with(
+        'ensure' => 'present'
+      )
     end
 
     it do
@@ -782,7 +875,5 @@ describe 'mesos::slave', :type => :class do
         '/etc/systemd/system/mesos-slave.service'
       ).with_content(/After=network-online.target openvpn-client@.service/)
     end
-
   end
-
 end

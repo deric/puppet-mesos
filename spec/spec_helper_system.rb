@@ -20,7 +20,7 @@ RSpec.configure do |c|
     puppet_install
 
     # Install modules and dependencies
-    puppet_module_install(:source => proj_root, :module_name => 'mesos')
+    puppet_module_install(source: proj_root, module_name: 'mesos')
     shell('puppet module install puppetlabs-stdlib')
     shell('puppet module install puppetlabs-apt')
   end
