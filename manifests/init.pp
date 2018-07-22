@@ -36,9 +36,9 @@
 # Copyright 2013-2018 Tomas Barton
 #
 class mesos(
-  String                     $ensure              = 'present',
+  String                                  $ensure              = 'present',
   # if version is not defined, ensure will be used
-  Optional[String]           $version = undef,
+  Optional[String]                        $version = undef,
   # master and slave creates separate logs automatically
   # TODO: currently not used
   Optional[String]                        $log_dir = undef,
@@ -54,7 +54,7 @@ class mesos(
   String                                  $owner               = 'root',
   String                                  $group               = 'root',
   Optional[String]                        $listen_address      = undef,
-  Optional[String]                        $repo                = undef,
+  Optional[Variant[String,Hash]]          $repo                = 'mesosphere',
   Hash                                    $env_var             = {},
   Integer                                 $ulimit              = 8192,
   Boolean                                 $manage_python       = false,

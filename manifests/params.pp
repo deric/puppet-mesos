@@ -4,21 +4,21 @@ class mesos::params {
     'service_provider' => undef,
   }
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'Debian': {
-      case $::operatingsystem {
+      case $facts['os']['name'] {
         'Debian': {
-          case $::operatingsystemmajrelease {
+          case $facts['os']['release']['major'] {
             '7': { $initstyle = 'init' }
             '8': { $initstyle = 'systemd' }
             default: { $initstyle = undef }
           }
         }
         'Ubuntu': {
-          case $::operatingsystemmajrelease {
-            'precise': { $initstyle = 'upstart' }
-            'trusty': { $initstyle = 'upstart' }
-            'xenial': { $initstyle = 'systemd' }
+          case $facts['os']['release']['major'] {
+            '12.04': { $initstyle = 'upstart' }
+            '14.04': { $initstyle = 'upstart' }
+            '16.04': { $initstyle = 'systemd' }
             default: { $initstyle = undef }
           }
         }
@@ -30,7 +30,7 @@ class mesos::params {
       }
     }
     'Redhat': {
-      case $::operatingsystemmajrelease {
+      case $facts['os']['release']['major'] {
         #'6': { $initstyle = 'redhat' } # TODO: mesosphere packages works with upstart
         '6': { $initstyle = 'upstart' } # see issue #28
         '7': { $initstyle = 'systemd' }

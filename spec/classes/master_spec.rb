@@ -13,11 +13,15 @@ describe 'mesos::master', :type => :class do
   }}
 
   let(:facts) {{
-    :operatingsystem => 'Debian',
+    # still old fact is needed due to this
+    # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
     :osfamily => 'Debian',
-    :lsbdistcodename => 'jessie',
-    :majdistrelease => '8',
-    :operatingsystemmajrelease => 'jessie',
+    :os => {
+      :family => 'Debian',
+      :name => 'Debian',
+      :distro => { :codename => 'stretch'},
+      :release => { :major => '9', :minor => '1', :full => '9.1' },
+    },
     :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
     :puppetversion => Puppet.version,
   }}

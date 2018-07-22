@@ -14,15 +14,20 @@ describe 'mesos::service', :type => :define do
   }}
 
   shared_examples 'mesos-service' do |family, os, codename, majdistrelease, release|
-    let(:facts) {{
-      :osfamily => family,
-      :operatingsystem => os,
-      :lsbdistcodename => codename,
-      :majdistrelease => majdistrelease,
-      :operatingsystemmajrelease => release,
-      :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-      :puppetversion => Puppet.version,
-    }}
+    let(:facts) do
+      {
+        :mesos_version => '1.2.0',
+        :osfamily => family,
+        :os => {
+          :family => family,
+          :name => os,
+          :distro => { :codename => codename},
+          :release => { :major => majdistrelease},
+        },
+        :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+        :puppetversion => Puppet.version,
+      }
+    end
 
     it { is_expected.to contain_service('mesos-slave').with(
         :ensure     => 'stopped',

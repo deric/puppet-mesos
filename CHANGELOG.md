@@ -1,5 +1,13 @@
 # deric-mesos
 
+## v1.0.0
+- [Full diff](https://github.com/deric/puppet-mesos/compare/v0.9.1...v1.0.0)
+- Introduced Puppet 4 strong types
+
+- [**Breaking Changes**]
+ - Dropped Puppet 3 support
+ - Use Mesosphere repo by default
+
 ## v0.9.1
 - [Full diff](https://github.com/deric/puppet-mesos/compare/v0.9.0...v0.9.1)
 - Use https for package repositories (#88)

@@ -5,6 +5,11 @@ Downloads](http://img.shields.io/puppetforge/dt/deric/mesos.svg)](https://forge.
 
 *COMPATIBILITY NOTE:* current version (0.6.x) requires `puppetlabs-apt >= 2.1.0` which has significantly refactored API (doesn't matter if you don't wanna use Mesosphere APT repo).
 
+| `deric-mesos`| Puppet 3.x    | Puppet 4.x   | Puppet 5.x |
+| ------------ | ------------- |--------------| -----------|
+| `0.9.x`      | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
+| `1.x.x`      | :x:           | :heavy_check_mark: | :heavy_check_mark: |
+
 For installing master
 
 ```puppet

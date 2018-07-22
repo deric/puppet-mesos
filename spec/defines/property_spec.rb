@@ -4,13 +4,21 @@ describe 'mesos::property', :type => :define do
   let(:title) { 'some-property' }
   let(:directory) { '/tmp/mesos-conf' }
 
-  let(:facts) {{
-    :operatingsystem => 'Debian',
-    :osfamily => 'Debian',
-    :lsbdistcodename => 'jessie',
-    :majdistrelease => '8',
-    :operatingsystemmajrelease => 'jessie',
-  }}
+
+  let(:facts) do
+    {
+      :mesos_version => '1.2.0',
+      :osfamily => 'Debian',
+      :os => {
+        :family => 'Debian',
+        :name => 'Debian',
+        :distro => { :codename => 'jessie'},
+        :release => { :major => '8', :minor => '9', :full => '8.9' },
+      },
+      :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+      :puppetversion => Puppet.version,
+    }
+  end
 
   before(:each) do
     puppet_debug_override

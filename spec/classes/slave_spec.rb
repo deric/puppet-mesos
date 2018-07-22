@@ -14,12 +14,16 @@ describe 'mesos::slave', :type => :class do
 
   let(:facts) do
     {
-      :mesos_version => '0.28.2',
+      :mesos_version => '1.2.0',
+      # still old fact is needed due to this
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
       :osfamily => 'Debian',
-      :operatingsystem => 'Debian',
-      :lsbdistcodename => 'jessie',
-      :majdistrelease => '8',
-      :operatingsystemmajrelease => 'jessie',
+      :os => {
+        :family => 'Debian',
+        :name => 'Debian',
+        :distro => { :codename => 'stretch'},
+        :release => { :major => '9', :minor => '1', :full => '9.1' },
+      },
       :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
       :puppetversion => Puppet.version,
     }
@@ -569,12 +573,18 @@ describe 'mesos::slave', :type => :class do
     context 'diable systemd support where systemd is not present' do
       let(:facts) do
         {
-          :mesos_version => '0.28.0',
+          :mesos_version => '1.2.0',
+          # still old fact is needed due to this
+          # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
           :osfamily => 'Debian',
-          :operatingsystem => 'Debian',
-          :lsbdistcodename => 'Ubuntu',
-          :majdistrelease => '12.04',
-          :operatingsystemmajrelease => 'precise',
+          :os => {
+            :family => 'Debian',
+            :name => 'Debian',
+            :distro => { :codename => 'precise'},
+            :release => { :major => '12', :minor => '04', :full => '12.04' },
+          },
+          :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+          :puppetversion => Puppet.version,
         }
       end
 
@@ -596,11 +606,16 @@ describe 'mesos::slave', :type => :class do
     context 'enable systemd support' do
       let(:facts) do
         {
-          :mesos_version => '0.28.0',
+          :mesos_version => '1.2.0',
           :osfamily => 'Debian',
-          :operatingsystem => 'Debian',
-          :lsbdistcodename => 'jessie',
-          :operatingsystemmajrelease => '8',
+          :os => {
+            :family => 'Debian',
+            :name => 'Debian',
+            :distro => { :codename => 'jessie'},
+            :release => { :major => '8', :minor => '9', :full => '8.9' },
+          },
+          :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+          :puppetversion => Puppet.version,
         }
       end
 
@@ -623,11 +638,16 @@ describe 'mesos::slave', :type => :class do
     context 'do not use systemd flag' do
       let(:facts) do
         {
-          :mesos_version => '1.0.1',
+          :mesos_version => '1.2.0',
           :osfamily => 'Debian',
-          :operatingsystem => 'Debian',
-          :lsbdistcodename => 'jessie',
-          :operatingsystemmajrelease => '8',
+          :os => {
+            :family => 'Debian',
+            :name => 'Debian',
+            :distro => { :codename => 'jessie'},
+            :release => { :major => '8', :minor => '9', :full => '8.9' },
+          },
+          :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+          :puppetversion => Puppet.version,
         }
       end
 
@@ -654,12 +674,16 @@ describe 'mesos::slave', :type => :class do
         {
           :mesos_version => '0.27.0',
           :osfamily => 'Debian',
-          :operatingsystem => 'Ubuntu',
-          :lsbdistcodename => 'Ubuntu',
-          :operatingsystemmajrelease => 'precise',
+          :os => {
+            :family => 'Debian',
+            :name => 'Debian',
+            :distro => { :codename => 'jessie'},
+            :release => { :major => '8', :minor => '9', :full => '8.9' },
+          },
+          :path => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+          :puppetversion => Puppet.version,
         }
       end
-
       it do
         is_expected.not_to contain_mesos__property('slave_systemd_enable_support')
           .with(
@@ -680,13 +704,15 @@ describe 'mesos::slave', :type => :class do
 
   context 'auto-detect service provider' do
     let(:facts) do
-    {
-      :mesos_version => '0.28.2',
-      :osfamily => 'RedHat',
-      :operatingsystem => 'CentOS',
-      :lsbdistcodename => '6.7',
-      :operatingsystemmajrelease => '6',
-    }
+      {
+        :mesos_version => '1.2.0',
+        :osfamily => 'RedHat',
+        :os => {
+          :family => 'RedHat',
+          :name => 'CentOS',
+          :release => { :major => '6', :minor => '7', :full => '6.7' },
+        },
+      }
     end
 
     it { is_expected.to contain_service('mesos-slave').with(
@@ -697,13 +723,15 @@ describe 'mesos::slave', :type => :class do
 
     context 'on CentOS 7' do
       let(:facts) do
-      {
-        :mesos_version => '0.28.2',
-        :osfamily => 'RedHat',
-        :operatingsystem => 'CentOS',
-        :lsbdistcodename => '7',
-        :operatingsystemmajrelease => '7',
-      }
+        {
+          :mesos_version => '1.2.0',
+          :osfamily => 'RedHat',
+          :os => {
+            :family => 'RedHat',
+            :name => 'CentOS',
+            :release => { :major => '7', :minor => '7', :full => '7.7' },
+          },
+        }
       end
 
       it { is_expected.to contain_service('mesos-slave').with(

@@ -169,11 +169,9 @@ describe 'mesos::repo', :type => :class do
   end
 
   context 'puppet 4.x' do
-    let(:params) do
-      {
-        'source' => 'mesosphere'
-      }
-    end
+    let(:params) {{
+      :source => 'mesosphere',
+    }}
 
     let(:facts) {{
       # still old fact is needed due to this

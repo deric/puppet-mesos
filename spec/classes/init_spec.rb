@@ -3,13 +3,17 @@ require 'spec_helper'
 describe 'mesos', :type => :class do
 
   let(:facts) {{
-    :operatingsystem => 'Debian',
+    # still old fact is needed due to this
+    # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
     :osfamily => 'Debian',
-    :lsbdistcodename => 'jessie',
-    :majdistrelease => '8',
-    :operatingsystemmajrelease => 'jessie',
+    :os => {
+      :family => 'Debian',
+      :name => 'Debian',
+      :distro => { :codename => 'stretch'},
+      :release => { :major => '9', :minor => '1', :full => '9.1' },
+    },
+    :puppetversion => Puppet.version,
   }}
-
   context 'with ensure' do
     let(:version) { '0.14' }
     let(:params) {{
@@ -91,15 +95,18 @@ describe 'mesos', :type => :class do
   end
 
   context 'remove packaged services' do
-    let(:facts) do
-      {
-        :operatingsystem => 'Debian',
-        :osfamily => 'Debian',
-        :lsbdistcodename => 'jessie',
-        :majdistrelease => '8',
-        :operatingsystemmajrelease => 'jessie',
-      }
-    end
+    let(:facts) {{
+      # still old fact is needed due to this
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
+      :osfamily => 'Debian',
+      :os => {
+        :family => 'Debian',
+        :name => 'Debian',
+        :distro => { :codename => 'stretch'},
+        :release => { :major => '9', :minor => '1', :full => '9.1' },
+      },
+      :puppetversion => Puppet.version,
+    }}
 
     context 'keeps everything' do
       it { is_expected.to contain_class('mesos::install').with(
