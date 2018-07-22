@@ -1,5 +1,9 @@
 # deric-mesos
 
+## v1.0.1
+- [Full diff](https://github.com/deric/puppet-mesos/compare/v1.0.0...v1.0.1)
+- Fixed passing custom repository configuration
+
 ## v1.0.0
 - [Full diff](https://github.com/deric/puppet-mesos/compare/v0.9.1...v1.0.0)
 - Introduced Puppet 4 strong types
