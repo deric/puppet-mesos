@@ -12,6 +12,11 @@ describe 'mesos::config', :type => :class do
     :group    => group,
   }}
 
+  # puppet 5 compatibility: make sure all dependent classes are loaded
+  let :pre_condition do
+    'include mesos::install'
+  end
+
   before(:each) do
     puppet_debug_override
   end
