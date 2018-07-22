@@ -7,18 +7,18 @@
 #
 
 class mesos::repo(
-  $source = undef
+  Optional[Variant[String,Hash]] $source = undef
 ) {
 
   if $source {
-    case $::osfamily {
+    case $facts['os']['family'] {
       'Debian': {
         include ::apt
 
-        $distro = downcase($::operatingsystem)
+        $os = downcase($facts['os']['family'])
         $mesosphere_apt = {
-          location => "https://repos.mesosphere.io/${distro}",
-          release  => $::lsbdistcodename,
+          location => "https://repos.mesosphere.io/${os}",
+          release  =>  $facts['os']['distro']['codename'],
           repos    => 'main',
           key      => {
             'id'     => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF',
@@ -33,18 +33,23 @@ class mesos::repo(
         if is_hash($source) {
           # merge configuration with mesosphere's defaults
           $repo_config = deep_merge($mesosphere_apt, $source)
-          ensure_resource('apt::source', 'mesos-custom', $repo_config)
+          ensure_resource('apt::source', 'mesos', $repo_config)
           anchor { 'mesos::repo::begin': }
-            -> Apt::Source['mesos-custom']
+            -> Apt::Source['mesos']
             -> Class['apt::update']
             -> anchor { 'mesos::repo::end': }
         } else {
           case $source {
-            undef: {} #nothing to do
+            undef: {
+              # make sure to cleanup, when no repository is defined
+              file{'/etc/apt/sources.list.d/mesos.list':
+                ensure => absent,
+              }
+            }
             'mesosphere': {
-              ensure_resource('apt::source', 'mesosphere', $mesosphere_apt)
+              ensure_resource('apt::source', 'mesos', $mesosphere_apt)
               anchor { 'mesos::repo::begin': }
-                -> Apt::Source['mesosphere']
+                -> Apt::Source['mesos']
                 -> Class['apt::update']
                 -> anchor { 'mesos::repo::end': }
             }
@@ -58,18 +63,8 @@ class mesos::repo(
         case $source {
           undef: {} #nothing to do
           'mesosphere': {
-            $osrel = $::operatingsystemmajrelease
-            case $osrel {
-              '6': {
-                $mrel = '2'
-              }
-              '7': {
-                $mrel = '1'
-              }
-              default: {
-                notify { "'${mrel}' is not supported for ${source}": }
-              }
-            }
+            $osrel = $facts['os']['release']['major']
+            $mrel = $facts['os']['release']['minor']
             case $osrel {
               '6', '7': {
                 exec { 'yum-clean-expire-cache':
@@ -85,7 +80,7 @@ class mesos::repo(
                 }
               }
               default: {
-                notify { "Yum repository '${source}' is not supported for major version ${::operatingsystemmajrelease}": }
+                notify { "Yum repository '${source}' is not supported for major version ${osrel}": }
               }
             }
           }
@@ -97,6 +92,11 @@ class mesos::repo(
       default: {
         fail("\"${module_name}\" provides no repository information for OSfamily \"${::osfamily}\"")
       }
+    }
+  } else {
+    # make sure to cleanup, when no repository is defined
+    file{'/etc/apt/sources.list.d/mesos.list':
+      ensure => absent,
     }
   }
 }

@@ -10,11 +10,11 @@
 # required by 'mesos::master' and 'mesos::slave'
 #
 class mesos::install(
-  $ensure                  = 'present',
-  $repo_source             = undef,
-  $manage_python           = false,
-  $python_package          = 'python',
-  $remove_package_services = false,
+  String            $ensure                  = 'present',
+  Optional[String]  $repo_source             = undef,
+  Boolean           $manage_python           = false,
+  String            $python_package          = 'python',
+  Boolean           $remove_package_services = false,
 ) {
   # 'ensure_packages' requires puppetlabs/stdlib
   #

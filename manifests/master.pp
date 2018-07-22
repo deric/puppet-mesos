@@ -23,43 +23,36 @@
 # structure. Arguments passed via $options hash are converted to file/directories
 #
 class mesos::master(
-  $enable              = true,
-  $cluster             = 'mesos',
-  $conf_dir            = '/etc/mesos-master',
-  $work_dir            = '/var/lib/mesos', # registrar directory, since 0.19
-  $conf_file           = '/etc/default/mesos-master',
-  $acls_file           = '/etc/mesos/acls',
-  $credentials_file    = '/etc/mesos/master-credentials',
-  $master_port         = $mesos::master_port,
-  $zookeeper           = $mesos::zookeeper,
-  $zk_path             = $mesos::zk_path,
-  $zk_default_port     = $mesos::zk_default_port,
-  $owner               = $mesos::owner,
-  $group               = $mesos::group,
-  $listen_address      = $mesos::listen_address,
-  $manage_service      = $mesos::manage_service,
-  $env_var             = {},
-  $options             = {},
-  $acls                = {},
-  $credentials         = [],
-  $syslog_logger       = true,
-  $use_hiera           = $mesos::use_hiera,
-  $single_role         = $mesos::single_role,
-  $service_provider    = $mesos::service_provider,
-  $manage_service_file = $::mesos::manage_service_file,
-  $systemd_wants       = $::mesos::params::systemd_wants,
-  $systemd_after       = $::mesos::params::systemd_after,
+  Boolean                                 $enable              = true,
+  String                                  $cluster             = 'mesos',
+  String                                  $conf_dir            = '/etc/mesos-master',
+  String                                  $work_dir            = '/var/lib/mesos', # registrar directory, since 0.19
+  String                                  $conf_file           = '/etc/default/mesos-master',
+  String                                  $acls_file           = '/etc/mesos/acls',
+  String                                  $credentials_file    = '/etc/mesos/master-credentials',
+  Integer                                 $master_port         = $mesos::master_port,
+  Optional[Variant[String,Array[String]]] $zookeeper           = $mesos::zookeeper,
+  String                                  $zk_path             = $mesos::zk_path,
+  Integer                                 $zk_default_port     = $mesos::zk_default_port,
+  String                                  $owner               = $mesos::owner,
+  String                                  $group               = $mesos::group,
+  Optional[String]                        $listen_address      = $mesos::listen_address,
+  Boolean                                 $manage_service      = $mesos::manage_service,
+  Hash                                    $env_var             = {},
+  Hash                                    $options             = {},
+  Hash                                    $acls                = {},
+  Array                                   $credentials         = [],
+  Boolean                                 $syslog_logger       = true,
+  Boolean                                 $use_hiera           = $mesos::use_hiera,
+  Boolean                                 $single_role         = $mesos::single_role,
+  Optional[String]                        $service_provider    = $mesos::service_provider,
+  Boolean                                 $manage_service_file = $::mesos::manage_service_file,
+  String                                  $systemd_wants       = $::mesos::params::systemd_wants,
+  String                                  $systemd_after       = $::mesos::params::systemd_after,
 ) inherits ::mesos {
 
-  validate_hash($env_var)
-  validate_hash($options)
-  validate_hash($acls)
   validate_absolute_path($acls_file)
-  validate_array($credentials)
   validate_absolute_path($credentials_file)
-  validate_bool($manage_service)
-  validate_bool($syslog_logger)
-  validate_bool($single_role)
 
   if (!empty($acls)) {
     $acls_options = {'acls' => $acls_file}

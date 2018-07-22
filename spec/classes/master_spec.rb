@@ -62,7 +62,7 @@ describe 'mesos::master', :type => :class do
 
   context 'setting master port' do
     let(:params){{
-      :master_port => '4040',
+      :master_port => 4040,
     }}
     it { should contain_file(file).with_content(/^export MESOS_PORT=4040/) }
   end

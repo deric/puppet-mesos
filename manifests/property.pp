@@ -42,14 +42,14 @@
 # Default: 0644
 #
 define mesos::property (
-  $dir,
-  $value   = undef,
-  $ensure  = 'present',
-  $file    = undef,
-  $service = undef,
-  $owner   = undef,
-  $group   = undef,
-  $mode    = undef,
+  String $dir,
+  $value,
+  String $ensure  = 'present',
+  Optional[String] $file    = undef,
+  Optional[String] $service = undef,
+  Optional[String] $owner   = undef,
+  Optional[String] $group   = undef,
+  Optional[String] $mode    = undef,
 ) {
   include ::mesos::params
   validate_absolute_path($dir)

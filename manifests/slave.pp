@@ -49,51 +49,39 @@
 #
 
 class mesos::slave (
-  $enable              = true,
-  $port                = 5051,
-  $work_dir            = '/var/lib/mesos',
-  $checkpoint          = false,
-  $isolation           = '',
-  $conf_dir            = '/etc/mesos-slave',
-  $conf_file           = '/etc/default/mesos-slave',
-  $credentials_file    = '/etc/mesos/slave-credentials',
-  $master              = $mesos::master,
-  $master_port         = $mesos::master_port,
-  $zookeeper           = $mesos::zookeeper,
-  $zk_path             = $mesos::zk_path,
-  $zk_default_port     = $mesos::zk_default_port,
-  $owner               = $mesos::owner,
-  $group               = $mesos::group,
-  $listen_address      = $mesos::listen_address,
-  $manage_service      = $mesos::manage_service,
-  $env_var             = {},
-  $cgroups             = {},
-  $options             = {},
-  $resources           = {},
-  $attributes          = {},
-  $principal           = undef,
-  $secret              = undef,
-  $syslog_logger       = true,
-  $use_hiera           = $mesos::use_hiera,
-  $single_role         = $mesos::single_role,
-  $service_provider    = $mesos::service_provider,
-  $manage_service_file = $::mesos::manage_service_file,
-  $systemd_wants       = $::mesos::params::systemd_wants,
-  $systemd_after       = $::mesos::params::systemd_after,
+  Boolean                                 $enable              = true,
+  Integer                                 $port                = 5051,
+  String                                  $work_dir            = '/var/lib/mesos',
+  Boolean                                 $checkpoint          = false,
+  Optional[String]                        $isolation           = undef,
+  String                                  $conf_dir            = '/etc/mesos-slave',
+  String                                  $conf_file           = '/etc/default/mesos-slave',
+  String                                  $credentials_file    = '/etc/mesos/slave-credentials',
+  String                                  $master              = $mesos::master,
+  Integer                                 $master_port         = $mesos::master_port,
+  Optional[Variant[String,Array[String]]] $zookeeper           = $mesos::zookeeper,
+  String                                  $zk_path             = $mesos::zk_path,
+  Integer                                 $zk_default_port     = $mesos::zk_default_port,
+  String                                  $owner               = $mesos::owner,
+  String                                  $group               = $mesos::group,
+  Optional[String]                        $listen_address      = $mesos::listen_address,
+  Boolean                                 $manage_service      = $mesos::manage_service,
+  Hash                                    $env_var             = {},
+  Hash                                    $cgroups             = {},
+  Hash                                    $options             = {},
+  Hash                                    $resources           = {},
+  Hash                                    $attributes          = {},
+  Optional[String]                        $principal           = undef,
+  Optional[String]                        $secret              = undef,
+  Boolean                                 $syslog_logger       = true,
+  Boolean                                 $use_hiera           = $mesos::use_hiera,
+  Boolean                                 $single_role         = $mesos::single_role,
+  Optional[String]                        $service_provider    = $mesos::service_provider,
+  Boolean                                 $manage_service_file = $::mesos::manage_service_file,
+  String                                  $systemd_wants       = $::mesos::params::systemd_wants,
+  String                                  $systemd_after       = $::mesos::params::systemd_after,
 ) inherits ::mesos {
-
-  validate_hash($env_var)
-  validate_hash($cgroups)
-  validate_hash($options)
-  validate_hash($resources)
-  validate_hash($attributes)
-  validate_string($isolation)
-  validate_string($principal)
-  validate_string($secret)
   validate_absolute_path($credentials_file)
-  validate_bool($manage_service)
-  validate_bool($syslog_logger)
-  validate_bool($single_role)
 
   if !empty($zookeeper) {
     if is_string($zookeeper) {

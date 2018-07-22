@@ -14,15 +14,15 @@
 # always use 'mesos::slave' or 'mesos:master'
 #
 class mesos::config(
-  $log_dir        = undef,
-  $ulimit         = 8192,
-  $conf_dir       = '/etc/mesos',
-  $conf_file      = '/etc/default/mesos',
-  $manage_zk_file = true,
-  $owner          = 'root',
-  $group          = 'root',
-  $env_var        = {},
-  $zookeeper_url  = undef,
+  Optional[String]  $log_dir        = undef,
+  Integer           $ulimit         = 8192,
+  String            $conf_dir       = '/etc/mesos',
+  String            $conf_file      = '/etc/default/mesos',
+  Boolean           $manage_zk_file = true,
+  String            $owner          = 'root',
+  String            $group          = 'root',
+  Hash              $env_var        = {},
+  Optional[String]  $zookeeper_url  = undef,
 ){
   validate_bool($manage_zk_file)
 

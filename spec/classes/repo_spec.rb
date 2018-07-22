@@ -2,16 +2,21 @@ require 'spec_helper'
 
 describe 'mesos::repo', :type => :class do
 
-  shared_examples 'debian' do |operatingsystem, lsbdistcodename, puppet|
+  shared_examples 'debian' do |family,operatingsystem, lsbdistcodename, puppet|
     let(:params) {{
       :source => 'mesosphere',
     }}
 
     let(:facts) {{
-      :operatingsystem => operatingsystem,
-      :osfamily => 'Debian',
-      :lsbdistcodename => lsbdistcodename,
-      :lsbdistid => operatingsystem,
+      # still old fact is needed due to this
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
+      :osfamily => family,
+      :os => {
+        :family => family,
+        :name => operatingsystem,
+        :distro => { :codename => lsbdistcodename },
+        :release => { :major => '8', :minor => '9', :full => '8.9' },
+      },
       :puppetversion => puppet,
     }}
 
@@ -19,52 +24,56 @@ describe 'mesos::repo', :type => :class do
       puppet_debug_override
     end
 
-    it { is_expected.to contain_apt__source('mesosphere').with(
-     'location' => "https://repos.mesosphere.io/#{operatingsystem.downcase}",
+    it { is_expected.to contain_apt__source('mesos').with(
+     'location' => "https://repos.mesosphere.io/#{family.downcase}",
      'repos'    => 'main',
      'release'  => "#{lsbdistcodename}",
      'key'      => {'id' => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com'},
      'include'  => {'src' => false}
     )}
 
-    it { is_expected.to contain_anchor('mesos::repo::begin').that_comes_before('Apt::Source[mesosphere]') }
-    it { is_expected.to contain_apt__source('mesosphere').that_comes_before('Class[apt::update]') }
+    it { is_expected.to contain_anchor('mesos::repo::begin').that_comes_before('Apt::Source[mesos]') }
+    it { is_expected.to contain_apt__source('mesos').that_comes_before('Class[apt::update]') }
     it { is_expected.to contain_class('apt::update').that_comes_before('Anchor[mesos::repo::end]') }
 
     context "undef source" do
       let(:params) {{
-        :source => 'undef',
+        :source => nil,
       }}
-      it { is_expected.not_to contain_apt__source('mesosphere') }
+      it { is_expected.not_to contain_apt__source('mesos') }
+      # it { is_expected.to contain_file('/etc/apt/sources.list.d/mesos.list').with({'ensure' => 'absent'}) }
     end
   end
 
   context 'on Debian based systems' do
     puppet = Puppet.version
 
-    it_behaves_like 'debian', 'Debian', 'wheezy', puppet
-    it_behaves_like 'debian', 'Ubuntu', 'precise', puppet
+    it_behaves_like 'debian', 'Debian', 'Debian', 'wheezy', puppet
+    it_behaves_like 'debian', 'Debian', 'Ubuntu', 'precise', puppet
   end
 
-  shared_examples 'redhat' do |operatingsystem, lsbdistcodename, mrel|
+  shared_examples 'redhat' do |family, operatingsystem, majrel, minrel|
     let(:params) {{
       :source => 'mesosphere',
     }}
 
-    let(:osrel) { lsbdistcodename}
-
+    let(:osrel) { majrel}
     let(:facts) {{
-      :operatingsystem => operatingsystem,
-      :osfamily                  => 'RedHat',
-      :lsbdistcodename           => lsbdistcodename,
-      :operatingsystemmajrelease => lsbdistcodename,
-      :lsbdistid                 => operatingsystem,
+      # still old fact is needed due to this
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
+      :osfamily => family,
+      :os => {
+        :family => family,
+        :name => operatingsystem,
+        :release => { :major => majrel, :minor => minrel, :full => "#{majrel}.#{minrel}" },
+      },
+      :puppetversion => Puppet.version,
     }}
 
     it { is_expected.to contain_package('mesosphere-el-repo').with({
      'ensure'   => 'present',
      'provider' => 'rpm',
-     'source'   => "https://repos.mesosphere.io/el/#{osrel}/noarch/RPMS/mesosphere-el-repo-#{osrel}-#{mrel}.noarch.rpm",
+     'source'   => "https://repos.mesosphere.io/el/#{majrel}/noarch/RPMS/mesosphere-el-repo-#{majrel}-#{minrel}.noarch.rpm",
     })}
 
     it do is_expected.to contain_exec('yum-clean-expire-cache').with({
@@ -74,7 +83,7 @@ describe 'mesos::repo', :type => :class do
 
     context "undef source" do
       let(:params) {{
-        :source => 'undef',
+        :source => nil,
       }}
       it { is_expected.not_to contain_package('mesosphere-el-repo') }
     end
@@ -105,14 +114,19 @@ describe 'mesos::repo', :type => :class do
     end
 
     let(:facts) {{
-      :operatingsystem => 'Debian',
+      # still old fact is needed due to this
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
       :osfamily => 'Debian',
-      :lsbdistcodename => 'jessie',
-      :lsbdistid => 'Debian',
+      :os => {
+        :family => 'Debian',
+        :name => 'Debian',
+        :distro => { :codename => 'stretch' },
+        :release => { :major => '9', :minor => '1', :full => '9.1' },
+      },
       :puppetversion => Puppet.version,
     }}
 
-    it { is_expected.to contain_apt__source('mesos-custom').with(
+    it { is_expected.to contain_apt__source('mesos').with(
      'location' => "http://myrepo.example.com/debian",
      'repos'    => 'main',
      'release'  => 'jessie',
@@ -133,20 +147,59 @@ describe 'mesos::repo', :type => :class do
       }
     end
     let(:facts) {{
-      :operatingsystem => 'Debian',
+      # still old fact is needed due to this
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
       :osfamily => 'Debian',
-      :lsbdistcodename => 'jessie',
-      :lsbdistid => 'Debian',
+      :os => {
+        :family => 'Debian',
+        :name => 'Debian',
+        :distro => { :codename => 'stretch' },
+        :release => { :major => '9', :minor => '1', :full => '9.1' },
+      },
       :puppetversion => Puppet.version,
     }}
 
-    it { is_expected.to contain_apt__source('mesos-custom').with(
+    it { is_expected.to contain_apt__source('mesos').with(
      'location' => "https://repos.mesosphere.io/debian",
      'repos'    => 'main',
      'release'  => 'jessie',
      'key'      => {'id' => '00026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.example.com'},
      'include'  => {'src' => false}
     )}
+  end
+
+  context 'puppet 4.x' do
+    let(:params) do
+      {
+        'source' => 'mesosphere'
+      }
+    end
+
+    let(:facts) {{
+      # still old fact is needed due to this
+      # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
+      :osfamily => 'Debian',
+      :os => {
+        :family => 'Debian',
+        :name => 'Debian',
+        :distro => { :codename => 'stretch'},
+        :release => { :major => '9', :minor => '1', :full => '9.1' },
+      },
+      :puppetversion => Puppet.version,
+    }}
+
+    before(:each) do
+      puppet_debug_override
+    end
+
+    it { is_expected.to contain_apt__source('mesos').with(
+     'location' => "https://repos.mesosphere.io/debian",
+     'repos'    => 'main',
+     'release'  => 'stretch',
+     'key'      => {'id' => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com'},
+     'include'  => {'src' => false}
+    )}
+
   end
 
 end
