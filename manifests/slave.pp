@@ -146,10 +146,14 @@ class mesos::slave (
     $credentials_ensure = absent
   }
 
-  if ($::mesos_version != undef) and (versioncmp($::mesos_version, '0.28.0') >= 0)
-    and $service_provider != 'systemd' {
-    # otherwise rely on mesos-slave defaults
-      $systemd_support = {'systemd_enable_support' => false}
+  if defined('$::mesos_version') {
+    if ($::mesos_version != undef) and (versioncmp($::mesos_version, '0.28.0') >= 0)
+      and $service_provider != 'systemd' {
+      # otherwise rely on mesos-slave defaults
+        $systemd_support = {'systemd_enable_support' => false}
+    } else {
+      $systemd_support = {}
+    }
   } else {
     $systemd_support = {}
   }
