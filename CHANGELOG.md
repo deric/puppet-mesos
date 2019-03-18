@@ -1,5 +1,11 @@
 # deric-mesos
 
+## v1.0.2
+- [Full diff](https://github.com/deric/puppet-mesos/compare/v1.0.1...v1.0.2)
+- Fixed the mesos_version variable check, which fails if the puppet server has "strict_variables = true" [#91](https://github.com/deric/puppet-mesos/pull/91)
+- Adds notifier from credentials and acls files to services [#92](https://github.com/deric/puppet-mesos/pull/92)
+- Mark Puppet 6 and new versions of `stdlib` and `apt` as compatible
+
 ## v1.0.1
 - [Full diff](https://github.com/deric/puppet-mesos/compare/v1.0.0...v1.0.1)
 - Fixed passing custom repository configuration
