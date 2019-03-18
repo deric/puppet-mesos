@@ -1,5 +1,9 @@
 # deric-mesos
 
+## v1.0.3
+- [Full diff](https://github.com/deric/puppet-mesos/compare/v1.0.2...v1.0.3)
+- Support `puppetlabs-apt` 6.x
+
 ## v1.0.2
 - [Full diff](https://github.com/deric/puppet-mesos/compare/v1.0.1...v1.0.2)
 - Fixed the mesos_version variable check, which fails if the puppet server has "strict_variables = true" [#91](https://github.com/deric/puppet-mesos/pull/91)
