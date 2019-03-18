@@ -112,12 +112,14 @@ class mesos::master(
     ensure  => $acls_ensure,
     content => $acls_content,
     mode    => '0444',
+    notify  => Service['mesos-master'],
   }
 
   file { $credentials_file:
     ensure  => $credentials_ensure,
     content => $credentials_content,
     mode    => '0400',
+    notify  => Service['mesos-master'],
   }
 
   # work_dir can't be specified via options,

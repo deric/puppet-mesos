@@ -186,6 +186,7 @@ class mesos::slave (
     ensure  => $credentials_ensure,
     content => $credentials_content,
     mode    => '0400',
+    notify  => Service['mesos-slave'],
   }
 
   create_resources(mesos::property,
