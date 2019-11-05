@@ -9,7 +9,7 @@ group :rake do
   gem 'highline'
   gem 'librarian-puppet', '>=2.0'
   gem 'metadata-json-lint', require: false
-  gem 'nokogiri', '~> 1.8.1'
+  gem 'nokogiri', '>= 1.10.4'
   gem 'rake'
   gem 'rspec-core', '>= 3.5.0'
   gem 'rspec-puppet'
