@@ -5,9 +5,9 @@ require 'pry'
 
 describe 'mesos installation', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
   context 'basic setup' do
-    it 'install mesos-master' do
+    it 'install mesos-slave' do
       pp = <<-EOS
-        class{'mesos::master': }
+        class{'mesos::slave': }
       EOS
 
       expect(apply_manifest(pp, {
@@ -20,7 +20,7 @@ describe 'mesos installation', :unless => UNSUPPORTED_PLATFORMS.include?(fact('o
       it { is_expected.to be_installed }
     end
 
-    describe service('mesos-master') do
+    describe service('mesos-slave') do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running } # might not work due to systemd bug
     end
