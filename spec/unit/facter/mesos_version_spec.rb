@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Facter::Util::Fact do
-  before do
+  before(:each) do
     Facter.clear
   end
 

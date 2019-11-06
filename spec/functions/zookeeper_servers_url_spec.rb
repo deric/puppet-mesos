@@ -8,7 +8,7 @@ describe 'zookeeper_servers_url' do
       param = ['192.168.1.1:2181']
 
       is_expected.to run.with_params(param).and_return(
-        'zk://192.168.1.1:2181/mesos'
+        'zk://192.168.1.1:2181/mesos',
       )
     end
 
@@ -16,20 +16,20 @@ describe 'zookeeper_servers_url' do
       param = ['192.168.1.1:2181', '192.168.1.2:2181']
 
       is_expected.to run.with_params(param).and_return(
-        'zk://192.168.1.1:2181,192.168.1.2:2181/mesos'
+        'zk://192.168.1.1:2181,192.168.1.2:2181/mesos',
       )
     end
 
-    it 'should raise an error if run with extra arguments' do
+    it 'raises an error if run with extra arguments' do
       is_expected.to run.with_params(1, 2, 3).and_raise_error(Puppet::ParseError)
     end
 
-    it 'should raise an error if the argument is not an array' do
+    it 'raises an error if the argument is not an array' do
       param = { 'test' => 1 }
       is_expected.to run.with_params(param).and_raise_error(Puppet::ParseError)
     end
 
-    it 'should be backwards compatible' do
+    it 'is backwards compatible' do
       param = 'zk://192.168.1.1:2181/mesos'
 
       is_expected.to run.with_params(param).and_return('zk://192.168.1.1:2181/mesos')
@@ -39,7 +39,7 @@ describe 'zookeeper_servers_url' do
       param = ['192.168.1.1:2181', '192.168.1.2:2181']
 
       is_expected.to run.with_params(param, 'foo').and_return(
-        'zk://192.168.1.1:2181,192.168.1.2:2181/foo'
+        'zk://192.168.1.1:2181,192.168.1.2:2181/foo',
       )
     end
 
@@ -47,7 +47,7 @@ describe 'zookeeper_servers_url' do
       param = ['192.168.1.1:2180', '192.168.1.2', '192.168.1.3']
 
       is_expected.to run.with_params(param, 'bar', 2222).and_return(
-        'zk://192.168.1.1:2180,192.168.1.2:2222,192.168.1.3:2222/bar'
+        'zk://192.168.1.1:2180,192.168.1.2:2222,192.168.1.3:2222/bar',
       )
     end
   end

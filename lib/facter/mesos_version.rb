@@ -14,7 +14,7 @@
 Facter.add(:mesos_version) do
   setcode do
     if Facter::Util::Resolution.which('mesos-master')
-      Facter::Util::Resolution.exec('mesos-master --version 2>&1').split(/ /)[1].strip
+      Facter::Util::Resolution.exec('mesos-master --version 2>&1').split(%r{ })[1].strip
     end
   end
 end

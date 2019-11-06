@@ -36,7 +36,7 @@ describe 'mesos::service', type: :define do
         ensure: 'stopped',
         enable: false,
         hasstatus: true,
-        hasrestart: true
+        hasrestart: true,
       )
     }
     context 'enable service' do
@@ -52,7 +52,7 @@ describe 'mesos::service', type: :define do
       it {
         is_expected.to contain_service('mesos-slave').with(
           enable: true,
-          ensure: 'running'
+          ensure: 'running',
         )
       }
     end
@@ -71,7 +71,7 @@ describe 'mesos::service', type: :define do
       it {
         is_expected.to contain_service('mesos-slave').with(
           enable: true,
-          ensure: nil
+          ensure: nil,
         )
       }
     end

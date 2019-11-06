@@ -52,7 +52,7 @@ describe 'mesos::property', type: :define do
 
     it { is_expected.to compile.with_all_deps }
 
-    it 'should remove a property file' do
+    it 'removes a property file' do
       is_expected.to contain_file("#{directory}/#{title}").with_ensure('absent')
     end
   end
@@ -67,7 +67,7 @@ describe 'mesos::property', type: :define do
 
     it { is_expected.to compile.with_all_deps }
 
-    it 'should remove the property file' do
+    it 'removes the property file' do
       is_expected.to contain_file("#{directory}/#{title}").with_ensure('absent')
     end
   end
@@ -77,10 +77,10 @@ describe 'mesos::property', type: :define do
       {}
     end
 
-    it 'should fail with an error' do
-      expect do
+    it 'fails with an error' do
+      expect {
         is_expected.to compile.with_all_deps
-      end.to raise_error /dir/
+      }.to raise_error %r{dir}
     end
   end
 
@@ -94,7 +94,7 @@ describe 'mesos::property', type: :define do
 
     it { is_expected.to compile.with_all_deps }
 
-    it 'should contain a positive "predicate" file' do
+    it 'contains a positive "predicate" file' do
       parameters = {
         ensure: 'present',
         content: ''
@@ -113,7 +113,7 @@ describe 'mesos::property', type: :define do
 
     it { is_expected.to compile.with_all_deps }
 
-    it 'should contain a negative "predicate" file' do
+    it 'contains a negative "predicate" file' do
       parameters = {
         ensure: 'present',
         content: ''
@@ -132,7 +132,7 @@ describe 'mesos::property', type: :define do
 
     it { is_expected.to compile.with_all_deps }
 
-    it 'should create a property file with the value' do
+    it 'creates a property file with the value' do
       parameters = {
         ensure: 'present',
         content: "123\n"
@@ -151,7 +151,7 @@ describe 'mesos::property', type: :define do
 
     it { is_expected.to compile.with_all_deps }
 
-    it 'should create a property file with the value' do
+    it 'creates a property file with the value' do
       parameters = {
         ensure: 'present',
         content: "3.14\n"
@@ -171,7 +171,7 @@ describe 'mesos::property', type: :define do
 
     it { is_expected.to compile.with_all_deps }
 
-    it 'should remove a property file' do
+    it 'removes a property file' do
       is_expected.to contain_file("#{directory}/#{title}").with_ensure('absent')
     end
   end
@@ -187,7 +187,7 @@ describe 'mesos::property', type: :define do
 
     it { is_expected.to compile.with_all_deps }
 
-    it 'should create the property file with an empty value' do
+    it 'creates the property file with an empty value' do
       parameters = {
         ensure: 'present',
         content: "\n"
@@ -205,10 +205,10 @@ describe 'mesos::property', type: :define do
       }
     end
 
-    it 'should fail with an error' do
-      expect do
+    it 'fails with an error' do
+      expect {
         is_expected.to compile.with_all_deps
-      end.to raise_error /ensure must be one of/
+      }.to raise_error %r{ensure must be one of}
     end
   end
 
@@ -297,10 +297,10 @@ describe 'mesos::property', type: :define do
       }
     end
 
-    it 'should fail with an error' do
-      expect do
+    it 'fails with an error' do
+      expect {
         is_expected.to compile.with_all_deps
-      end.to raise_error /service is deprecated and will be removed in the next major release/
+      }.to raise_error %r{service is deprecated and will be removed in the next major release}
     end
   end
 end

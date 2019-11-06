@@ -13,19 +13,19 @@ describe 'mesos_hash_parser' do
         'isolation' => {
           'value' => 'cgroups',
           'file' => 'isolation'
-        }
+        },
       )
     end
 
-    it 'should raise an error if run with extra arguments' do
+    it 'raises an error if run with extra arguments' do
       is_expected.to run.with_params(1, 2, 3, 4).and_raise_error(Puppet::ParseError)
     end
 
-    it 'should raise an error with incorrect type of arguments' do
+    it 'raises an error with incorrect type of arguments' do
       is_expected.to run.with_params(1, 2).and_raise_error(Puppet::ParseError)
     end
 
-    it 'should raise an error when running without arguments' do
+    it 'raises an error when running without arguments' do
       is_expected.to run.with_params(nil).and_raise_error(Puppet::ParseError)
     end
 
@@ -34,13 +34,13 @@ describe 'mesos_hash_parser' do
         'foo' => {
           'value' => 'bar',
           'file' => 'foo'
-        }
+        },
       )
     end
   end
 
   describe 'support prefixes' do
-    it 'should prefix keys' do
+    it 'prefixes keys' do
       param = {
         'root' => '/cgroups'
       }
@@ -49,11 +49,11 @@ describe 'mesos_hash_parser' do
         'cg_root' => {
           'value' => '/cgroups',
           'file' => 'root'
-        }
+        },
       )
     end
 
-    it 'should prefix files' do
+    it 'prefixes files' do
       param = {
         'root' => '/cgroups'
       }
@@ -62,7 +62,7 @@ describe 'mesos_hash_parser' do
         'cg_root' => {
           'value' => '/cgroups',
           'file' => 'cg_root'
-        }
+        },
       )
     end
   end

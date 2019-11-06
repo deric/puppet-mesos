@@ -6,7 +6,7 @@ ZooKeeper port (applies only for servers without specified port)
 
 Usage: zookeeper_servers_url([10.0.0.1,10.0.0.2],'mesos', 2181)
   EOS
-) do |args|
+             ) do |args|
 
     # Only 1 argument should be passed
     if args.size > 3

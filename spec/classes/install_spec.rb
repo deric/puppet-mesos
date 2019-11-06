@@ -20,29 +20,28 @@ describe 'mesos::install', type: :class do
     let(:params) do
       {
         ensure:      version,
-        repo_source: 'mesosphere',
+        repo_source: 'mesosphere'
       }
     end
-
 
     before(:each) do
       puppet_debug_override
     end
 
     it {
-      should contain_package('mesos').with(
-        'ensure' => version
+      is_expected.to contain_package('mesos').with(
+        'ensure' => version,
       )
     }
 
     # mesos dependencies (for web GUI)
     it {
-      should_not contain_package('python').with(
-        'ensure' => 'present'
+      is_expected.not_to contain_package('python').with(
+        'ensure' => 'present',
       )
     }
 
-    it { should contain_class('mesos::repo') }
+    it { is_expected.to contain_class('mesos::repo') }
   end
 
   context 'do not install repo' do
@@ -51,9 +50,9 @@ describe 'mesos::install', type: :class do
         manage_repo: false
       }
     end
+
     it { is_expected.not_to contain_class('mesos::repo') }
   end
-
 
   context 'manage python installation' do
     let(:params)  do
@@ -61,13 +60,14 @@ describe 'mesos::install', type: :class do
         manage_python: true
       }
     end
-    it { should contain_package('python') }
+
+    it { is_expected.to contain_package('python') }
   end
 
   context 'remove packaged services' do
     context 'keeps everything' do
-      it { should_not contain_file('/etc/init/mesos-master.conf') }
-      it { should_not contain_file('/etc/init/mesos-slave.conf') }
+      it { is_expected.not_to contain_file('/etc/init/mesos-master.conf') }
+      it { is_expected.not_to contain_file('/etc/init/mesos-slave.conf') }
     end
 
     context 'keeps everything on RHEL 7' do
@@ -83,8 +83,8 @@ describe 'mesos::install', type: :class do
         }
       end
 
-      it { should_not contain_file('/etc/init/mesos-master.conf') }
-      it { should_not contain_file('/etc/init/mesos-slave.conf') }
+      it { is_expected.not_to contain_file('/etc/init/mesos-master.conf') }
+      it { is_expected.not_to contain_file('/etc/init/mesos-slave.conf') }
     end
 
     context 'removes packaged upstart config on RHEL 6' do
@@ -101,8 +101,8 @@ describe 'mesos::install', type: :class do
         }
       end
 
-      it { should contain_file('/etc/init/mesos-master.conf').with_ensure('absent') }
-      it { should contain_file('/etc/init/mesos-slave.conf').with_ensure('absent') }
+      it { is_expected.to contain_file('/etc/init/mesos-master.conf').with_ensure('absent') }
+      it { is_expected.to contain_file('/etc/init/mesos-slave.conf').with_ensure('absent') }
     end
   end
 end

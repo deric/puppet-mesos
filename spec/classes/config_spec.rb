@@ -28,20 +28,20 @@ describe 'mesos::config', type: :class do
       'owner'   => owner,
       'group'   => group,
       'mode'    => '0644',
-      'require' => 'Package[mesos]'
+      'require' => 'Package[mesos]',
     )
   }
 
   it 'has default log dir' do
     is_expected.to contain_file(
-      '/etc/default/mesos'
+      '/etc/default/mesos',
     ).with_content(/LOGS="\/var\/log\/mesos"/)
   end
 
   it 'has default ulimit' do
     is_expected.to contain_file(
-      '/etc/default/mesos'
-    ).with_content(/ULIMIT="-n 8192"/)
+      '/etc/default/mesos',
+    ).with_content(%r{ULIMIT="-n 8192"})
   end
 
   context 'conf_file' do
@@ -67,8 +67,8 @@ describe 'mesos::config', type: :class do
 
     it {
       is_expected.to contain_file(
-        '/etc/default/mesos'
-      ).with_content(/ULIMIT="-n 16384"/)
+        '/etc/default/mesos',
+      ).with_content(%r{ULIMIT="-n 16384"})
     }
   end
 
@@ -79,9 +79,10 @@ describe 'mesos::config', type: :class do
         zookeeper_url: 'zk://10.0.0.1/mesos'
       }
     end
+
     it {
       is_expected.to contain_file(
-        '/etc/default/mesos'
+        '/etc/default/mesos',
       ).with_content(/LOGS="\/srv\/mesos\/log"/)
     }
   end
@@ -98,13 +99,13 @@ describe 'mesos::config', type: :class do
 
     it {
       is_expected.to contain_file(
-        '/etc/default/mesos'
+        '/etc/default/mesos',
       ).with_content(/export JAVA_HOME="\/usr\/bin\/java"/)
     }
 
     it {
       is_expected.to contain_file(
-        '/etc/default/mesos'
+        '/etc/default/mesos',
       ).with_content(/export MESOS_HOME="\/var\/lib\/mesos"/)
     }
   end

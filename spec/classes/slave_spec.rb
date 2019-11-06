@@ -35,27 +35,27 @@ describe 'mesos::slave', type: :class do
     puppet_debug_override
   end
 
-  it { should contain_package('mesos') }
+  it { is_expected.to contain_package('mesos') }
   it {
-    should contain_service('mesos-slave').with(
+    is_expected.to contain_service('mesos-slave').with(
       ensure: 'running',
-      enable: true
+      enable: true,
     )
   }
 
   it {
-    should contain_file(slave_file).with(
+    is_expected.to contain_file(slave_file).with(
       'ensure' => 'present',
       'owner'   => owner,
       'group'   => group,
-      'mode'    => '0644'
+      'mode'    => '0644',
     )
   }
 
   it 'does not set IP address by default' do
-    should_not contain_file(
-      slave_file
-    ).with_content(/^export MESOS_IP=/)
+    is_expected.not_to contain_file(
+      slave_file,
+    ).with_content(%r{^export MESOS_IP=})
   end
 
   context 'with ip address set' do
@@ -66,29 +66,29 @@ describe 'mesos::slave', type: :class do
     end
 
     it 'has ip address from param' do
-      should contain_file(
-        slave_file
-      ).with_content(/^export MESOS_IP="192.168.1.1"$/)
+      is_expected.to contain_file(
+        slave_file,
+      ).with_content(%r{^export MESOS_IP="192.168.1.1"$})
     end
   end
 
   it 'has default port eq to 5051' do
-    should contain_file(
-      slave_file
-    ).with_content(/^export MESOS_PORT=5051$/)
+    is_expected.to contain_file(
+      slave_file,
+    ).with_content(%r{^export MESOS_PORT=5051$})
   end
 
   it 'checkpoint should be false' do
-    should_not contain_file(
-      "#{conf}/?checkpoint"
+    is_expected.not_to contain_file(
+      "#{conf}/?checkpoint",
     ).with(
-      'ensure' => 'present'
+      'ensure' => 'present',
     )
   end
 
-  it 'should have workdir in /var/lib/mesos' do
-    should contain_file(
-      "#{conf}/work_dir"
+  it 'has workdir in /var/lib/mesos' do
+    is_expected.to contain_file(
+      "#{conf}/work_dir",
     ).with_content(/^\/var\/lib\/mesos$/)
   end
 
@@ -98,14 +98,15 @@ describe 'mesos::slave', type: :class do
         master: '192.168.1.100'
       }
     end
+
     it {
-      should contain_file(
-        slave_file
-      ).with_content(/^export MESOS_MASTER="192.168.1.100:5050"/)
+      is_expected.to contain_file(
+        slave_file,
+      ).with_content(%r{^export MESOS_MASTER="192.168.1.100:5050"})
     }
     it {
-      should contain_file(
-        '/etc/mesos/zk'
+      is_expected.to contain_file(
+        '/etc/mesos/zk',
       ).with(ensure: 'absent')
     }
   end
@@ -117,10 +118,11 @@ describe 'mesos::slave', type: :class do
         zookeeper: ['192.168.1.100:2181']
       }
     end
+
     it {
-      should_not contain_file(
-        slave_file
-      ).with_content(/^export MESOS_MASTER="172.16.0.1"/)
+      is_expected.not_to contain_file(
+        slave_file,
+      ).with_content(%r{^export MESOS_MASTER="172.16.0.1"})
     }
     # this would work only if we set mesos::zookeeper through hiera
     # it { should contain_file(
@@ -137,8 +139,8 @@ describe 'mesos::slave', type: :class do
     end
 
     it {
-      should contain_service('mesos-slave').with(
-        enable: false
+      is_expected.to contain_service('mesos-slave').with(
+        enable: false,
       )
     }
   end
@@ -151,8 +153,8 @@ describe 'mesos::slave', type: :class do
     end
 
     it {
-      should contain_file(
-        "#{conf}/work_dir"
+      is_expected.to contain_file(
+        "#{conf}/work_dir",
       ).with_content(/^\/home\/mesos$/)
     }
   end
@@ -167,10 +169,10 @@ describe 'mesos::slave', type: :class do
     end
 
     it {
-      should contain_file(
-        "#{conf}/?checkpoint"
+      is_expected.to contain_file(
+        "#{conf}/?checkpoint",
       ).with(
-        'ensure' => 'present'
+        'ensure' => 'present',
       )
     }
   end
@@ -185,10 +187,10 @@ describe 'mesos::slave', type: :class do
     end
 
     it {
-      should contain_file(
-        "#{conf}/?no-checkpoint"
+      is_expected.to contain_file(
+        "#{conf}/?no-checkpoint",
       ).with(
-        'ensure' => 'present'
+        'ensure' => 'present',
       )
     }
   end
@@ -204,23 +206,23 @@ describe 'mesos::slave', type: :class do
     end
 
     it {
-      should contain_file(
-        slave_file
+      is_expected.to contain_file(
+        slave_file,
       ).with_content(/export JAVA_HOME="\/usr\/bin\/java"/)
     }
 
     it {
-      should contain_file(
-        slave_file
+      is_expected.to contain_file(
+        slave_file,
       ).with_content(/export MESOS_HOME="\/var\/lib\/mesos"/)
     }
   end
 
-  it 'should not set isolation by default (value depends on mesos version)' do
-    should_not contain_file(
-      "#{conf}/isolation"
+  it 'does not set isolation by default (value depends on mesos version)' do
+    is_expected.not_to contain_file(
+      "#{conf}/isolation",
     ).with(
-      'ensure' => 'present'
+      'ensure' => 'present',
     )
   end
 
@@ -232,18 +234,18 @@ describe 'mesos::slave', type: :class do
     end
 
     it {
-      should contain_file(
-        "#{conf}/isolation"
+      is_expected.to contain_file(
+        "#{conf}/isolation",
       ).with(
-        'ensure' => 'present'
+        'ensure' => 'present',
       ).with_content(/^cgroups\/cpu,cgroups\/mem$/)
     }
   end
 
-  it 'should not contain cgroups settings' do
-    should_not contain_file(
-      slave_file
-    ).with_content(/CGROUPS/)
+  it 'does not contain cgroups settings' do
+    is_expected.not_to contain_file(
+      slave_file,
+    ).with_content(%r{CGROUPS})
   end
 
   context 'setting isolation mechanism' do
@@ -260,31 +262,31 @@ describe 'mesos::slave', type: :class do
     end
 
     it {
-      should contain_file(
-        "#{conf}/cgroups_root"
-      ).with_content(/^mesos$/)
+      is_expected.to contain_file(
+        "#{conf}/cgroups_root",
+      ).with_content(%r{^mesos$})
     }
 
     it {
-      should contain_file(
-        "#{conf}/cgroups_hierarchy"
+      is_expected.to contain_file(
+        "#{conf}/cgroups_hierarchy",
       ).with_content(/^\/sys\/fs\/cgroup$/)
     }
 
     it {
-      should contain_file(
-        "#{conf}/isolation"
+      is_expected.to contain_file(
+        "#{conf}/isolation",
       ).with(
-        'ensure' => 'present'
+        'ensure' => 'present',
       ).with_content(/^cgroups\/cpu,cgroups\/mem$/)
     }
 
     it {
-      should contain_mesos__property('slave_hierarchy').with(
+      is_expected.to contain_mesos__property('slave_hierarchy').with(
         'owner' => owner,
         'group'   => group,
         'dir'     => conf,
-        'value'   => '/sys/fs/cgroup'
+        'value'   => '/sys/fs/cgroup',
       )
     }
   end
@@ -298,9 +300,9 @@ describe 'mesos::slave', type: :class do
     end
 
     it {
-      should contain_file(slave_file).with(
+      is_expected.to contain_file(slave_file).with(
         'ensure' => 'present',
-        'mode' => '0644'
+        'mode' => '0644',
       )
     }
   end
@@ -318,21 +320,21 @@ describe 'mesos::slave', type: :class do
     end
 
     it {
-      should contain_file(resources_dir).with(
-        'ensure' => 'directory'
+      is_expected.to contain_file(resources_dir).with(
+        'ensure' => 'directory',
       )
     }
 
     it {
-      should contain_file(
-        "#{resources_dir}/cpu"
-      ).with_content(/^4$/)
+      is_expected.to contain_file(
+        "#{resources_dir}/cpu",
+      ).with_content(%r{^4$})
     }
 
     it {
-      should contain_file(
-        "#{resources_dir}/mem"
-      ).with_content(/^2048$/)
+      is_expected.to contain_file(
+        "#{resources_dir}/mem",
+      ).with_content(%r{^2048$})
     }
   end
 
@@ -348,9 +350,9 @@ describe 'mesos::slave', type: :class do
 
     # fact is not evaluated in test with newer puppet (or rspec)
     it 'has ip address from system fact' do
-      should contain_file(
-        slave_file
-      ).with_content(/IP="192\.168\.1\.2"$/)
+      is_expected.to contain_file(
+        slave_file,
+      ).with_content(%r{IP="192\.168\.1\.2"$})
     end
   end
 
@@ -363,8 +365,8 @@ describe 'mesos::slave', type: :class do
     end
 
     it 'contains isolation file in slave directory' do
-      should contain_file(
-        "#{conf}/isolation"
+      is_expected.to contain_file(
+        "#{conf}/isolation",
       ).with_content(/^cgroups\/cpu,cgroups\/mem$/)
     end
   end
@@ -379,8 +381,8 @@ describe 'mesos::slave', type: :class do
     end
 
     it 'contains isolation file in slave directory' do
-      should contain_file(
-        "#{my_conf_dir}/isolation"
+      is_expected.to contain_file(
+        "#{my_conf_dir}/isolation",
       ).with_content(/^cgroups\/cpu,cgroups\/mem$/)
     end
   end
@@ -397,24 +399,24 @@ describe 'mesos::slave', type: :class do
     end
 
     it do
-      should contain_file(work_dir).with(
+      is_expected.to contain_file(work_dir).with(
         'ensure' => 'directory',
         'owner'   => owner,
-        'group'   => group
+        'group'   => group,
       )
     end
 
     it do
-      should contain_mesos__property('slave_work_dir').with(
+      is_expected.to contain_mesos__property('slave_work_dir').with(
         'owner' => owner,
         'group' => group,
         'dir'   => conf,
-        'value' => work_dir
+        'value' => work_dir,
       )
     end
 
     it do
-      should contain_file("#{conf}/work_dir")
+      is_expected.to contain_file("#{conf}/work_dir")
         .with_content(work_dir + "\n")
         .that_requires("File[#{conf}]")
     end
@@ -434,28 +436,28 @@ describe 'mesos::slave', type: :class do
       }
     end
 
-    it { should compile.with_all_deps }
-    it { should contain_package('mesos') }
+    it { is_expected.to compile.with_all_deps }
+    it { is_expected.to contain_package('mesos') }
     it {
-      should contain_service('mesos-slave').with(
+      is_expected.to contain_service('mesos-slave').with(
         ensure: 'running',
-        enable: true
+        enable: true,
       )
     }
 
     it {
-      should contain_mesos__property('resources_ports').with(
+      is_expected.to contain_mesos__property('resources_ports').with(
         'dir' => '/etc/mesos-slave/resources',
         'file'    => 'ports',
-        'value'   => '[10000-65535]'
+        'value'   => '[10000-65535]',
       )
     }
 
     it {
-      should contain_mesos__property('attributes_env').with(
+      is_expected.to contain_mesos__property('attributes_env').with(
         'dir' => '/etc/mesos-slave/attributes',
         'file'    => 'env',
-        'value'   => 'production'
+        'value'   => 'production',
       )
     }
   end
@@ -470,10 +472,10 @@ describe 'mesos::slave', type: :class do
     end
 
     it 'has no-strict file in config dir' do
-      should contain_file(
-        "#{my_conf_dir}/?no-strict"
+      is_expected.to contain_file(
+        "#{my_conf_dir}/?no-strict",
       ).with(
-        'ensure' => 'present'
+        'ensure' => 'present',
       )
     end
   end
@@ -529,17 +531,17 @@ describe 'mesos::slave', type: :class do
       end
 
       it 'has no credentials property' do
-        should_not contain_mesos__property(
-          'slave_credential'
+        is_expected.not_to contain_mesos__property(
+          'slave_credential',
         )
       end
 
       it 'has not credentials file' do
-        should contain_file(
-          '/etc/mesos/slave-credentials'
+        is_expected.to contain_file(
+          '/etc/mesos/slave-credentials',
         )
           .with(
-            'ensure' => 'absent'
+            'ensure' => 'absent',
           )
       end
     end
@@ -556,22 +558,22 @@ describe 'mesos::slave', type: :class do
       end
 
       it 'has credentials property' do
-        should contain_mesos__property(
-          'slave_credential'
+        is_expected.to contain_mesos__property(
+          'slave_credential',
         ).with(
-          'value' => '/etc/mesos/slave-credentials'
+          'value' => '/etc/mesos/slave-credentials',
         )
       end
 
       it 'has credentials file' do
-        should contain_file(
-          '/etc/mesos/slave-credentials'
+        is_expected.to contain_file(
+          '/etc/mesos/slave-credentials',
         ).with(
           'ensure' => 'file',
           'content' => '{"principal": "some-mesos-principal", "secret": "a-very-secret"}',
           'owner' => owner,
           'group' => group,
-          'mode' => '0400'
+          'mode' => '0400',
         )
       end
     end
@@ -586,18 +588,19 @@ describe 'mesos::slave', type: :class do
             syslog_logger: true
           }
         end
+
         it do
-          should contain_mesos__property('slave_logger')
+          is_expected.to contain_mesos__property('slave_logger')
             .with(
               ensure: 'absent',
               file: 'logger',
               value: false,
               dir: conf,
               owner: owner,
-              group: group
+              group: group,
             )
 
-          should contain_file("#{conf}/?no-logger").with_ensure('absent')
+          is_expected.to contain_file("#{conf}/?no-logger").with_ensure('absent')
         end
       end
 
@@ -610,18 +613,19 @@ describe 'mesos::slave', type: :class do
             syslog_logger: false
           }
         end
+
         it do
-          should contain_mesos__property('slave_logger')
+          is_expected.to contain_mesos__property('slave_logger')
             .with(
               ensure: 'present',
               file: 'logger',
               value: false,
               dir: conf,
               owner: owner,
-              group: group
+              group: group,
             )
 
-          should contain_file("#{conf}/?no-logger").with_ensure('present')
+          is_expected.to contain_file("#{conf}/?no-logger").with_ensure('present')
         end
       end
     end
@@ -629,21 +633,21 @@ describe 'mesos::slave', type: :class do
 
   context 'single role' do
     it {
-      should contain_service('mesos-slave').with(
+      is_expected.to contain_service('mesos-slave').with(
         ensure: 'running',
-        enable: true
+        enable: true,
       )
     }
 
     it {
-      should contain_service('mesos-master').with(
-        enable: false
+      is_expected.to contain_service('mesos-master').with(
+        enable: false,
       )
     }
 
     it {
-      should contain_mesos__service('master').with(enable: false)
-      should contain_mesos__service('slave').with(enable: true)
+      is_expected.to contain_mesos__service('master').with(enable: false)
+      is_expected.to contain_mesos__service('slave').with(enable: true)
     }
 
     context 'disable single role' do
@@ -654,8 +658,8 @@ describe 'mesos::slave', type: :class do
       end
 
       it {
-        should_not contain_service('mesos-master').with(
-          enable: false
+        is_expected.not_to contain_service('mesos-master').with(
+          enable: false,
         )
       }
     end
@@ -688,7 +692,7 @@ describe 'mesos::slave', type: :class do
             value: false,
             dir: conf,
             owner: owner,
-            group: group
+            group: group,
           )
 
         is_expected.to contain_file("#{conf}/?no-systemd_enable_support").with_ensure('present')
@@ -719,7 +723,7 @@ describe 'mesos::slave', type: :class do
             value: true,
             dir: conf,
             owner: owner,
-            group: group
+            group: group,
           )
 
         is_expected.not_to contain_file("#{conf}/?systemd_enable_support").with_ensure('present')
@@ -751,7 +755,7 @@ describe 'mesos::slave', type: :class do
             value: true,
             dir: conf,
             owner: owner,
-            group: group
+            group: group,
           )
 
         is_expected.not_to contain_file("#{conf}/?systemd_enable_support").with_ensure('present')
@@ -774,6 +778,7 @@ describe 'mesos::slave', type: :class do
           puppetversion: Puppet.version
         }
       end
+
       it do
         is_expected.not_to contain_mesos__property('slave_systemd_enable_support')
           .with(
@@ -782,7 +787,7 @@ describe 'mesos::slave', type: :class do
             value: false,
             dir: conf,
             owner: owner,
-            group: group
+            group: group,
           )
 
         is_expected.not_to contain_file("#{conf}/?no-systemd_enable_support").with_ensure('present')
@@ -808,7 +813,7 @@ describe 'mesos::slave', type: :class do
       is_expected.to contain_service('mesos-slave').with(
         ensure: 'running',
         provider: 'upstart',
-        enable: true
+        enable: true,
       )
     }
 
@@ -829,7 +834,7 @@ describe 'mesos::slave', type: :class do
         is_expected.to contain_service('mesos-slave').with(
           ensure: 'running',
           provider: 'systemd',
-          enable: true
+          enable: true,
         )
       }
     end
@@ -848,7 +853,7 @@ describe 'mesos::slave', type: :class do
     it do
       is_expected.to contain_service('mesos-slave').with(
         ensure: 'running',
-        enable: true
+        enable: true,
       )
     end
 
@@ -858,22 +863,22 @@ describe 'mesos::slave', type: :class do
 
     it do
       is_expected.to contain_file(
-        '/etc/systemd/system/mesos-slave.service'
+        '/etc/systemd/system/mesos-slave.service',
       ).with(
-        'ensure' => 'present'
+        'ensure' => 'present',
       )
     end
 
     it do
       is_expected.to contain_file(
-        '/etc/systemd/system/mesos-slave.service'
-      ).with_content(/Wants=network-online.target openvpn-client@.service/)
+        '/etc/systemd/system/mesos-slave.service',
+      ).with_content(%r{Wants=network-online.target openvpn-client@.service})
     end
 
     it do
       is_expected.to contain_file(
-        '/etc/systemd/system/mesos-slave.service'
-      ).with_content(/After=network-online.target openvpn-client@.service/)
+        '/etc/systemd/system/mesos-slave.service',
+      ).with_content(%r{After=network-online.target openvpn-client@.service})
     end
   end
 end

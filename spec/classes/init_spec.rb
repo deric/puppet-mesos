@@ -15,6 +15,7 @@ describe 'mesos', type: :class do
       puppetversion: Puppet.version
     }
   end
+
   context 'with ensure' do
     let(:version) { '0.14' }
     let(:params) do
@@ -29,13 +30,13 @@ describe 'mesos', type: :class do
 
     it {
       is_expected.to contain_package('mesos').with(
-        'ensure' => version
+        'ensure' => version,
       )
     }
 
     it {
       is_expected.not_to contain_package('python').with(
-        'ensure' => 'present'
+        'ensure' => 'present',
       )
     }
   end
@@ -50,7 +51,7 @@ describe 'mesos', type: :class do
 
     it {
       is_expected.to contain_package('mesos').with(
-        'ensure' => version
+        'ensure' => version,
       )
     }
   end
@@ -65,7 +66,7 @@ describe 'mesos', type: :class do
 
     it {
       is_expected.to contain_package('mesos').with(
-        'ensure' => version
+        'ensure' => version,
       )
     }
   end
@@ -79,7 +80,7 @@ describe 'mesos', type: :class do
       }
     end
 
-    it { is_expected.to contain_file(file).with_content(/ULIMIT="-n #{ulimit}"/) }
+    it { is_expected.to contain_file(file).with_content(%r{ULIMIT="-n #{ulimit}"}) }
   end
 
   it { is_expected.to contain_class('mesos') }
@@ -101,7 +102,7 @@ describe 'mesos', type: :class do
 
     it {
       is_expected.to contain_package(python).with(
-        'ensure' => 'present'
+        'ensure' => 'present',
       )
     }
   end
@@ -136,7 +137,7 @@ describe 'mesos', type: :class do
     context 'keeps everything' do
       it {
         is_expected.to contain_class('mesos::install').with(
-          'remove_package_services' => false
+          'remove_package_services' => false,
         )
       }
     end
@@ -158,11 +159,12 @@ describe 'mesos', type: :class do
         zookeeper: ['192.168.1.100:2181']
       }
     end
+
     it {
       is_expected.to contain_file(
-        '/etc/mesos/zk'
+        '/etc/mesos/zk',
       ).with(
-        ensure: 'present'
+        ensure: 'present',
       ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
     }
   end
@@ -174,9 +176,10 @@ describe 'mesos', type: :class do
         zookeeper: ['192.168.1.100:2181']
       }
     end
+
     it {
       is_expected.not_to contain_file(
-        '/etc/mesos/zk'
+        '/etc/mesos/zk',
       )
     }
   end
@@ -187,11 +190,12 @@ describe 'mesos', type: :class do
         zookeeper: 'zk://192.168.1.100:2181/mesos'
       }
     end
+
     it {
       is_expected.to contain_file(
-        '/etc/mesos/zk'
+        '/etc/mesos/zk',
       ).with(
-        ensure: 'present'
+        ensure: 'present',
       ).with_content(/^zk:\/\/192.168.1.100:2181\/mesos/)
     }
   end
@@ -203,11 +207,12 @@ describe 'mesos', type: :class do
         zk_path: 'my_mesos'
       }
     end
+
     it {
       is_expected.to contain_file(
-        '/etc/mesos/zk'
+        '/etc/mesos/zk',
       ).with(
-        ensure: 'present'
+        ensure: 'present',
       ).with_content(/^zk:\/\/192.168.1.100:2181,192.168.1.105:2181\/my_mesos/)
     }
   end
@@ -219,11 +224,12 @@ describe 'mesos', type: :class do
         zk_default_port: 2828
       }
     end
+
     it {
       is_expected.to contain_file(
-        '/etc/mesos/zk'
+        '/etc/mesos/zk',
       ).with(
-        ensure: 'present'
+        ensure: 'present',
       ).with_content(/^zk:\/\/192.168.1.100:2828,192.168.1.105:2828\/mesos/)
     }
   end
@@ -235,7 +241,7 @@ describe 'mesos', type: :class do
           location: 'http://repos.mesosphere.io/debian',
           release: 'jessie',
           repos: 'main',
-          key: { 'id' => '00026D0004C44CF7EF55ADF8DF7D54CBE56151BB', 'server' => 'keyserver.example.com' },
+          key: { 'id' => '00026D0004C44CF7EF55ADF8DF7D54CBE56151BB', 'server' => 'keyserver.example.com' }
         }
       }
     end
@@ -246,7 +252,7 @@ describe 'mesos', type: :class do
         'repos'    => 'main',
         'release'  => 'jessie',
         'key'      => { 'id' => '00026D0004C44CF7EF55ADF8DF7D54CBE56151BB', 'server' => 'keyserver.example.com' },
-        'include'  => { 'src' => false }
+        'include'  => { 'src' => false },
       )
     }
   end

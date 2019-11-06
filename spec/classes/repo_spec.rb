@@ -33,7 +33,7 @@ describe 'mesos::repo', type: :class do
         'repos'    => 'main',
         'release'  => lsbdistcodename.to_s,
         'key'      => { 'id' => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com' },
-        'include'  => { 'src' => false }
+        'include'  => { 'src' => false },
       )
     }
 
@@ -47,6 +47,7 @@ describe 'mesos::repo', type: :class do
           source: nil
         }
       end
+
       it { is_expected.not_to contain_apt__source('mesos') }
       # it { is_expected.to contain_file('/etc/apt/sources.list.d/mesos.list').with({'ensure' => 'absent'}) }
     end
@@ -85,13 +86,13 @@ describe 'mesos::repo', type: :class do
       is_expected.to contain_package('mesosphere-el-repo').with(
         'ensure' => 'present',
         'provider' => 'rpm',
-        'source'   => "https://repos.mesosphere.io/el/#{majrel}/noarch/RPMS/mesosphere-el-repo-#{majrel}-#{minrel}.noarch.rpm"
+        'source'   => "https://repos.mesosphere.io/el/#{majrel}/noarch/RPMS/mesosphere-el-repo-#{majrel}-#{minrel}.noarch.rpm",
       )
     }
 
     it do
       is_expected.to contain_exec('yum-clean-expire-cache').with(
-        command: 'yum clean expire-cache'
+        command: 'yum clean expire-cache',
       )
     end
 
@@ -101,6 +102,7 @@ describe 'mesos::repo', type: :class do
           source: nil
         }
       end
+
       it { is_expected.not_to contain_package('mesosphere-el-repo') }
     end
   end
@@ -150,7 +152,7 @@ describe 'mesos::repo', type: :class do
         'repos'    => 'main',
         'release'  => 'stretch',
         'key'      => { 'id' => '99926D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com' },
-        'include'  => { 'src' => false }
+        'include'  => { 'src' => false },
       )
     }
   end
@@ -187,7 +189,7 @@ describe 'mesos::repo', type: :class do
         'repos'    => 'main',
         'release'  => 'stretch',
         'key'      => { 'id' => '00026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.example.com' },
-        'include'  => { 'src' => false }
+        'include'  => { 'src' => false },
       )
     }
   end
@@ -224,7 +226,7 @@ describe 'mesos::repo', type: :class do
         'repos'    => 'main',
         'release'  => 'stretch',
         'key'      => { 'id' => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com' },
-        'include'  => { 'src' => false }
+        'include'  => { 'src' => false },
       )
     }
   end

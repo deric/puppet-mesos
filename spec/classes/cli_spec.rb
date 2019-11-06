@@ -50,13 +50,13 @@ describe 'mesos::cli', type: :class do
         'ensure' => 'present',
         'owner'   => owner,
         'group'   => group,
-        'mode'    => '0644'
+        'mode'    => '0644',
       )
     end
 
     it do
       is_expected.to contain_file('/etc/.mesos.json').with_content(
-        /zk:\/\/192.168.1.100:2181\/mesos/
+        /zk:\/\/192.168.1.100:2181\/mesos/,
       )
     end
   end

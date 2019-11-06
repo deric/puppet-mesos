@@ -8,7 +8,7 @@ This function converts simple key-value structure to a Hash
 that is required by create_resources function
 
   EOS
-) do |args|
+             ) do |args|
 
     # Arguments: hash key_prefix [file_prefix]
 
