@@ -25,11 +25,11 @@
 class mesos::master(
   Boolean                                 $enable              = true,
   String                                  $cluster             = 'mesos',
-  String                                  $conf_dir            = '/etc/mesos-master',
-  String                                  $work_dir            = '/var/lib/mesos', # registrar directory, since 0.19
-  String                                  $conf_file           = '/etc/default/mesos-master',
-  String                                  $acls_file           = '/etc/mesos/acls',
-  String                                  $credentials_file    = '/etc/mesos/master-credentials',
+  Stdlib::Absolutepath                    $conf_dir            = '/etc/mesos-master',
+  Stdlib::Absolutepath                    $work_dir            = '/var/lib/mesos', # registrar directory, since 0.19
+  Stdlib::Absolutepath                    $conf_file           = '/etc/default/mesos-master',
+  Stdlib::Absolutepath                    $acls_file           = '/etc/mesos/acls',
+  Stdlib::Absolutepath                    $credentials_file    = '/etc/mesos/master-credentials',
   Integer                                 $master_port         = $mesos::master_port,
   Optional[Variant[String,Array[String]]] $zookeeper           = $mesos::zookeeper,
   String                                  $zk_path             = $mesos::zk_path,
@@ -50,9 +50,6 @@ class mesos::master(
   String                                  $systemd_wants       = $::mesos::params::systemd_wants,
   String                                  $systemd_after       = $::mesos::params::systemd_after,
 ) inherits ::mesos {
-
-  validate_absolute_path($acls_file)
-  validate_absolute_path($credentials_file)
 
   if (!empty($acls)) {
     $acls_options = {'acls' => $acls_file}

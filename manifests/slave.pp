@@ -54,9 +54,9 @@ class mesos::slave (
   String                                  $work_dir            = '/var/lib/mesos',
   Boolean                                 $checkpoint          = false,
   Optional[String]                        $isolation           = undef,
-  String                                  $conf_dir            = '/etc/mesos-slave',
-  String                                  $conf_file           = '/etc/default/mesos-slave',
-  String                                  $credentials_file    = '/etc/mesos/slave-credentials',
+  Stdlib::Absolutepath                    $conf_dir            = '/etc/mesos-slave',
+  Stdlib::Absolutepath                    $conf_file           = '/etc/default/mesos-slave',
+  Stdlib::Absolutepath                    $credentials_file    = '/etc/mesos/slave-credentials',
   String                                  $master              = $mesos::master,
   Integer                                 $master_port         = $mesos::master_port,
   Optional[Variant[String,Array[String]]] $zookeeper           = $mesos::zookeeper,
@@ -81,7 +81,6 @@ class mesos::slave (
   String                                  $systemd_wants       = $::mesos::params::systemd_wants,
   String                                  $systemd_after       = $::mesos::params::systemd_after,
 ) inherits ::mesos {
-  validate_absolute_path($credentials_file)
 
   if !empty($zookeeper) {
     if is_string($zookeeper) {

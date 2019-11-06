@@ -208,7 +208,7 @@ describe 'mesos::property', type: :define do
     it 'fails with an error' do
       expect {
         is_expected.to compile.with_all_deps
-      }.to raise_error %r{ensure must be one of}
+      }.to raise_error %r{expects a match for Enum}
     end
   end
 

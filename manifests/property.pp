@@ -42,9 +42,9 @@
 # Default: 0644
 #
 define mesos::property (
-  String $dir,
+  Stdlib::Absolutepath $dir,
   $value,
-  String $ensure  = 'present',
+  Enum['present', 'absent', 'file'] $ensure  = 'present',
   Optional[String] $file    = undef,
   Optional[String] $service = undef,
   Optional[String] $owner   = undef,
@@ -52,11 +52,6 @@ define mesos::property (
   Optional[String] $mode    = undef,
 ) {
   include ::mesos::params
-  validate_absolute_path($dir)
-
-  if ! ($ensure in ['present', 'absent', 'file']) {
-    fail("\$ensure must be one of 'present', 'file', 'absent'!")
-  }
 
   if $service {
     fail("\$service is deprecated and will be removed in the next major release, please use \$notify => ${service} instead")
