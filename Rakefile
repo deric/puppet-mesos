@@ -40,3 +40,9 @@ end
 task spec_prep: :librarian_spec_prep
 
 task default: %i[validate spec lint]
+
+desc "Run acceptance tests"
+RSpec::Core::RakeTask.new(:acceptance) do |t|
+  # just `spec/acceptance` caused runnin all specs
+  t.pattern = 'spec/acceptance/*_spec.rb'
+end

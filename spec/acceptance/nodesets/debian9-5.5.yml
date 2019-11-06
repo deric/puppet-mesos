@@ -1,0 +1,13 @@
+HOSTS:
+  debian-9-x64:
+    platform: debian-9-amd64
+    hypervisor : docker
+    image: deric/stretch-puppet:5.5.16
+    docker_preserve_image: false
+    roles:
+      - agent
+    debug: false
+CONFIG:
+  masterless: true
+  log_level: trace
+  type: foss

@@ -467,6 +467,19 @@ for latest version from git:
 mod 'deric/mesos', :git => 'git://github.com/deric/puppet-mesos.git'
 ```
 
+## Acceptance testing
+
+Fastest way is to run tests on prepared Docker images:
+```
+BEAKER_set=debian9-5.5 bundle exec rake acceptance
+```
+For examining system state set Beaker's ENV variable `BEAKER_destroy=no`:
+
+```
+BEAKER_destroy=no BEAKER_set=debian9-6.3 bundle exec rake acceptance
+```
+and after finishing tests connect to container:
+
 ## Links
 
 For more information see [Mesos project](http://mesos.apache.org/)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec-system/spec_helper'
 require 'rspec-system-puppet/helpers'
 require 'rspec-system-serverspec/helpers'
@@ -16,9 +18,6 @@ RSpec.configure do |c|
 
   # This is where we 'setup' the nodes before running our tests
   c.before :suite do
-    # Install puppet
-    puppet_install
-
     # Install modules and dependencies
     puppet_module_install(source: proj_root, module_name: 'mesos')
     shell('puppet module install puppetlabs-stdlib')
