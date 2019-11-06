@@ -44,7 +44,7 @@ matrix:
       env: RAKE_ENV=ci BEAKER_debug=true BEAKER_set=debian9-5.5
       script: bundle exec rake acceptance
       services: docker
-      sudo: required
+      bundler_args: --without development
     -
       env: DEPLOY_TO_FORGE=yes
       stage: deploy
