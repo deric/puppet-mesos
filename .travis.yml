@@ -1,24 +1,49 @@
+---
+dist: xenial
 language: ruby
-bundler_args: --without development
-sudo: false
-cache:
-  directories:
-    - $HOME/librarian-puppet
+cache: bundler
+before_install:
+  - bundle -v
+  - rm -f Gemfile.lock
+  - gem update --system $RUBYGEMS_VERSION
+  - gem --version
+  - bundle -v
 script:
-  - RAKE_ENV=ci bundle exec rake validate
-  - RAKE_ENV=ci bundle exec rake spec
-  - RAKE_ENV=ci bundle exec rake lint
+  - 'bundle exec rake $CHECK'
+bundler_args: --without system_tests
 rvm:
-  - 2.2.7
-  - 2.3.4
-  - 2.4.1
-env:
-  global:
-    - LIBRARIAN_PUPPET_TMP="$HOME/librarian-puppet"
-  matrix:
-    - PUPPET_VERSION="~> 4.3.0" STRICT_VARIABLES=yes
-    - PUPPET_VERSION="~> 4.4.0" STRICT_VARIABLES=yes
-    - PUPPET_VERSION="~> 4.5.0" STRICT_VARIABLES=yes
-    - PUPPET_VERSION="~> 4.9.0" STRICT_VARIABLES=yes
-    - PUPPET_VERSION="~> 4.10.0" STRICT_VARIABLES=yes
-    - PUPPET_VERSION="~> 5.1.0" STRICT_VARIABLES=yes
+  - 2.5.3
+stages:
+  - static
+  - spec
+  - acceptance
+  -
+    if: tag =~ ^v\d
+    name: deploy
+matrix:
+  fast_finish: true
+  include:
+    -
+      env: CHECK="check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint"
+      stage: static
+    -
+      env: PUPPET_GEM_VERSION="~> 4.10" CHECK=parallel_spec
+      rvm: 2.4.5
+      stage: spec
+    -
+      env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec
+      rvm: 2.4.5
+      stage: spec
+    -
+      env: PUPPET_GEM_VERSION="~> 6.0" CHECK=parallel_spec
+      rvm: 2.5.3
+      stage: spec
+    -
+      env: DEPLOY_TO_FORGE=yes
+      stage: deploy
+branches:
+  only:
+    - master
+    - /^v\d/
+notifications:
+  email: false
