@@ -39,6 +39,13 @@ matrix:
       rvm: 2.5.3
       stage: spec
     -
+      rvm: 2.5.3
+      dist: xenial
+      env: RAKE_ENV=ci BEAKER_debug=true BEAKER_set=debian9-5.5
+      script: bundle exec rake acceptance
+      services: docker
+      sudo: required
+    -
       env: DEPLOY_TO_FORGE=yes
       stage: deploy
 branches:

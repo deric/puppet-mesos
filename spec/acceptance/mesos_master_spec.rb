@@ -5,7 +5,7 @@ require 'pry'
 
 describe 'mesos installation', :unless => UNSUPPORTED_PLATFORMS.include?(fact('osfamily')) do
   context 'basic setup' do
-    it 'install accounts' do
+    it 'install mesos-master' do
       pp = <<-EOS
         class{'mesos::master': }
       EOS
@@ -17,15 +17,12 @@ describe 'mesos installation', :unless => UNSUPPORTED_PLATFORMS.include?(fact('o
     end
 
     describe package('mesos') do
-      it { is_expected.to exist }
+      it { is_expected.to be_installed }
     end
 
-    context 'second run' do
-      it 'applies manifest' do
-        expect(apply_manifest(pp,
-          :catch_failures => false,
-          :debug => true).exit_code).to be_zero
-      end
+    describe service('mesos-master') do
+      it { is_expected.to be_enabled }
+      # it { is_expected.to be_running } # might not work due to systemd bug
     end
   end
 end
