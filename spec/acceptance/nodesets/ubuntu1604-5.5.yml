@@ -1,0 +1,13 @@
+HOSTS:
+  ubuntu1604-64:
+    platform: ubuntu-16.04-amd64
+    hypervisor : docker
+    image: deric/xenial-puppet:5.5.16
+    docker_preserve_image: false
+    roles:
+      - agent
+    debug: false
+CONFIG:
+  masterless: true
+  log_level: trace
+  type: foss
