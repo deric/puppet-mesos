@@ -9,5 +9,5 @@ HOSTS:
     debug: false
 CONFIG:
   masterless: true
-  log_level: trace
+  log_level: debug
   type: foss

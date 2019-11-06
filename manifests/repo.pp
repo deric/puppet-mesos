@@ -15,9 +15,9 @@ class mesos::repo(
       'Debian': {
         include ::apt
 
-        $os = downcase($facts['os']['family'])
+        $osname = downcase($facts['os']['name'])
         $mesosphere_apt = {
-          location => "https://repos.mesosphere.io/${os}",
+          location => "https://repos.mesosphere.io/${osname}",
           release  =>  $facts['os']['distro']['codename'],
           repos    => 'main',
           key      => {

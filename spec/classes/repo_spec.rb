@@ -29,7 +29,7 @@ describe 'mesos::repo', type: :class do
 
     it {
       is_expected.to contain_apt__source('mesos').with(
-        'location' => "https://repos.mesosphere.io/#{family.downcase}",
+        'location' => "https://repos.mesosphere.io/#{operatingsystem.downcase}",
         'repos'    => 'main',
         'release'  => lsbdistcodename.to_s,
         'key'      => { 'id' => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com' },
@@ -229,5 +229,39 @@ describe 'mesos::repo', type: :class do
         'include'  => { 'src' => false },
       )
     }
+  end
+
+  context 'Ubuntu' do
+    let(:facts) do
+      {
+        # still old fact is needed due to this
+        # https://github.com/puppetlabs/puppetlabs-apt/blob/master/manifests/params.pp#L3
+        osfamily: 'Debian',
+        os: {
+          family: 'Debian',
+          name: 'Ubuntu',
+          distro: { codename: 'xenial' },
+          release: { major: '16.04', full: '16.04' }
+        },
+        puppetversion: Puppet.version
+      }
+    end
+
+    let(:params) do
+      {
+        source: 'mesosphere'
+      }
+    end
+
+    it {
+      is_expected.to contain_apt__source('mesos').with(
+        'location' => 'https://repos.mesosphere.io/ubuntu',
+        'repos'    => 'main',
+        'release'  => 'xenial',
+        'key'      => { 'id' => '81026D0004C44CF7EF55ADF8DF7D54CBE56151BF', 'server' => 'keyserver.ubuntu.com' },
+        'include'  => { 'src' => false },
+      )
+    }
+
   end
 end

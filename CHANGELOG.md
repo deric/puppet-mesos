@@ -2,6 +2,7 @@
 
 ## v1.0.4
 - Add parameter `mesos::manage_repo` that would disable repository management (#93)
+- Fix Ubuntu support (#89)
 - [Full diff](https://github.com/deric/puppet-mesos/compare/v1.0.3...v1.0.4)
 
 ## v1.0.3
