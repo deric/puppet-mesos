@@ -84,7 +84,7 @@ class mesos(
   class {'mesos::install':
     ensure                  => $mesos_ensure,
     repo_source             => $repo,
-    manage_repo           => $manage_repo,
+    manage_repo             => $manage_repo,
     manage_python           => $manage_python,
     python_package          => $python_package,
     remove_package_services => $force_provider == 'none',
