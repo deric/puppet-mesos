@@ -347,17 +347,19 @@ Software repositories could be enabled by defining a source:
 
 ```yaml
 mesos::repo: 'mesosphere'
+mesos::manage_repo: true
 ```
 
 or in Puppet code:
 
 ```puppet
 class{'mesos':
-  repo => 'mesosphere'
+  repo        => 'mesosphere',
+  manage_repo => true,
 }
 ```
 
-by default this feature is disabled and right we support [mesosphere.io](http://mesosphere.io) repositories for:
+by default this feature is enabled and right we support [mesosphere.io](http://mesosphere.io) repositories for:
 
   * Debian/Ubuntu
   * RedHat/CentOS

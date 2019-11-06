@@ -54,7 +54,8 @@ class mesos(
   String                                  $owner               = 'root',
   String                                  $group               = 'root',
   Optional[String]                        $listen_address      = undef,
-  Optional[Variant[String,Hash]]          $repo                = 'mesosphere',
+  Boolean                                 $manage_repo         = true,
+  Variant[String,Hash]                    $repo                = 'mesosphere',
   Hash                                    $env_var             = {},
   Integer                                 $ulimit              = 8192,
   Boolean                                 $manage_python       = false,
@@ -83,6 +84,7 @@ class mesos(
   class {'mesos::install':
     ensure                  => $mesos_ensure,
     repo_source             => $repo,
+    manage_repo           => $manage_repo,
     manage_python           => $manage_python,
     python_package          => $python_package,
     remove_package_services => $force_provider == 'none',

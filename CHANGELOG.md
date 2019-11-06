@@ -1,5 +1,9 @@
 # deric-mesos
 
+## v1.0.4
+- Add parameter `mesos::manage_repo` that would disable repository management (#93)
+- [Full diff](https://github.com/deric/puppet-mesos/compare/v1.0.3...v1.0.4)
+
 ## v1.0.3
 - [Full diff](https://github.com/deric/puppet-mesos/compare/v1.0.2...v1.0.3)
 - Support `puppetlabs-apt` 6.x

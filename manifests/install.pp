@@ -10,11 +10,12 @@
 # required by 'mesos::master' and 'mesos::slave'
 #
 class mesos::install(
-  String                          $ensure                  = 'present',
-  Optional[Variant[String,Hash]]  $repo_source             = undef,
-  Boolean                         $manage_python           = false,
-  String                          $python_package          = 'python',
-  Boolean                         $remove_package_services = false,
+  String               $ensure                  = 'present',
+  Boolean              $manage_repo             = true,
+  Variant[String,Hash] $repo_source             = {},
+  Boolean              $manage_python           = false,
+  String               $python_package          = 'python',
+  Boolean              $remove_package_services = false,
 ) {
   # 'ensure_packages' requires puppetlabs/stdlib
   #
@@ -28,16 +29,20 @@ class mesos::install(
     )
   }
 
-  class {'mesos::repo':
-    source => $repo_source,
+  if $manage_repo and !empty($repo_source) {
+    class {'mesos::repo':
+      source => $repo_source,
+    }
+    Package<| title == 'mesos' |> {
+      require => Class['mesos::repo']
+    }
   }
 
   # a debian (or other binary package) must be available,
   # see https://github.com/deric/mesos-deb-packaging
   # for Debian packaging
   package { 'mesos':
-    ensure  => $ensure,
-    require => Class['mesos::repo']
+    ensure  => $ensure
   }
 
   if ($remove_package_services and $::osfamily == 'redhat' and $::operatingsystemmajrelease == '6') {

@@ -1,13 +1,29 @@
 require 'spec_helper'
 
 describe 'mesos::install', type: :class do
+  let(:facts) do
+    {
+      osfamily: 'Debian',
+      os: {
+        family: 'Debian',
+        name: 'Debian',
+        distro: { codename: 'stretch' },
+        release: { major: '9', minor: '1', full: '9.1' }
+      },
+      path: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+      puppetversion: Puppet.version
+    }
+  end
+
   context 'with given version' do
-    let(:version) { '0.14' }
+    let(:version) { '1.5' }
     let(:params) do
       {
-        ensure: version
+        ensure:      version,
+        repo_source: 'mesosphere',
       }
     end
+
 
     before(:each) do
       puppet_debug_override
@@ -28,6 +44,16 @@ describe 'mesos::install', type: :class do
 
     it { should contain_class('mesos::repo') }
   end
+
+  context 'do not install repo' do
+    let(:params)  do
+      {
+        manage_repo: false
+      }
+    end
+    it { is_expected.not_to contain_class('mesos::repo') }
+  end
+
 
   context 'manage python installation' do
     let(:params)  do
