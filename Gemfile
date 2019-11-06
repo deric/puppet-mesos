@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 group :rake do
-  puppetversion = ENV.key?('PUPPET_VERSION') ? (ENV['PUPPET_VERSION']).to_s : ['>= 3.0.0', '< 6.0']
+  puppetversion = ENV.key?('PUPPET_GEM_VERSION') ? (ENV['PUPPET_GEM_VERSION']).to_s : ['>= 4.10.0', '< 7.0']
   gem 'puppet', puppetversion
   gem 'puppet-lint'
   gem 'puppetlabs_spec_helper', '>=0.2.0'
