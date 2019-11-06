@@ -17,6 +17,7 @@ group :rake do
   gem 'safe_yaml' if RUBY_VERSION >= '2.2.0'
   gem 'semantic_puppet'
   gem 'xmlrpc' if RUBY_VERSION >= '2.3.0'
+  gem 'parallel_tests'
 end
 
 group :development do
