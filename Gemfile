@@ -22,4 +22,6 @@ end
 group :development do
   gem 'puppet-blacksmith', git: 'https://github.com/deric/puppet-blacksmith', branch: 'tag-order'
   gem 'rubocop', '>= 0.49.0'
+  gem 'rubocop-rspec'
+  gem 'rubocop-i18n'
 end
