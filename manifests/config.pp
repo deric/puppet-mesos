@@ -24,7 +24,6 @@ class mesos::config(
   Hash              $env_var        = {},
   Optional[String]  $zookeeper_url  = undef,
 ){
-  validate_bool($manage_zk_file)
 
   File {
     owner  => $owner,
