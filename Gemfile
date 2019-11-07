@@ -29,7 +29,7 @@ end
 
 group :system_tests do
   gem 'pry'
-  gem 'beaker'
+  gem 'beaker', '>= 4.4.0' # fix for RHEL8 needed: https://github.com/puppetlabs/beaker/commit/287e84c4fb287f9fafdf1eda79e140cf6e59fd94
   gem 'beaker-rspec'
   gem 'beaker-docker'
   gem 'serverspec'

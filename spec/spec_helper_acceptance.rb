@@ -18,9 +18,6 @@ RSpec.configure do |c|
   c.before :suite do
     #install_puppet
     hosts.each do |host|
-      if ['RedHat'].include?(fact('osfamily'))
-        on host, 'yum install -y tar'
-      end
       #on host, 'gem install bundler'
       #on host, 'cd /etc/puppet && bundle install --without development'
       on host, puppet('module','install','puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }

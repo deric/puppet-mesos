@@ -1,0 +1,17 @@
+HOSTS:
+  centos-8-x64:
+    platform: el-8-x86_64 # needed to avoid installing ntpdate (BKR-1555)
+    hypervisor: docker
+    image: deric/centos8-puppet:5.5.17
+    dockerfile: spec/acceptance/Dockerfile.centos8
+    use_image_entry_point: true
+    provision: true
+    debug: true
+    # install various tools required to get the image up to usable levels
+    #docker_image_commands:
+    #  - 'yum install -y crontabs tar wget openssl sysvinit-tools iproute which initscripts'
+CONFIG:
+  trace_limit: 200
+  type: foss
+  masterless: true
+  log_level: trace
