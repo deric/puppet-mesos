@@ -1,9 +1,11 @@
 # deric-mesos
 
-## v1.0.4
+## v1.1.0
 - Add parameter `mesos::manage_repo` that would disable repository management (#93)
 - Fix Ubuntu support (#89)
-- [Full diff](https://github.com/deric/puppet-mesos/compare/v1.0.3...v1.0.4)
+- Workaround for CentOS, RHEL (#87, #90)
+- Basic acceptance tests
+- [Full diff](https://github.com/deric/puppet-mesos/compare/v1.0.3...v1.1.0)
 
 ## v1.0.3
 - [Full diff](https://github.com/deric/puppet-mesos/compare/v1.0.2...v1.0.3)

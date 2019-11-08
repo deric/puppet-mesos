@@ -1,6 +1,6 @@
 {
   "name": "deric-mesos",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "author": "Tomas Barton",
   "summary": "Module managing Mesos master and slave instalation",
   "license": "Apache-2.0",
