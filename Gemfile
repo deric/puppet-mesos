@@ -25,6 +25,7 @@ group :development do
   gem 'rubocop', '>= 0.49.0'
   gem 'rubocop-rspec'
   gem 'rubocop-i18n'
+  gem 'pdk'
 end
 
 group :system_tests do
