@@ -64,9 +64,17 @@ class mesos::repo(
           undef: {} #nothing to do
           'mesosphere': {
             $osrel = $facts['os']['release']['major']
-            $mrel = $facts['os']['release']['minor']
             case $osrel {
               '6', '7': {
+                case $facts['os']['release']['minor'] {
+                  '1','2': {
+                    $mrel = $facts['os']['release']['minor']
+                  } default: {
+                    # mesosphere no longer updates for new releases
+                    $mrel = '3'
+                  }
+                }
+
                 exec { 'yum-clean-expire-cache':
                   user        => 'root',
                   path        => '/usr/bin',

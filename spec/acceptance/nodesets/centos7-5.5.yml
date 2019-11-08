@@ -6,12 +6,9 @@ HOSTS:
     dockerfile: spec/acceptance/Dockerfile.centos7
     use_image_entry_point: true
     provision: true
-    debug: true
-    # install various tools required to get the image up to usable levels
-    #docker_image_commands:
-    #  - 'yum install -y crontabs tar wget openssl sysvinit-tools iproute which initscripts'
+    debug: false
 CONFIG:
   trace_limit: 200
   type: foss
   masterless: true
-  log_level: trace
+  log_level: debug
