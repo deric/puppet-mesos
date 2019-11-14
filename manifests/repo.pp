@@ -30,7 +30,7 @@ class mesos::repo(
         }
 
         # custom configuration
-        if is_hash($source) {
+        if $source =~ Hash {
           # merge configuration with mesosphere's defaults
           $repo_config = deep_merge($mesosphere_apt, $source)
           ensure_resource('apt::source', 'mesos', $repo_config)

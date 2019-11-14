@@ -62,7 +62,7 @@ define mesos::property (
   $file_group = pick($group, $mesos::params::config_file_group)
   $file_mode  = pick($mode,  $mesos::params::config_file_mode)
 
-  if is_bool($value) {
+  if $value =~ Boolean {
     if $value {
       $file_path = "${dir}/?${file_name}"
     } else {
@@ -70,7 +70,7 @@ define mesos::property (
     }
     $file_content = ''
     $file_ensure = $ensure
-  } elsif is_numeric($value) {
+  } elsif $value =~ Numeric {
     # function empty() from puppetlabs-stdlib prior to 4.10.0 does not handle numeric values
     # thus we need to treat numeric values differently
     # TODO: this block can be safely removed after upgrading stdlib
